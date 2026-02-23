@@ -27,5 +27,17 @@
     "@wiredwp/robinpath": "^0.30.1",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0"
+  },
+  "description": "Async utilities: parallel, race, waterfall, map, retry, throttle, debounce, timeout, and concurrency control",
+  "keywords": [
+    "promise",
+    "infrastructure"
+  ],
+  "license": "MIT",
+  "robinpath": {
+    "category": "infrastructure",
+    "type": "utility",
+    "auth": "none",
+    "functionCount": 17
   }
 }

@@ -31,5 +31,17 @@
     "@types/js-yaml": "^4.0.9",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0"
+  },
+  "description": "Parse, stringify, and manipulate YAML data",
+  "keywords": [
+    "yaml",
+    "utility"
+  ],
+  "license": "MIT",
+  "robinpath": {
+    "category": "utility",
+    "type": "utility",
+    "auth": "none",
+    "functionCount": 9
   }
 }

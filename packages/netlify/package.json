@@ -25,5 +25,18 @@
   "devDependencies": {
     "@wiredwp/robinpath": "^0.30.1",
     "typescript": "^5.6.0"
+  },
+  "description": "Netlify module for RobinPath.",
+  "keywords": [
+    "netlify",
+    "devops"
+  ],
+  "license": "MIT",
+  "robinpath": {
+    "category": "devops",
+    "type": "integration",
+    "auth": "api-key",
+    "functionCount": 21,
+    "baseUrl": "https://api.netlify.com"
   }
 }

@@ -25,5 +25,18 @@
   "devDependencies": {
     "@wiredwp/robinpath": "^0.30.1",
     "typescript": "^5.6.0"
+  },
+  "description": "Basecamp module for RobinPath.",
+  "keywords": [
+    "basecamp",
+    "project management"
+  ],
+  "license": "MIT",
+  "robinpath": {
+    "category": "project-management",
+    "type": "integration",
+    "auth": "api-key",
+    "functionCount": 19,
+    "baseUrl": "https://3.basecampapi.com"
   }
 }

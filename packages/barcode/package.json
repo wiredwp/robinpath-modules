@@ -31,5 +31,17 @@
     "@types/qrcode": "^1.5.0",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0"
+  },
+  "description": "QR code generation, EAN/UPC barcode validation, ISBN conversion, and Luhn checksum",
+  "keywords": [
+    "barcode",
+    "utility"
+  ],
+  "license": "MIT",
+  "robinpath": {
+    "category": "utility",
+    "type": "utility",
+    "auth": "none",
+    "functionCount": 14
   }
 }

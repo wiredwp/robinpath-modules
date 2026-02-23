@@ -27,5 +27,17 @@
     "@wiredwp/robinpath": "^0.30.1",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0"
+  },
+  "description": "Child process management: run commands, spawn long-running processes, get system info",
+  "keywords": [
+    "process",
+    "infrastructure"
+  ],
+  "license": "MIT",
+  "robinpath": {
+    "category": "infrastructure",
+    "type": "utility",
+    "auth": "none",
+    "functionCount": 15
   }
 }

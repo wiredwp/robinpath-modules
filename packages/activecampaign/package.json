@@ -25,5 +25,26 @@
   "devDependencies": {
     "@wiredwp/robinpath": "^0.30.1",
     "typescript": "^5.6.0"
+  },
+  "description": "ActiveCampaign -- contacts, automations, campaigns, deals, lists, and tags via the ActiveCampaign REST API v3.",
+  "keywords": [
+    "email",
+    "marketing",
+    "automation",
+    "crm",
+    "contacts",
+    "deals",
+    "campaigns",
+    "lists",
+    "tags"
+  ],
+  "license": "MIT",
+  "robinpath": {
+    "category": "email-marketing",
+    "type": "integration",
+    "auth": "api-key",
+    "functionCount": 21,
+    "apiVersion": "v3",
+    "baseUrl": "https://{account}.api-us1.com/api/3"
   }
 }

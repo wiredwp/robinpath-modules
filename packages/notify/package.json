@@ -25,5 +25,17 @@
   "devDependencies": {
     "@wiredwp/robinpath": "^0.30.1",
     "typescript": "^5.6.0"
+  },
+  "description": "Notify module for RobinPath.",
+  "keywords": [
+    "notify",
+    "messaging"
+  ],
+  "license": "MIT",
+  "robinpath": {
+    "category": "messaging",
+    "type": "integration",
+    "auth": "none",
+    "functionCount": 10
   }
 }

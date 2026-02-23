@@ -29,5 +29,17 @@
   "devDependencies": {
     "@wiredwp/robinpath": "^0.30.1",
     "typescript": "^5.6.0"
+  },
+  "description": "Generate chart images (PNG/JPEG) using Chart.js. Supports bar, line, pie, doughnut, scatter, radar, polarArea, and bubble charts with auto-coloring and customizable titles, legends, and dimensions.",
+  "keywords": [
+    "chart",
+    "analytics"
+  ],
+  "license": "MIT",
+  "robinpath": {
+    "category": "analytics",
+    "type": "integration",
+    "auth": "none",
+    "functionCount": 7
   }
 }

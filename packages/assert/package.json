@@ -27,5 +27,17 @@
     "@wiredwp/robinpath": "^0.30.1",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0"
+  },
+  "description": "Testing assertions: equal, deepEqual, truthy, falsy, type checks, includes, matches, throws, and more",
+  "keywords": [
+    "assert",
+    "utility"
+  ],
+  "license": "MIT",
+  "robinpath": {
+    "category": "utility",
+    "type": "utility",
+    "auth": "none",
+    "functionCount": 15
   }
 }

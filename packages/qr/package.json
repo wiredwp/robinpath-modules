@@ -25,5 +25,18 @@
   "devDependencies": {
     "@wiredwp/robinpath": "^0.30.1",
     "typescript": "^5.6.0"
+  },
+  "description": "QR Code module for RobinPath.",
+  "keywords": [
+    "qr",
+    "utility"
+  ],
+  "license": "MIT",
+  "robinpath": {
+    "category": "utility",
+    "type": "utility",
+    "auth": "none",
+    "functionCount": 8,
+    "baseUrl": "https://api.qrserver.com"
   }
 }

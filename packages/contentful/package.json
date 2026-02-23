@@ -25,5 +25,18 @@
   "devDependencies": {
     "@wiredwp/robinpath": "^0.30.1",
     "typescript": "^5.6.0"
+  },
+  "description": "Contentful module for RobinPath.",
+  "keywords": [
+    "contentful",
+    "cms"
+  ],
+  "license": "MIT",
+  "robinpath": {
+    "category": "cms",
+    "type": "integration",
+    "auth": "api-key",
+    "functionCount": 21,
+    "baseUrl": "https://api.contentful.com"
   }
 }
