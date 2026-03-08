@@ -1,6 +1,6 @@
 {
   "name": "@robinpath/office",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "Microsoft Office document creation and reading (Word, Excel, PowerPoint) for RobinPath",
   "publishConfig": {
     "access": "public"

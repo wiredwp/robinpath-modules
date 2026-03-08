@@ -1,6 +1,6 @@
 {
   "name": "@robinpath/excel",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Read, write, and manipulate Excel spreadsheets (.xlsx)",
   "publishConfig": {
     "access": "public"

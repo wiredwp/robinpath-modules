@@ -1,6 +1,6 @@
 {
   "name": "@robinpath/rss",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Parse RSS and Atom feeds, detect new entries",
   "publishConfig": {
     "access": "public"

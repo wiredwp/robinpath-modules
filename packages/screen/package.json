@@ -1,6 +1,6 @@
 {
   "name": "@robinpath/screen",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Screen capture and OCR: screenshots, region capture, window capture, and text extraction",
   "publishConfig": {
     "access": "public"

@@ -1,6 +1,6 @@
 {
   "name": "@robinpath/archive",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "Create and extract .zip and .tar.gz file archives",
   "publishConfig": {
     "access": "public"

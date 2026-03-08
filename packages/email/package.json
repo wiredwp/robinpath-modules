@@ -1,6 +1,6 @@
 {
   "name": "@robinpath/email",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "SMTP email sending and address parsing for RobinPath",
   "publishConfig": {
     "access": "public"

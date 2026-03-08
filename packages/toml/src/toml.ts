@@ -13,29 +13,29 @@ function resolvePath(obj: unknown, path: string): any {
   return current;
 }
 
-const parse: BuiltinHandler = (args) => any(String(args[0] ?? ""));
+const parse: BuiltinHandler = (args) => TOML.parse(String(args[0] ?? ""));
 
-const stringify: BuiltinHandler = (args) => any(args[0] as Record<string, unknown>);
+const stringify: BuiltinHandler = (args) => TOML.stringify(args[0] as Record<string, unknown>);
 
-const parseFile: BuiltinHandler = (args) => any(readFileSync(String(args[0] ?? ""), "utf-8"));
+const parseFile: BuiltinHandler = (args) => TOML.parse(readFileSync(String(args[0] ?? ""), "utf-8"));
 
 const writeFile: BuiltinHandler = (args) => {
-  writeFileSync(String(args[0] ?? ""), any(args[1] as Record<string, unknown>), "utf-8");
+  writeFileSync(String(args[0] ?? ""), TOML.stringify(args[1] as Record<string, unknown>), "utf-8");
   return true;
 };
 
 const get: BuiltinHandler = (args) => {
-  const obj = any(String(args[0] ?? ""));
+  const obj = TOML.parse(String(args[0] ?? ""));
   return resolvePath(obj, String(args[1] ?? ""));
 };
 
 const isValid: BuiltinHandler = (args) => {
-  try { any(String(args[0] ?? "")); return true; } catch { return false; }
+  try { TOML.parse(String(args[0] ?? "")); return true; } catch { return false; }
 };
 
-const toJSON: BuiltinHandler = (args) => JSON.stringify(any(String(args[0] ?? "")), null, 2);
+const toJSON: BuiltinHandler = (args) => JSON.stringify(TOML.parse(String(args[0] ?? "")), null, 2);
 
-const fromJSON: BuiltinHandler = (args) => any(JSON.parse(String(args[0] ?? "")));
+const fromJSON: BuiltinHandler = (args) => TOML.stringify(JSON.parse(String(args[0] ?? "")));
 
 export const TomlFunctions: Record<string, BuiltinHandler> = {
   parse, stringify, parseFile, writeFile, get, isValid, toJSON, fromJSON,
