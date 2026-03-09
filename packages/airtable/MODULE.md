@@ -381,12 +381,15 @@ All functions throw on failure. Common errors:
 | `Bulk update supports up to 10 records at a time` | Check the error message for details |
 
 ```robinpath
-set $result as airtable.listBases "default"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List bases and validate result"
+do
+  set $result as airtable.listBases "default"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -397,11 +400,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-airtable.setToken $token
-set $result as airtable.listBases "default"
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  airtable.setToken $token
+enddo
+
+@desc "List bases and iterate results"
+do
+  set $result as airtable.listBases "default"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createRecord
@@ -409,9 +419,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-airtable.setToken $token
-set $result as airtable.createRecord "default" "appABC123" "Tasks" {"Name": "New task", "Status": "Todo"}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  airtable.setToken $token
+enddo
+
+@desc "Create record"
+do
+  set $result as airtable.createRecord "default" "appABC123" "Tasks" {"Name": "New task", "Status": "Todo"}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -419,10 +436,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-airtable.setToken $token
-set $created as airtable.createRecord "default" "appABC123" "Tasks" {"Name": "New task", "Status": "Todo"}
-# Update the created item
-airtable.updateRecord "default" "appABC123" "Tasks" "recDEF456" {"Status": "Done"}
+@desc "Setup authentication"
+do
+  airtable.setToken $token
+enddo
+
+@desc "Create record and update record"
+do
+  set $created as airtable.createRecord "default" "appABC123" "Tasks" {"Name": "New task", "Status": "Todo"}
+  # Update the created item
+  airtable.updateRecord "default" "appABC123" "Tasks" "recDEF456" {"Status": "Done"}
+enddo
 ```
 
 ### 4. Check before creating
@@ -430,14 +454,21 @@ airtable.updateRecord "default" "appABC123" "Tasks" "recDEF456" {"Status": "Done
 List existing items and only create if needed.
 
 ```robinpath
-airtable.setToken $token
-set $existing as airtable.listBases "default"
-if $existing == null
-  airtable.createRecord "default" "appABC123" "Tasks" {"Name": "New task", "Status": "Todo"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  airtable.setToken $token
+enddo
+
+@desc "List bases and create record"
+do
+  set $existing as airtable.listBases "default"
+  if $existing == null
+    airtable.createRecord "default" "appABC123" "Tasks" {"Name": "New task", "Status": "Todo"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Airtable workflow
@@ -445,11 +476,18 @@ end
 Chain multiple airtable operations together.
 
 ```robinpath
-airtable.setToken $token
-set $r_listBases as airtable.listBases "default"
-set $r_getBaseSchema as airtable.getBaseSchema "default" "appABC123"
-set $r_listRecords as airtable.listRecords "default" "appABC123" "Tasks" {"filterByFormula": "{Status}='Done'", "maxRecords": 50}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  airtable.setToken $token
+enddo
+
+@desc "List bases, get base schema, and more"
+do
+  set $r_listBases as airtable.listBases "default"
+  set $r_getBaseSchema as airtable.getBaseSchema "default" "appABC123"
+  set $r_listRecords as airtable.listRecords "default" "appABC123" "Tasks" {"filterByFormula": "{Status}='Done'", "maxRecords": 50}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listBases with validation
@@ -457,13 +495,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-airtable.setToken $token
-set $result as airtable.listBases "default"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  airtable.setToken $token
+enddo
+
+@desc "List bases and validate result"
+do
+  set $result as airtable.listBases "default"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

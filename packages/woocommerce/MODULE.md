@@ -454,12 +454,15 @@ All functions throw on failure. Common errors:
 | `Woocommerce: "..." not configured. Call woocommerce.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as woocommerce.listProducts
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List products and validate result"
+do
+  set $result as woocommerce.listProducts
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -470,11 +473,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-woocommerce.setCredentials $token
-set $result as woocommerce.listProducts
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  woocommerce.setCredentials $token
+enddo
+
+@desc "List products and iterate results"
+do
+  set $result as woocommerce.listProducts
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createProduct
@@ -482,9 +492,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-woocommerce.setCredentials $token
-set $result as woocommerce.createProduct
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  woocommerce.setCredentials $token
+enddo
+
+@desc "Create product"
+do
+  set $result as woocommerce.createProduct
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -492,10 +509,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-woocommerce.setCredentials $token
-set $created as woocommerce.createProduct
-# Update the created item
-woocommerce.updateProduct
+@desc "Setup authentication"
+do
+  woocommerce.setCredentials $token
+enddo
+
+@desc "Create product and update product"
+do
+  set $created as woocommerce.createProduct
+  # Update the created item
+  woocommerce.updateProduct
+enddo
 ```
 
 ### 4. Check before creating
@@ -503,14 +527,21 @@ woocommerce.updateProduct
 List existing items and only create if needed.
 
 ```robinpath
-woocommerce.setCredentials $token
-set $existing as woocommerce.listProducts
-if $existing == null
-  woocommerce.createProduct
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  woocommerce.setCredentials $token
+enddo
+
+@desc "List products and create product"
+do
+  set $existing as woocommerce.listProducts
+  if $existing == null
+    woocommerce.createProduct
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step WooCommerce workflow
@@ -518,11 +549,18 @@ end
 Chain multiple woocommerce operations together.
 
 ```robinpath
-woocommerce.setCredentials $token
-set $r_listProducts as woocommerce.listProducts
-set $r_getProduct as woocommerce.getProduct
-set $r_createProduct as woocommerce.createProduct
-print "All operations complete"
+@desc "Setup authentication"
+do
+  woocommerce.setCredentials $token
+enddo
+
+@desc "List products, get product, and more"
+do
+  set $r_listProducts as woocommerce.listProducts
+  set $r_getProduct as woocommerce.getProduct
+  set $r_createProduct as woocommerce.createProduct
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listProducts with validation
@@ -530,13 +568,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-woocommerce.setCredentials $token
-set $result as woocommerce.listProducts
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  woocommerce.setCredentials $token
+enddo
+
+@desc "List products and validate result"
+do
+  set $result as woocommerce.listProducts
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

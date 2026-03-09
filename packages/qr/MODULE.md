@@ -188,12 +188,15 @@ All functions throw on failure. Common errors:
 | `Qr: "..." not configured. Call qr.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as qr.generateQrUrl
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Generate qr url and validate result"
+do
+  set $result as qr.generateQrUrl
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -204,10 +207,13 @@ end
 Chain multiple qr operations together.
 
 ```robinpath
-set $r_generateQrUrl as qr.generateQrUrl
-set $r_generateQrDataUrl as qr.generateQrDataUrl
-set $r_generateWifiQr as qr.generateWifiQr
-print "All operations complete"
+@desc "Generate qr url, generate qr data url, and more"
+do
+  set $r_generateQrUrl as qr.generateQrUrl
+  set $r_generateQrDataUrl as qr.generateQrDataUrl
+  set $r_generateWifiQr as qr.generateWifiQr
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe generateQrUrl with validation
@@ -215,12 +221,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as qr.generateQrUrl
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Generate qr url and validate result"
+do
+  set $result as qr.generateQrUrl
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -239,12 +239,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as crypto.md5 "hello"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Md5 and validate result"
+do
+  set $result as crypto.md5 "hello"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -255,10 +258,13 @@ end
 Chain multiple crypto operations together.
 
 ```robinpath
-set $r_md5 as crypto.md5 "hello"
-set $r_sha1 as crypto.sha1 "hello"
-set $r_sha256 as crypto.sha256 "hello"
-print "All operations complete"
+@desc "Md5, sha1, and more"
+do
+  set $r_md5 as crypto.md5 "hello"
+  set $r_sha1 as crypto.sha1 "hello"
+  set $r_sha256 as crypto.sha256 "hello"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe md5 with validation
@@ -266,12 +272,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as crypto.md5 "hello"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Md5 and validate result"
+do
+  set $result as crypto.md5 "hello"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

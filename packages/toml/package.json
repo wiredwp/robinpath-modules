@@ -41,6 +41,8 @@
     "category": "utility",
     "type": "utility",
     "auth": "none",
-    "functionCount": 8
+    "functionCount": 8,
+    "runtime": "node",
+    "runtimeReason": "Requires smol-toml (npm package)"
   }
 }

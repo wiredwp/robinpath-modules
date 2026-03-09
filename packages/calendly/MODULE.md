@@ -280,12 +280,15 @@ All functions throw on failure. Common errors:
 | `Calendly: "..." not configured. Call calendly.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as calendly.getCurrentUser
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get current user and validate result"
+do
+  set $result as calendly.getCurrentUser
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -296,11 +299,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-calendly.setCredentials $token
-set $result as calendly.getCurrentUser
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  calendly.setCredentials $token
+enddo
+
+@desc "Get current user and iterate results"
+do
+  set $result as calendly.getCurrentUser
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createWebhook
@@ -308,9 +318,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-calendly.setCredentials $token
-set $result as calendly.createWebhook
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  calendly.setCredentials $token
+enddo
+
+@desc "Create webhook"
+do
+  set $result as calendly.createWebhook
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -318,14 +335,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-calendly.setCredentials $token
-set $existing as calendly.getCurrentUser
-if $existing == null
-  calendly.createWebhook
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  calendly.setCredentials $token
+enddo
+
+@desc "Get current user and create webhook"
+do
+  set $existing as calendly.getCurrentUser
+  if $existing == null
+    calendly.createWebhook
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Calendly workflow
@@ -333,11 +357,18 @@ end
 Chain multiple calendly operations together.
 
 ```robinpath
-calendly.setCredentials $token
-set $r_getCurrentUser as calendly.getCurrentUser
-set $r_listEventTypes as calendly.listEventTypes
-set $r_getEventType as calendly.getEventType
-print "All operations complete"
+@desc "Setup authentication"
+do
+  calendly.setCredentials $token
+enddo
+
+@desc "Get current user, list event types, and more"
+do
+  set $r_getCurrentUser as calendly.getCurrentUser
+  set $r_listEventTypes as calendly.listEventTypes
+  set $r_getEventType as calendly.getEventType
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe getCurrentUser with validation
@@ -345,13 +376,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-calendly.setCredentials $token
-set $result as calendly.getCurrentUser
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  calendly.setCredentials $token
+enddo
+
+@desc "Get current user and validate result"
+do
+  set $result as calendly.getCurrentUser
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

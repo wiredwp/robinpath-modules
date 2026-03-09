@@ -294,12 +294,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as validate.isEmail "user@example.com"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Is email and validate result"
+do
+  set $result as validate.isEmail "user@example.com"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -310,10 +313,13 @@ end
 Chain multiple validate operations together.
 
 ```robinpath
-set $r_isEmail as validate.isEmail "user@example.com"
-set $r_isUrl as validate.isUrl "https://example.com"
-set $r_isIP as validate.isIP "192.168.1.1"
-print "All operations complete"
+@desc "Is email, is url, and more"
+do
+  set $r_isEmail as validate.isEmail "user@example.com"
+  set $r_isUrl as validate.isUrl "https://example.com"
+  set $r_isIP as validate.isIP "192.168.1.1"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe isEmail with validation
@@ -321,12 +327,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as validate.isEmail "user@example.com"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Is email and validate result"
+do
+  set $result as validate.isEmail "user@example.com"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

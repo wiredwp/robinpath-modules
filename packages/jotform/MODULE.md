@@ -313,12 +313,15 @@ All functions throw on failure. Common errors:
 | `Jotform: "..." not configured. Call jotform.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as jotform.listForms
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List forms and validate result"
+do
+  set $result as jotform.listForms
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -329,11 +332,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-jotform.setCredentials $token
-set $result as jotform.listForms
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  jotform.setCredentials $token
+enddo
+
+@desc "List forms and iterate results"
+do
+  set $result as jotform.listForms
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createSubmission
@@ -341,9 +351,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-jotform.setCredentials $token
-set $result as jotform.createSubmission
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  jotform.setCredentials $token
+enddo
+
+@desc "Create submission"
+do
+  set $result as jotform.createSubmission
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -351,14 +368,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-jotform.setCredentials $token
-set $existing as jotform.listForms
-if $existing == null
-  jotform.createSubmission
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  jotform.setCredentials $token
+enddo
+
+@desc "List forms and create submission"
+do
+  set $existing as jotform.listForms
+  if $existing == null
+    jotform.createSubmission
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step JotForm workflow
@@ -366,11 +390,18 @@ end
 Chain multiple jotform operations together.
 
 ```robinpath
-jotform.setCredentials $token
-set $r_listForms as jotform.listForms
-set $r_getForm as jotform.getForm
-set $r_getFormQuestions as jotform.getFormQuestions
-print "All operations complete"
+@desc "Setup authentication"
+do
+  jotform.setCredentials $token
+enddo
+
+@desc "List forms, get form, and more"
+do
+  set $r_listForms as jotform.listForms
+  set $r_getForm as jotform.getForm
+  set $r_getFormQuestions as jotform.getFormQuestions
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe listForms with validation
@@ -378,13 +409,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-jotform.setCredentials $token
-set $result as jotform.listForms
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  jotform.setCredentials $token
+enddo
+
+@desc "List forms and validate result"
+do
+  set $result as jotform.listForms
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

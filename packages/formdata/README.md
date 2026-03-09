@@ -1,4 +1,4 @@
-# @robinpath/form
+# @robinpath/formdata
 
 > Multipart form data builder, file uploads, URL encoding/decoding, and form submission
 
@@ -6,7 +6,7 @@
 
 ## Why use this module?
 
-The `form` module lets you:
+The `formdata` module lets you:
 
 - Create a FormData object from key-value pairs
 - Add a text field to a FormData
@@ -19,7 +19,7 @@ All functions are callable directly from RobinPath scripts with a simple, consis
 ## Installation
 
 ```bash
-npm install @robinpath/form
+npm install @robinpath/formdata
 ```
 
 ## Quick Start
@@ -27,54 +27,54 @@ npm install @robinpath/form
 No credentials needed — start using it right away:
 
 ```robinpath
-form.addField $form "name" "Alice"
+formdata.addField $form "name" "Alice"
 ```
 
 ## Available Functions
 
 | Function | Description |
 |----------|-------------|
-| `form.create` | Create a FormData object from key-value pairs |
-| `form.addField` | Add a text field to a FormData |
-| `form.addFile` | Add a file to a FormData |
-| `form.submit` | Submit a FormData to a URL |
-| `form.encode` | URL-encode an object as application/x-www-form-urlencoded |
-| `form.decode` | Decode a URL-encoded form body |
-| `form.uploadFile` | Upload a file to a URL as multipart form |
-| `form.parseMultipart` | Parse a multipart form body |
+| `formdata.create` | Create a FormData object from key-value pairs |
+| `formdata.addField` | Add a text field to a FormData |
+| `formdata.addFile` | Add a file to a FormData |
+| `formdata.submit` | Submit a FormData to a URL |
+| `formdata.encode` | URL-encode an object as application/x-www-form-urlencoded |
+| `formdata.decode` | Decode a URL-encoded form body |
+| `formdata.uploadFile` | Upload a file to a URL as multipart form |
+| `formdata.parseMultipart` | Parse a multipart form body |
 
 ## Examples
 
 ### Add a text field to a FormData
 
 ```robinpath
-form.addField $form "name" "Alice"
+formdata.addField $form "name" "Alice"
 ```
 
 ### Add a file to a FormData
 
 ```robinpath
-form.addFile $form "avatar" "./photo.jpg"
+formdata.addFile $form "avatar" "./photo.jpg"
 ```
 
 ### Submit a FormData to a URL
 
 ```robinpath
-form.submit "https://api.example.com/upload" $form
+formdata.submit "https://api.example.com/upload" $form
 ```
 
 ## Integration with RobinPath
 
 ```typescript
 import { RobinPath } from "@wiredwp/robinpath";
-import Module from "@robinpath/form";
+import Module from "@robinpath/formdata";
 
 const rp = new RobinPath();
 rp.registerModule(Module.name, Module.functions);
 rp.registerModuleMeta(Module.name, Module.functionMetadata);
 
 const result = await rp.executeScript(`
-  form.addField $form "name" "Alice"
+  formdata.addField $form "name" "Alice"
 `);
 ```
 
@@ -84,6 +84,7 @@ See [MODULE.md](./MODULE.md) for complete documentation including all parameters
 
 ## Related Modules
 
+- [`@robinpath/form`](../form) — Declarative form builder for defining form fields inline
 - [`@robinpath/json`](../json) — JSON module for complementary functionality
 
 ## License

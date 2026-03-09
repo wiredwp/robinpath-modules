@@ -288,12 +288,15 @@ All functions throw on failure. Common errors:
 | `Invoice: "..." not configured. Call invoice.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as invoice.createInvoice
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create invoice and validate result"
+do
+  set $result as invoice.createInvoice
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -313,10 +316,13 @@ print "Created: " + $result
 Chain multiple invoice operations together.
 
 ```robinpath
-set $r_createInvoice as invoice.createInvoice
-set $r_addLineItem as invoice.addLineItem
-set $r_removeLineItem as invoice.removeLineItem
-print "All operations complete"
+@desc "Create invoice, add line item, and more"
+do
+  set $r_createInvoice as invoice.createInvoice
+  set $r_addLineItem as invoice.addLineItem
+  set $r_removeLineItem as invoice.removeLineItem
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe createInvoice with validation
@@ -324,12 +330,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as invoice.createInvoice
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create invoice and validate result"
+do
+  set $result as invoice.createInvoice
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

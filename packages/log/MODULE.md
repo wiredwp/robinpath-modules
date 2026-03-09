@@ -310,12 +310,15 @@ All functions throw on failure. Common errors:
 | `Timer "..." does not exist` | Check the error message for details |
 
 ```robinpath
-set $result as log.debug "variable x =" $x
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Debug and validate result"
+do
+  set $result as log.debug "variable x =" $x
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -326,10 +329,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as log.getLevel
-each $item in $result
-  print $item
-end
+@desc "Get level and iterate results"
+do
+  set $result as log.getLevel
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Log workflow
@@ -337,10 +343,13 @@ end
 Chain multiple log operations together.
 
 ```robinpath
-set $r_debug as log.debug "variable x =" $x
-set $r_info as log.info "Server started on port" $port
-set $r_warn as log.warn "Deprecated function called"
-print "All operations complete"
+@desc "Debug, info, and more"
+do
+  set $r_debug as log.debug "variable x =" $x
+  set $r_info as log.info "Server started on port" $port
+  set $r_warn as log.warn "Deprecated function called"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe debug with validation
@@ -348,12 +357,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as log.debug "variable x =" $x
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Debug and validate result"
+do
+  set $result as log.debug "variable x =" $x
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -43,6 +43,8 @@
     "category": "web",
     "type": "utility",
     "auth": "connection-string",
-    "functionCount": 8
+    "functionCount": 8,
+    "runtime": "node",
+    "runtimeReason": "Requires basic-ftp + ssh2-sftp-client (npm packages)"
   }
 }

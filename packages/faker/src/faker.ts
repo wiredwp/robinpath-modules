@@ -427,216 +427,190 @@ export const FakerFunctionMetadata = {
   seed: {
     description: "Set the random seed for reproducible fake data generation",
     parameters: [
-      { name: "seed", dataType: "number", description: "Seed value for the PRNG" },
+      { name: "seed", dataType: "number", description: "Seed value for the PRNG", formInputType: "number", required: true },
     ],
-
     returnType: "object",
-    returnDescription: "API response.",
+    returnDescription: "Object containing the seed value that was set.",
   },
   name: {
     description: "Generate a random full name",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random full name.",
   },
   firstName: {
     description: "Generate a random first name",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random first name.",
   },
   lastName: {
     description: "Generate a random last name",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random last name.",
   },
   email: {
     description: "Generate a random email address",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random email address.",
   },
   phone: {
     description: "Generate a random phone number",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random phone number in (XXX) XXX-XXXX format.",
   },
   address: {
     description: "Generate a random street address",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random street address with city and zip code.",
   },
   city: {
     description: "Generate a random city name",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random city name.",
   },
   country: {
     description: "Generate a random country name",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random country name.",
   },
   zipCode: {
     description: "Generate a random zip code",
     parameters: [
-      { name: "format", dataType: "string", description: "Zip code format where # is a digit (default #####)", optional: true },
+      { name: "format", dataType: "string", description: "Zip code format where # is a digit (default #####)", formInputType: "text", required: false },
     ],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random zip code matching the specified format.",
   },
   company: {
     description: "Generate a random company name",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random company name.",
   },
   lorem: {
     description: "Generate lorem ipsum text as words, sentences, or paragraphs",
     parameters: [
-      { name: "type", dataType: "string", description: "Type of lorem text: words, sentences, or paragraphs (default words)", optional: true },
-      { name: "count", dataType: "number", description: "Number of items to generate (default 5)", optional: true },
+      { name: "type", dataType: "string", description: "Type of lorem text: words, sentences, or paragraphs (default words)", formInputType: "text", required: false },
+      { name: "count", dataType: "number", description: "Number of items to generate (default 5)", formInputType: "number", required: false },
     ],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Generated lorem ipsum text.",
   },
   number: {
     description: "Generate a random integer within a range",
     parameters: [
-      { name: "min", dataType: "number", description: "Minimum value (default 0)", optional: true },
-      { name: "max", dataType: "number", description: "Maximum value (default 1000)", optional: true },
+      { name: "min", dataType: "number", description: "Minimum value (default 0)", formInputType: "number", required: false },
+      { name: "max", dataType: "number", description: "Maximum value (default 1000)", formInputType: "number", required: false },
     ],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "number",
+    returnDescription: "Random integer within the specified range.",
   },
   float: {
     description: "Generate a random floating-point number within a range",
     parameters: [
-      { name: "min", dataType: "number", description: "Minimum value (default 0)", optional: true },
-      { name: "max", dataType: "number", description: "Maximum value (default 1)", optional: true },
-      { name: "precision", dataType: "number", description: "Decimal places (default 2)", optional: true },
+      { name: "min", dataType: "number", description: "Minimum value (default 0)", formInputType: "number", required: false },
+      { name: "max", dataType: "number", description: "Maximum value (default 1)", formInputType: "number", required: false },
+      { name: "precision", dataType: "number", description: "Decimal places (default 2)", formInputType: "number", required: false },
     ],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "number",
+    returnDescription: "Random floating-point number within the specified range.",
   },
   boolean: {
     description: "Generate a random boolean value",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "boolean",
+    returnDescription: "Random boolean value (true or false).",
   },
   date: {
     description: "Generate a random date within a range",
     parameters: [
-      { name: "from", dataType: "string", description: "Start date ISO string (default 2000-01-01)", optional: true },
-      { name: "to", dataType: "string", description: "End date ISO string (default now)", optional: true },
+      { name: "from", dataType: "string", description: "Start date ISO string (default 2000-01-01)", formInputType: "text", required: false },
+      { name: "to", dataType: "string", description: "End date ISO string (default now)", formInputType: "text", required: false },
     ],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random date as an ISO 8601 string.",
   },
   uuid: {
     description: "Generate a random UUID v4",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random UUID v4 string.",
   },
   pick: {
     description: "Pick a random element from an array",
     parameters: [
-      { name: "array", dataType: "array", description: "Array to pick from" },
+      { name: "array", dataType: "array", description: "Array to pick from", formInputType: "json", required: true },
     ],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "any",
+    returnDescription: "Random element from the provided array.",
   },
   shuffle: {
     description: "Randomly shuffle an array using Fisher-Yates algorithm",
     parameters: [
-      { name: "array", dataType: "array", description: "Array to shuffle" },
+      { name: "array", dataType: "array", description: "Array to shuffle", formInputType: "json", required: true },
     ],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "array",
+    returnDescription: "New array with elements randomly shuffled.",
   },
   paragraph: {
     description: "Generate a single random paragraph of lorem ipsum",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random paragraph of lorem ipsum text.",
   },
   sentence: {
     description: "Generate a single random sentence of lorem ipsum",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random sentence of lorem ipsum text.",
   },
   word: {
     description: "Generate a single random lorem ipsum word",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random lorem ipsum word.",
   },
   color: {
     description: "Generate a random color in hex, rgb, or name format",
     parameters: [
-      { name: "format", dataType: "string", description: "Color format: hex, rgb, or name (default hex)", optional: true },
+      { name: "format", dataType: "string", description: "Color format: hex, rgb, or name (default hex)", formInputType: "text", required: false },
     ],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random color value in the specified format.",
   },
   ip: {
     description: "Generate a random IP address",
     parameters: [
-      { name: "version", dataType: "string", description: "IP version: v4 or v6 (default v4)", optional: true },
+      { name: "version", dataType: "string", description: "IP version: v4 or v6 (default v4)", formInputType: "text", required: false },
     ],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random IP address string.",
   },
   url: {
     description: "Generate a random URL",
     parameters: [],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Random URL string.",
   },
   avatar: {
     description: "Generate a random avatar image URL",
     parameters: [
-      { name: "size", dataType: "number", description: "Avatar size in pixels (default 200)", optional: true },
-      { name: "name", dataType: "string", description: "Name for the avatar initials", optional: true },
+      { name: "size", dataType: "number", description: "Avatar size in pixels (default 200)", formInputType: "number", required: false },
+      { name: "name", dataType: "string", description: "Name for the avatar initials", formInputType: "text", required: false },
     ],
-
-    returnType: "object",
-    returnDescription: "API response.",
+    returnType: "string",
+    returnDescription: "Avatar image URL.",
   },
 };
 
 export const FakerModuleMetadata = {
   description: "Fake data generation with seedable PRNG. Generates names, emails, addresses, lorem ipsum, numbers, dates, UUIDs, colors, IPs, and more. No external dependencies.",
-  version: "1.0.0",
+  methods: ["seed", "name", "firstName", "lastName", "email", "phone", "address", "city", "country", "zipCode", "company", "lorem", "number", "float", "boolean", "date", "uuid", "pick", "shuffle", "paragraph", "sentence", "word", "color", "ip", "url", "avatar"],
 };

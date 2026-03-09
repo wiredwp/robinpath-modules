@@ -334,12 +334,15 @@ All functions throw on failure. Common errors:
 | `url is required` | Check the error message for details |
 
 ```robinpath
-set $result as server.create
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create and validate result"
+do
+  set $result as server.create
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -350,10 +353,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as server.getServers
-each $item in $result
-  print $item
-end
+@desc "Get servers and iterate results"
+do
+  set $result as server.getServers
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with create
@@ -370,13 +376,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as server.getServers
-if $existing == null
-  server.create
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Get servers and create"
+do
+  set $existing as server.getServers
+  if $existing == null
+    server.create
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Server workflow
@@ -384,10 +393,13 @@ end
 Chain multiple server operations together.
 
 ```robinpath
-set $r_create as server.create
-set $r_start as server.start
-set $r_stop as server.stop
-print "All operations complete"
+@desc "Create, start, and more"
+do
+  set $r_create as server.create
+  set $r_start as server.start
+  set $r_stop as server.stop
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe create with validation
@@ -395,12 +407,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as server.create
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create and validate result"
+do
+  set $result as server.create
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

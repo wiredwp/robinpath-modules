@@ -289,12 +289,15 @@ All functions throw on failure. Common errors:
 | `SSH connection "..." not found` | Check the error message for details |
 
 ```robinpath
-set $result as ssh.exec "server" "ls -la /var/log"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Exec and validate result"
+do
+  set $result as ssh.exec "server" "ls -la /var/log"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -305,10 +308,13 @@ end
 Chain multiple ssh operations together.
 
 ```robinpath
-set $r_connect as ssh.connect "server" {"host": "example.com", "username": "admin", "password": "..."}
-set $r_exec as ssh.exec "server" "ls -la /var/log"
-set $r_upload as ssh.upload "server" "./deploy.tar.gz" "/opt/app/deploy.tar.gz"
-print "All operations complete"
+@desc "Connect, exec, and more"
+do
+  set $r_connect as ssh.connect "server" {"host": "example.com", "username": "admin", "password": "..."}
+  set $r_exec as ssh.exec "server" "ls -la /var/log"
+  set $r_upload as ssh.upload "server" "./deploy.tar.gz" "/opt/app/deploy.tar.gz"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe connect with validation
@@ -316,12 +322,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as ssh.connect "server" {"host": "example.com", "username": "admin", "password": "..."}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Connect and validate result"
+do
+  set $result as ssh.connect "server" {"host": "example.com", "username": "admin", "password": "..."}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

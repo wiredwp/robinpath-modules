@@ -1,6 +1,6 @@
 {
   "name": "@robinpath/ldap",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publishConfig": {
     "access": "public"
   },
@@ -20,9 +20,7 @@
     "build": "tsc",
     "test": "node --import tsx --test tests/*.test.ts"
   },
-  "dependencies": {
-    "ldapjs": "^3.0.0"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "@wiredwp/robinpath": ">=0.20.0"
   },

@@ -304,12 +304,15 @@ All functions throw on failure. Common errors:
 | `agent.... step "..." failed after ... attempts: ...` | Check the error message for details |
 
 ```robinpath
-set $result as agent.pipeline {"retries": 3, "cache": true, "model": "claude-haiku-4-5-20251001"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Pipeline and validate result"
+do
+  set $result as agent.pipeline {"retries": 3, "cache": true, "model": "claude-haiku-4-5-20251001"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -320,10 +323,13 @@ end
 Chain multiple agent operations together.
 
 ```robinpath
-set $r_pipeline as agent.pipeline {"retries": 3, "cache": true, "model": "claude-haiku-4-5-20251001"}
-set $r_claude as agent.claude "analyze" {"question": "What is 2+2?", "expectedOutput": "NUMBER"} into $answer
-set $r_codex as agent.codex "generate" {"question": "Write a hello world in Python", "expectedOutput": "CODE"} into $code
-print "All operations complete"
+@desc "Pipeline, claude, and more"
+do
+  set $r_pipeline as agent.pipeline {"retries": 3, "cache": true, "model": "claude-haiku-4-5-20251001"}
+  set $r_claude as agent.claude "analyze" {"question": "What is 2+2?", "expectedOutput": "NUMBER"} into $answer
+  set $r_codex as agent.codex "generate" {"question": "Write a hello world in Python", "expectedOutput": "CODE"} into $code
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe pipeline with validation
@@ -331,12 +337,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as agent.pipeline {"retries": 3, "cache": true, "model": "claude-haiku-4-5-20251001"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Pipeline and validate result"
+do
+  set $result as agent.pipeline {"retries": 3, "cache": true, "model": "claude-haiku-4-5-20251001"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -41,6 +41,8 @@
     "category": "utility",
     "type": "utility",
     "auth": "none",
-    "functionCount": 10
+    "functionCount": 10,
+    "runtime": "node",
+    "runtimeReason": "Requires fast-xml-parser (npm package)"
   }
 }

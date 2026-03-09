@@ -279,12 +279,15 @@ All functions throw on failure. Common errors:
 | `MQTT client "..." already exists. Disconnect first or use a different id.` | Check the error message for details |
 
 ```robinpath
-set $result as mqtt.publish
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Publish and validate result"
+do
+  set $result as mqtt.publish
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -295,10 +298,13 @@ end
 Chain multiple mqtt operations together.
 
 ```robinpath
-set $r_connect as mqtt.connect
-set $r_publish as mqtt.publish
-set $r_subscribe as mqtt.subscribe
-print "All operations complete"
+@desc "Connect, publish, and more"
+do
+  set $r_connect as mqtt.connect
+  set $r_publish as mqtt.publish
+  set $r_subscribe as mqtt.subscribe
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe connect with validation
@@ -306,12 +312,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as mqtt.connect
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Connect and validate result"
+do
+  set $result as mqtt.connect
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

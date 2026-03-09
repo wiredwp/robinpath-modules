@@ -294,12 +294,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as any "/tmp/file.txt"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Validate result"
+do
+  set $result as any "/tmp/file.txt"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -310,10 +313,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as any "/tmp"
-each $item in $result
-  print $item
-end
+@desc "Iterate results"
+do
+  set $result as any "/tmp"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Fs workflow
@@ -321,10 +327,13 @@ end
 Chain multiple fs operations together.
 
 ```robinpath
-set $r_read as any "/tmp/file.txt"
-set $r_write as any "/tmp/file.txt" "hello world"
-set $r_append as any "/tmp/file.txt" "more text"
-print "All operations complete"
+@desc "Execute operation"
+do
+  set $r_read as any "/tmp/file.txt"
+  set $r_write as any "/tmp/file.txt" "hello world"
+  set $r_append as any "/tmp/file.txt" "more text"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe read with validation
@@ -332,12 +341,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as any "/tmp/file.txt"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Validate result"
+do
+  set $result as any "/tmp/file.txt"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

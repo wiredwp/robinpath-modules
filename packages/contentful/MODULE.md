@@ -420,12 +420,15 @@ All functions throw on failure. Common errors:
 | `contentful.archiveEntry requires an ID.` | Check the error message for details |
 
 ```robinpath
-set $result as contentful.listEntries
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List entries and validate result"
+do
+  set $result as contentful.listEntries
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -436,11 +439,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-contentful.setCredentials $token
-set $result as contentful.listEntries
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  contentful.setCredentials $token
+enddo
+
+@desc "List entries and iterate results"
+do
+  set $result as contentful.listEntries
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createEntry
@@ -448,9 +458,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-contentful.setCredentials $token
-set $result as contentful.createEntry
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  contentful.setCredentials $token
+enddo
+
+@desc "Create entry"
+do
+  set $result as contentful.createEntry
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -458,10 +475,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-contentful.setCredentials $token
-set $created as contentful.createEntry
-# Update the created item
-contentful.updateEntry
+@desc "Setup authentication"
+do
+  contentful.setCredentials $token
+enddo
+
+@desc "Create entry and update entry"
+do
+  set $created as contentful.createEntry
+  # Update the created item
+  contentful.updateEntry
+enddo
 ```
 
 ### 4. Check before creating
@@ -469,14 +493,21 @@ contentful.updateEntry
 List existing items and only create if needed.
 
 ```robinpath
-contentful.setCredentials $token
-set $existing as contentful.listEntries
-if $existing == null
-  contentful.createEntry
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  contentful.setCredentials $token
+enddo
+
+@desc "List entries and create entry"
+do
+  set $existing as contentful.listEntries
+  if $existing == null
+    contentful.createEntry
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Contentful workflow
@@ -484,11 +515,18 @@ end
 Chain multiple contentful operations together.
 
 ```robinpath
-contentful.setCredentials $token
-set $r_listEntries as contentful.listEntries
-set $r_getEntry as contentful.getEntry
-set $r_createEntry as contentful.createEntry
-print "All operations complete"
+@desc "Setup authentication"
+do
+  contentful.setCredentials $token
+enddo
+
+@desc "List entries, get entry, and more"
+do
+  set $r_listEntries as contentful.listEntries
+  set $r_getEntry as contentful.getEntry
+  set $r_createEntry as contentful.createEntry
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listEntries with validation
@@ -496,13 +534,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-contentful.setCredentials $token
-set $result as contentful.listEntries
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  contentful.setCredentials $token
+enddo
+
+@desc "List entries and validate result"
+do
+  set $result as contentful.listEntries
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

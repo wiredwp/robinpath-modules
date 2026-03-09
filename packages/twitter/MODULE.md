@@ -606,12 +606,15 @@ All functions throw on failure. Common errors:
 | `Search query is required.` | Check the error message for details |
 
 ```robinpath
-set $result as twitter.createTweet "Hello from RobinPath!"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create tweet and validate result"
+do
+  set $result as twitter.createTweet "Hello from RobinPath!"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -622,11 +625,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-twitter.setToken $token
-set $result as twitter.getTweet "1234567890" {"tweet.fields": "created_at,public_metrics"}
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  twitter.setToken $token
+enddo
+
+@desc "Get tweet and iterate results"
+do
+  set $result as twitter.getTweet "1234567890" {"tweet.fields": "created_at,public_metrics"}
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createTweet
@@ -634,9 +644,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-twitter.setToken $token
-set $result as twitter.createTweet "Hello from RobinPath!"
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  twitter.setToken $token
+enddo
+
+@desc "Create tweet"
+do
+  set $result as twitter.createTweet "Hello from RobinPath!"
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -644,14 +661,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-twitter.setToken $token
-set $existing as twitter.getTweet "1234567890" {"tweet.fields": "created_at,public_metrics"}
-if $existing == null
-  twitter.createTweet "Hello from RobinPath!"
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  twitter.setToken $token
+enddo
+
+@desc "Get tweet and create tweet"
+do
+  set $existing as twitter.getTweet "1234567890" {"tweet.fields": "created_at,public_metrics"}
+  if $existing == null
+    twitter.createTweet "Hello from RobinPath!"
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Twitter/X workflow
@@ -659,11 +683,18 @@ end
 Chain multiple twitter operations together.
 
 ```robinpath
-twitter.setToken $token
-set $r_createTweet as twitter.createTweet "Hello from RobinPath!"
-set $r_deleteTweet as twitter.deleteTweet "1234567890"
-set $r_getTweet as twitter.getTweet "1234567890" {"tweet.fields": "created_at,public_metrics"}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  twitter.setToken $token
+enddo
+
+@desc "Create tweet, delete tweet, and more"
+do
+  set $r_createTweet as twitter.createTweet "Hello from RobinPath!"
+  set $r_deleteTweet as twitter.deleteTweet "1234567890"
+  set $r_getTweet as twitter.getTweet "1234567890" {"tweet.fields": "created_at,public_metrics"}
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe createTweet with validation
@@ -671,13 +702,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-twitter.setToken $token
-set $result as twitter.createTweet "Hello from RobinPath!"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  twitter.setToken $token
+enddo
+
+@desc "Create tweet and validate result"
+do
+  set $result as twitter.createTweet "Hello from RobinPath!"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

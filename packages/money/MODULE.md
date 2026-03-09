@@ -342,12 +342,15 @@ All functions throw on failure. Common errors:
 | `Rate not found for ${from} -> ${to}` | Check the error message for details |
 
 ```robinpath
-set $result as money.format 1234.56 "USD"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Format and validate result"
+do
+  set $result as money.format 1234.56 "USD"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -358,10 +361,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as money.listCurrencies
-each $item in $result
-  print $item
-end
+@desc "List currencies and iterate results"
+do
+  set $result as money.listCurrencies
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with add
@@ -378,13 +384,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as money.listCurrencies
-if $existing == null
-  money.add 0.1 0.2
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "List currencies and add"
+do
+  set $existing as money.listCurrencies
+  if $existing == null
+    money.add 0.1 0.2
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Money workflow
@@ -392,10 +401,13 @@ end
 Chain multiple money operations together.
 
 ```robinpath
-set $r_format as money.format 1234.56 "USD"
-set $r_parse as money.parse "$1,234.56"
-set $r_add as money.add 0.1 0.2
-print "All operations complete"
+@desc "Format, parse, and more"
+do
+  set $r_format as money.format 1234.56 "USD"
+  set $r_parse as money.parse "$1,234.56"
+  set $r_add as money.add 0.1 0.2
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe format with validation
@@ -403,12 +415,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as money.format 1234.56 "USD"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Format and validate result"
+do
+  set $result as money.format 1234.56 "USD"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -384,12 +384,15 @@ All functions throw on failure. Common errors:
 | `Intercom: "..." not configured. Call intercom.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as intercom.listContacts
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List contacts and validate result"
+do
+  set $result as intercom.listContacts
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -400,11 +403,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-intercom.setCredentials $token
-set $result as intercom.listContacts
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  intercom.setCredentials $token
+enddo
+
+@desc "List contacts and iterate results"
+do
+  set $result as intercom.listContacts
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createContact
@@ -412,9 +422,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-intercom.setCredentials $token
-set $result as intercom.createContact
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  intercom.setCredentials $token
+enddo
+
+@desc "Create contact"
+do
+  set $result as intercom.createContact
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -422,10 +439,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-intercom.setCredentials $token
-set $created as intercom.createContact
-# Update the created item
-intercom.updateContact
+@desc "Setup authentication"
+do
+  intercom.setCredentials $token
+enddo
+
+@desc "Create contact and update contact"
+do
+  set $created as intercom.createContact
+  # Update the created item
+  intercom.updateContact
+enddo
 ```
 
 ### 4. Check before creating
@@ -433,14 +457,21 @@ intercom.updateContact
 List existing items and only create if needed.
 
 ```robinpath
-intercom.setCredentials $token
-set $existing as intercom.listContacts
-if $existing == null
-  intercom.createContact
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  intercom.setCredentials $token
+enddo
+
+@desc "List contacts and create contact"
+do
+  set $existing as intercom.listContacts
+  if $existing == null
+    intercom.createContact
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Intercom workflow
@@ -448,11 +479,18 @@ end
 Chain multiple intercom operations together.
 
 ```robinpath
-intercom.setCredentials $token
-set $r_listContacts as intercom.listContacts
-set $r_getContact as intercom.getContact
-set $r_createContact as intercom.createContact
-print "All operations complete"
+@desc "Setup authentication"
+do
+  intercom.setCredentials $token
+enddo
+
+@desc "List contacts, get contact, and more"
+do
+  set $r_listContacts as intercom.listContacts
+  set $r_getContact as intercom.getContact
+  set $r_createContact as intercom.createContact
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listContacts with validation
@@ -460,13 +498,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-intercom.setCredentials $token
-set $result as intercom.listContacts
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  intercom.setCredentials $token
+enddo
+
+@desc "List contacts and validate result"
+do
+  set $result as intercom.listContacts
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

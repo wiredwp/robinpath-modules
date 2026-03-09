@@ -502,12 +502,15 @@ All functions throw on failure. Common errors:
 | `Endpoint is required` | Check the error message for details |
 
 ```robinpath
-set $result as openai.chat "Hello, how are you?" {"model": "gpt-4o"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Chat and validate result"
+do
+  set $result as openai.chat "Hello, how are you?" {"model": "gpt-4o"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -518,11 +521,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-openai.setApiKey $token
-set $result as openai.listModels
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  openai.setApiKey $token
+enddo
+
+@desc "List models and iterate results"
+do
+  set $result as openai.listModels
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createImageVariation
@@ -530,9 +540,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-openai.setApiKey $token
-set $result as openai.createImageVariation "/path/to/image.png" {"n": 2}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  openai.setApiKey $token
+enddo
+
+@desc "Create image variation"
+do
+  set $result as openai.createImageVariation "/path/to/image.png" {"n": 2}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -540,10 +557,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-openai.setApiKey $token
-set $created as openai.createImageVariation "/path/to/image.png" {"n": 2}
-# Update the created item
-openai.editImage "/path/to/image.png" "Add a hat to the person"
+@desc "Setup authentication"
+do
+  openai.setApiKey $token
+enddo
+
+@desc "Create image variation and edit image"
+do
+  set $created as openai.createImageVariation "/path/to/image.png" {"n": 2}
+  # Update the created item
+  openai.editImage "/path/to/image.png" "Add a hat to the person"
+enddo
 ```
 
 ### 4. Check before creating
@@ -551,14 +575,21 @@ openai.editImage "/path/to/image.png" "Add a hat to the person"
 List existing items and only create if needed.
 
 ```robinpath
-openai.setApiKey $token
-set $existing as openai.listModels
-if $existing == null
-  openai.createImageVariation "/path/to/image.png" {"n": 2}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  openai.setApiKey $token
+enddo
+
+@desc "List models and create image variation"
+do
+  set $existing as openai.listModels
+  if $existing == null
+    openai.createImageVariation "/path/to/image.png" {"n": 2}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step OpenAI workflow
@@ -566,11 +597,18 @@ end
 Chain multiple openai operations together.
 
 ```robinpath
-openai.setApiKey $token
-set $r_chat as openai.chat "Hello, how are you?" {"model": "gpt-4o"}
-set $r_complete as openai.complete "Once upon a time"
-set $r_generateImage as openai.generateImage "A sunset over mountains" {"model": "dall-e-3", "size": "1024x1024"}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  openai.setApiKey $token
+enddo
+
+@desc "Chat, complete, and more"
+do
+  set $r_chat as openai.chat "Hello, how are you?" {"model": "gpt-4o"}
+  set $r_complete as openai.complete "Once upon a time"
+  set $r_generateImage as openai.generateImage "A sunset over mountains" {"model": "dall-e-3", "size": "1024x1024"}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe chat with validation
@@ -578,13 +616,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-openai.setApiKey $token
-set $result as openai.chat "Hello, how are you?" {"model": "gpt-4o"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  openai.setApiKey $token
+enddo
+
+@desc "Chat and validate result"
+do
+  set $result as openai.chat "Hello, how are you?" {"model": "gpt-4o"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -215,12 +215,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as soap.call "http://example.com/ws" "GetUser" {"id": 1} {"namespace": "http://example.com"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Call and validate result"
+do
+  set $result as soap.call "http://example.com/ws" "GetUser" {"id": 1} {"namespace": "http://example.com"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -231,10 +234,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as soap.getFault $xml
-each $item in $result
-  print $item
-end
+@desc "Get fault and iterate results"
+do
+  set $result as soap.getFault $xml
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step SOAP workflow
@@ -242,10 +248,13 @@ end
 Chain multiple soap operations together.
 
 ```robinpath
-set $r_call as soap.call "http://example.com/ws" "GetUser" {"id": 1} {"namespace": "http://example.com"}
-set $r_buildEnvelope as soap.buildEnvelope "GetUser" {"id": 1}
-set $r_parseEnvelope as soap.parseEnvelope $xml
-print "All operations complete"
+@desc "Call, build envelope, and more"
+do
+  set $r_call as soap.call "http://example.com/ws" "GetUser" {"id": 1} {"namespace": "http://example.com"}
+  set $r_buildEnvelope as soap.buildEnvelope "GetUser" {"id": 1}
+  set $r_parseEnvelope as soap.parseEnvelope $xml
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe call with validation
@@ -253,12 +262,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as soap.call "http://example.com/ws" "GetUser" {"id": 1} {"namespace": "http://example.com"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Call and validate result"
+do
+  set $result as soap.call "http://example.com/ws" "GetUser" {"id": 1} {"namespace": "http://example.com"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

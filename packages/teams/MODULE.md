@@ -246,12 +246,15 @@ All functions throw on failure. Common errors:
 | `teams.getMessages requires teamId and channelId.` | Check the error message for details |
 
 ```robinpath
-set $result as teams.sendChannel "team-id" "channel-id" "Hello team!"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Send channel and validate result"
+do
+  set $result as teams.sendChannel "team-id" "channel-id" "Hello team!"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -262,11 +265,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-teams.setToken $token
-set $result as teams.listTeams
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  teams.setToken $token
+enddo
+
+@desc "List teams and iterate results"
+do
+  set $result as teams.listTeams
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with sendChannel
@@ -274,9 +284,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-teams.setToken $token
-set $result as teams.sendChannel "team-id" "channel-id" "Hello team!"
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  teams.setToken $token
+enddo
+
+@desc "Send channel"
+do
+  set $result as teams.sendChannel "team-id" "channel-id" "Hello team!"
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -284,14 +301,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-teams.setToken $token
-set $existing as teams.listTeams
-if $existing == null
-  teams.sendChannel "team-id" "channel-id" "Hello team!"
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  teams.setToken $token
+enddo
+
+@desc "List teams and send channel"
+do
+  set $existing as teams.listTeams
+  if $existing == null
+    teams.sendChannel "team-id" "channel-id" "Hello team!"
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Teams workflow
@@ -299,11 +323,18 @@ end
 Chain multiple teams operations together.
 
 ```robinpath
-teams.setToken $token
-set $r_sendChannel as teams.sendChannel "team-id" "channel-id" "Hello team!"
-set $r_sendChat as teams.sendChat "chat-id" "Hey there!"
-set $r_replyToMessage as teams.replyToMessage "team-id" "channel-id" "msg-id" "Thanks!"
-print "All operations complete"
+@desc "Setup authentication"
+do
+  teams.setToken $token
+enddo
+
+@desc "Send channel, send chat, and more"
+do
+  set $r_sendChannel as teams.sendChannel "team-id" "channel-id" "Hello team!"
+  set $r_sendChat as teams.sendChat "chat-id" "Hey there!"
+  set $r_replyToMessage as teams.replyToMessage "team-id" "channel-id" "msg-id" "Thanks!"
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe sendChannel with validation
@@ -311,13 +342,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-teams.setToken $token
-set $result as teams.sendChannel "team-id" "channel-id" "Hello team!"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  teams.setToken $token
+enddo
+
+@desc "Send channel and validate result"
+do
+  set $result as teams.sendChannel "team-id" "channel-id" "Hello team!"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

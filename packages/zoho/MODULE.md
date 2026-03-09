@@ -416,12 +416,15 @@ All functions throw on failure. Common errors:
 | `Zoho: "..." not configured. Call zoho.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as zoho.listRecords
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List records and validate result"
+do
+  set $result as zoho.listRecords
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -432,11 +435,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-zoho.setCredentials $token
-set $result as zoho.listRecords
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  zoho.setCredentials $token
+enddo
+
+@desc "List records and iterate results"
+do
+  set $result as zoho.listRecords
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createRecord
@@ -444,9 +454,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-zoho.setCredentials $token
-set $result as zoho.createRecord
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  zoho.setCredentials $token
+enddo
+
+@desc "Create record"
+do
+  set $result as zoho.createRecord
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -454,10 +471,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-zoho.setCredentials $token
-set $created as zoho.createRecord
-# Update the created item
-zoho.updateRecord
+@desc "Setup authentication"
+do
+  zoho.setCredentials $token
+enddo
+
+@desc "Create record and update record"
+do
+  set $created as zoho.createRecord
+  # Update the created item
+  zoho.updateRecord
+enddo
 ```
 
 ### 4. Check before creating
@@ -465,14 +489,21 @@ zoho.updateRecord
 List existing items and only create if needed.
 
 ```robinpath
-zoho.setCredentials $token
-set $existing as zoho.listRecords
-if $existing == null
-  zoho.createRecord
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  zoho.setCredentials $token
+enddo
+
+@desc "List records and create record"
+do
+  set $existing as zoho.listRecords
+  if $existing == null
+    zoho.createRecord
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Zoho workflow
@@ -480,11 +511,18 @@ end
 Chain multiple zoho operations together.
 
 ```robinpath
-zoho.setCredentials $token
-set $r_listRecords as zoho.listRecords
-set $r_getRecord as zoho.getRecord
-set $r_createRecord as zoho.createRecord
-print "All operations complete"
+@desc "Setup authentication"
+do
+  zoho.setCredentials $token
+enddo
+
+@desc "List records, get record, and more"
+do
+  set $r_listRecords as zoho.listRecords
+  set $r_getRecord as zoho.getRecord
+  set $r_createRecord as zoho.createRecord
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listRecords with validation
@@ -492,13 +530,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-zoho.setCredentials $token
-set $result as zoho.listRecords
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  zoho.setCredentials $token
+enddo
+
+@desc "List records and validate result"
+do
+  set $result as zoho.listRecords
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

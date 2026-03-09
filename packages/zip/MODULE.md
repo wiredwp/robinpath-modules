@@ -205,12 +205,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as zip.gzip "hello world"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Gzip and validate result"
+do
+  set $result as zip.gzip "hello world"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -221,10 +224,13 @@ end
 Chain multiple zip operations together.
 
 ```robinpath
-set $r_gzip as zip.gzip "hello world"
-set $r_gunzip as zip.gunzip $compressed
-set $r_deflate as zip.deflate "hello"
-print "All operations complete"
+@desc "Gzip, gunzip, and more"
+do
+  set $r_gzip as zip.gzip "hello world"
+  set $r_gunzip as zip.gunzip $compressed
+  set $r_deflate as zip.deflate "hello"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe gzip with validation
@@ -232,12 +238,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as zip.gzip "hello world"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Gzip and validate result"
+do
+  set $result as zip.gzip "hello world"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

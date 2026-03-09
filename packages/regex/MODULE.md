@@ -182,12 +182,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as regex.test "hello world" "^hello"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Test and validate result"
+do
+  set $result as regex.test "hello world" "^hello"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -198,10 +201,13 @@ end
 Chain multiple regex operations together.
 
 ```robinpath
-set $r_test as regex.test "hello world" "^hello"
-set $r_match as regex.match "abc 123 def 456" "\d+"
-set $r_matchAll as regex.matchAll "abc 123 def 456" "\d+"
-print "All operations complete"
+@desc "Test, match, and more"
+do
+  set $r_test as regex.test "hello world" "^hello"
+  set $r_match as regex.match "abc 123 def 456" "\d+"
+  set $r_matchAll as regex.matchAll "abc 123 def 456" "\d+"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe test with validation
@@ -209,12 +215,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as regex.test "hello world" "^hello"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Test and validate result"
+do
+  set $result as regex.test "hello world" "^hello"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

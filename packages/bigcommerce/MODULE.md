@@ -419,12 +419,15 @@ All functions throw on failure. Common errors:
 | `Bigcommerce: "..." not configured. Call bigcommerce.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as bigcommerce.listProducts
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List products and validate result"
+do
+  set $result as bigcommerce.listProducts
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -435,11 +438,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-bigcommerce.setCredentials $token
-set $result as bigcommerce.listProducts
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  bigcommerce.setCredentials $token
+enddo
+
+@desc "List products and iterate results"
+do
+  set $result as bigcommerce.listProducts
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createProduct
@@ -447,9 +457,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-bigcommerce.setCredentials $token
-set $result as bigcommerce.createProduct
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  bigcommerce.setCredentials $token
+enddo
+
+@desc "Create product"
+do
+  set $result as bigcommerce.createProduct
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -457,10 +474,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-bigcommerce.setCredentials $token
-set $created as bigcommerce.createProduct
-# Update the created item
-bigcommerce.updateProduct
+@desc "Setup authentication"
+do
+  bigcommerce.setCredentials $token
+enddo
+
+@desc "Create product and update product"
+do
+  set $created as bigcommerce.createProduct
+  # Update the created item
+  bigcommerce.updateProduct
+enddo
 ```
 
 ### 4. Check before creating
@@ -468,14 +492,21 @@ bigcommerce.updateProduct
 List existing items and only create if needed.
 
 ```robinpath
-bigcommerce.setCredentials $token
-set $existing as bigcommerce.listProducts
-if $existing == null
-  bigcommerce.createProduct
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  bigcommerce.setCredentials $token
+enddo
+
+@desc "List products and create product"
+do
+  set $existing as bigcommerce.listProducts
+  if $existing == null
+    bigcommerce.createProduct
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step BigCommerce workflow
@@ -483,11 +514,18 @@ end
 Chain multiple bigcommerce operations together.
 
 ```robinpath
-bigcommerce.setCredentials $token
-set $r_listProducts as bigcommerce.listProducts
-set $r_getProduct as bigcommerce.getProduct
-set $r_createProduct as bigcommerce.createProduct
-print "All operations complete"
+@desc "Setup authentication"
+do
+  bigcommerce.setCredentials $token
+enddo
+
+@desc "List products, get product, and more"
+do
+  set $r_listProducts as bigcommerce.listProducts
+  set $r_getProduct as bigcommerce.getProduct
+  set $r_createProduct as bigcommerce.createProduct
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listProducts with validation
@@ -495,13 +533,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-bigcommerce.setCredentials $token
-set $result as bigcommerce.listProducts
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  bigcommerce.setCredentials $token
+enddo
+
+@desc "List products and validate result"
+do
+  set $result as bigcommerce.listProducts
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

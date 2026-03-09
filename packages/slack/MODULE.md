@@ -296,12 +296,15 @@ All functions throw on failure. Common errors:
 | `File path is required` | Check the error message for details |
 
 ```robinpath
-set $result as slack.send "default" "#general" "Hello from RobinPath!"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Send and validate result"
+do
+  set $result as slack.send "default" "#general" "Hello from RobinPath!"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -312,11 +315,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-slack.setToken $token
-set $result as slack.listChannels "default" {"limit": 50}
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  slack.setToken $token
+enddo
+
+@desc "List channels and iterate results"
+do
+  set $result as slack.listChannels "default" {"limit": 50}
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with send
@@ -324,9 +334,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-slack.setToken $token
-set $result as slack.send "default" "#general" "Hello from RobinPath!"
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  slack.setToken $token
+enddo
+
+@desc "Send"
+do
+  set $result as slack.send "default" "#general" "Hello from RobinPath!"
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -334,10 +351,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-slack.setToken $token
-set $created as slack.send "default" "#general" "Hello from RobinPath!"
-# Update the created item
-slack.updateMessage "default" "C01234" "1234567890.123456" "Updated message text"
+@desc "Setup authentication"
+do
+  slack.setToken $token
+enddo
+
+@desc "Send and update message"
+do
+  set $created as slack.send "default" "#general" "Hello from RobinPath!"
+  # Update the created item
+  slack.updateMessage "default" "C01234" "1234567890.123456" "Updated message text"
+enddo
 ```
 
 ### 4. Check before creating
@@ -345,14 +369,21 @@ slack.updateMessage "default" "C01234" "1234567890.123456" "Updated message text
 List existing items and only create if needed.
 
 ```robinpath
-slack.setToken $token
-set $existing as slack.listChannels "default" {"limit": 50}
-if $existing == null
-  slack.send "default" "#general" "Hello from RobinPath!"
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  slack.setToken $token
+enddo
+
+@desc "List channels and send"
+do
+  set $existing as slack.listChannels "default" {"limit": 50}
+  if $existing == null
+    slack.send "default" "#general" "Hello from RobinPath!"
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Slack workflow
@@ -360,11 +391,18 @@ end
 Chain multiple slack operations together.
 
 ```robinpath
-slack.setToken $token
-set $r_send as slack.send "default" "#general" "Hello from RobinPath!"
-set $r_sendWebhook as slack.sendWebhook "https://hooks.slack.com/services/T.../B.../xxx" "Deploy complete!"
-set $r_reply as slack.reply "default" "C01234" "1234567890.123456" "Got it, thanks!"
-print "All operations complete"
+@desc "Setup authentication"
+do
+  slack.setToken $token
+enddo
+
+@desc "Send, send webhook, and more"
+do
+  set $r_send as slack.send "default" "#general" "Hello from RobinPath!"
+  set $r_sendWebhook as slack.sendWebhook "https://hooks.slack.com/services/T.../B.../xxx" "Deploy complete!"
+  set $r_reply as slack.reply "default" "C01234" "1234567890.123456" "Got it, thanks!"
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe send with validation
@@ -372,13 +410,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-slack.setToken $token
-set $result as slack.send "default" "#general" "Hello from RobinPath!"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  slack.setToken $token
+enddo
+
+@desc "Send and validate result"
+do
+  set $result as slack.send "default" "#general" "Hello from RobinPath!"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

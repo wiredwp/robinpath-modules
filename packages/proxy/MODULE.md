@@ -294,12 +294,15 @@ All functions throw on failure. Common errors:
 | `Proxy "..." not found. Call create() first.` | Check the error message for details |
 
 ```robinpath
-set $result as proxy.forward
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Forward and validate result"
+do
+  set $result as proxy.forward
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -310,10 +313,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as proxy.list
-each $item in $result
-  print $item
-end
+@desc "List and iterate results"
+do
+  set $result as proxy.list
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with create
@@ -330,13 +336,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as proxy.list
-if $existing == null
-  proxy.create
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "List and create"
+do
+  set $existing as proxy.list
+  if $existing == null
+    proxy.create
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Proxy workflow
@@ -344,10 +353,13 @@ end
 Chain multiple proxy operations together.
 
 ```robinpath
-set $r_forward as proxy.forward
-set $r_create as proxy.create
-set $r_start as proxy.start
-print "All operations complete"
+@desc "Forward, create, and more"
+do
+  set $r_forward as proxy.forward
+  set $r_create as proxy.create
+  set $r_start as proxy.start
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe forward with validation
@@ -355,12 +367,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as proxy.forward
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Forward and validate result"
+do
+  set $result as proxy.forward
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

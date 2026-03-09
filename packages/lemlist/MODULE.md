@@ -316,12 +316,15 @@ All functions throw on failure. Common errors:
 | `Lemlist: "..." not configured. Call lemlist.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as lemlist.listCampaigns
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List campaigns and validate result"
+do
+  set $result as lemlist.listCampaigns
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -332,11 +335,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-lemlist.setCredentials $token
-set $result as lemlist.listCampaigns
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  lemlist.setCredentials $token
+enddo
+
+@desc "List campaigns and iterate results"
+do
+  set $result as lemlist.listCampaigns
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with addLeadToCampaign
@@ -344,9 +354,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-lemlist.setCredentials $token
-set $result as lemlist.addLeadToCampaign
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  lemlist.setCredentials $token
+enddo
+
+@desc "Add lead to campaign"
+do
+  set $result as lemlist.addLeadToCampaign
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -354,14 +371,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-lemlist.setCredentials $token
-set $existing as lemlist.listCampaigns
-if $existing == null
-  lemlist.addLeadToCampaign
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  lemlist.setCredentials $token
+enddo
+
+@desc "List campaigns and add lead to campaign"
+do
+  set $existing as lemlist.listCampaigns
+  if $existing == null
+    lemlist.addLeadToCampaign
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Lemlist workflow
@@ -369,11 +393,18 @@ end
 Chain multiple lemlist operations together.
 
 ```robinpath
-lemlist.setCredentials $token
-set $r_listCampaigns as lemlist.listCampaigns
-set $r_getCampaign as lemlist.getCampaign
-set $r_listCampaignLeads as lemlist.listCampaignLeads
-print "All operations complete"
+@desc "Setup authentication"
+do
+  lemlist.setCredentials $token
+enddo
+
+@desc "List campaigns, get campaign, and more"
+do
+  set $r_listCampaigns as lemlist.listCampaigns
+  set $r_getCampaign as lemlist.getCampaign
+  set $r_listCampaignLeads as lemlist.listCampaignLeads
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe listCampaigns with validation
@@ -381,13 +412,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-lemlist.setCredentials $token
-set $result as lemlist.listCampaigns
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  lemlist.setCredentials $token
+enddo
+
+@desc "List campaigns and validate result"
+do
+  set $result as lemlist.listCampaigns
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

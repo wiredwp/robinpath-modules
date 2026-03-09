@@ -200,12 +200,15 @@ All functions throw on failure. Common errors:
 | `Connection "..." not found` | Check the error message for details |
 
 ```robinpath
-set $result as any "server" "./file.txt" "/remote/file.txt"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Validate result"
+do
+  set $result as any "server" "./file.txt" "/remote/file.txt"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -216,10 +219,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as any "server" "/uploads"
-each $item in $result
-  print $item
-end
+@desc "Iterate results"
+do
+  set $result as any "server" "/uploads"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step FTP workflow
@@ -227,10 +233,13 @@ end
 Chain multiple ftp operations together.
 
 ```robinpath
-set $r_connect as any "server" {"protocol": "sftp", "host": "example.com", "user": "admin", "pass": "..."}
-set $r_upload as any "server" "./file.txt" "/remote/file.txt"
-set $r_download as any "server" "/remote/file.txt" "./file.txt"
-print "All operations complete"
+@desc "Execute operation"
+do
+  set $r_connect as any "server" {"protocol": "sftp", "host": "example.com", "user": "admin", "pass": "..."}
+  set $r_upload as any "server" "./file.txt" "/remote/file.txt"
+  set $r_download as any "server" "/remote/file.txt" "./file.txt"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe connect with validation
@@ -238,12 +247,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as any "server" {"protocol": "sftp", "host": "example.com", "user": "admin", "pass": "..."}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Validate result"
+do
+  set $result as any "server" {"protocol": "sftp", "host": "example.com", "user": "admin", "pass": "..."}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

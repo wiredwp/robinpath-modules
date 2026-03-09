@@ -314,12 +314,15 @@ All functions throw on failure. Common errors:
 | `Mixpanel: "..." not configured. Call mixpanel.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as mixpanel.trackEvent
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Track event and validate result"
+do
+  set $result as mixpanel.trackEvent
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -330,11 +333,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-mixpanel.setCredentials $token
-set $result as mixpanel.getTopEvents
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  mixpanel.setCredentials $token
+enddo
+
+@desc "Get top events and iterate results"
+do
+  set $result as mixpanel.getTopEvents
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Mixpanel workflow
@@ -342,11 +352,18 @@ end
 Chain multiple mixpanel operations together.
 
 ```robinpath
-mixpanel.setCredentials $token
-set $r_trackEvent as mixpanel.trackEvent
-set $r_trackBatch as mixpanel.trackBatch
-set $r_identifyUser as mixpanel.identifyUser
-print "All operations complete"
+@desc "Setup authentication"
+do
+  mixpanel.setCredentials $token
+enddo
+
+@desc "Track event, track batch, and more"
+do
+  set $r_trackEvent as mixpanel.trackEvent
+  set $r_trackBatch as mixpanel.trackBatch
+  set $r_identifyUser as mixpanel.identifyUser
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe trackEvent with validation
@@ -354,13 +371,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-mixpanel.setCredentials $token
-set $result as mixpanel.trackEvent
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  mixpanel.setCredentials $token
+enddo
+
+@desc "Track event and validate result"
+do
+  set $result as mixpanel.trackEvent
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

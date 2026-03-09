@@ -268,12 +268,15 @@ All functions throw on failure. Common errors:
 | `shopify.getInventory requires an inventoryItemId.` | Check the error message for details |
 
 ```robinpath
-set $result as shopify.listProducts {"limit":10}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List products and validate result"
+do
+  set $result as shopify.listProducts {"limit":10}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -284,11 +287,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-shopify.setCredentials $token
-set $result as shopify.listProducts {"limit":10}
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  shopify.setCredentials $token
+enddo
+
+@desc "List products and iterate results"
+do
+  set $result as shopify.listProducts {"limit":10}
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createProduct
@@ -296,9 +306,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-shopify.setCredentials $token
-set $result as shopify.createProduct {"title":"New Product","body_html":"<p>Description</p>","vendor":"My Brand"}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  shopify.setCredentials $token
+enddo
+
+@desc "Create product"
+do
+  set $result as shopify.createProduct {"title":"New Product","body_html":"<p>Description</p>","vendor":"My Brand"}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -306,10 +323,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-shopify.setCredentials $token
-set $created as shopify.createProduct {"title":"New Product","body_html":"<p>Description</p>","vendor":"My Brand"}
-# Update the created item
-shopify.updateProduct "123456789" {"title":"Updated Title"}
+@desc "Setup authentication"
+do
+  shopify.setCredentials $token
+enddo
+
+@desc "Create product and update product"
+do
+  set $created as shopify.createProduct {"title":"New Product","body_html":"<p>Description</p>","vendor":"My Brand"}
+  # Update the created item
+  shopify.updateProduct "123456789" {"title":"Updated Title"}
+enddo
 ```
 
 ### 4. Check before creating
@@ -317,14 +341,21 @@ shopify.updateProduct "123456789" {"title":"Updated Title"}
 List existing items and only create if needed.
 
 ```robinpath
-shopify.setCredentials $token
-set $existing as shopify.listProducts {"limit":10}
-if $existing == null
-  shopify.createProduct {"title":"New Product","body_html":"<p>Description</p>","vendor":"My Brand"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  shopify.setCredentials $token
+enddo
+
+@desc "List products and create product"
+do
+  set $existing as shopify.listProducts {"limit":10}
+  if $existing == null
+    shopify.createProduct {"title":"New Product","body_html":"<p>Description</p>","vendor":"My Brand"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Shopify workflow
@@ -332,11 +363,18 @@ end
 Chain multiple shopify operations together.
 
 ```robinpath
-shopify.setCredentials $token
-set $r_listProducts as shopify.listProducts {"limit":10}
-set $r_getProduct as shopify.getProduct "123456789"
-set $r_createProduct as shopify.createProduct {"title":"New Product","body_html":"<p>Description</p>","vendor":"My Brand"}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  shopify.setCredentials $token
+enddo
+
+@desc "List products, get product, and more"
+do
+  set $r_listProducts as shopify.listProducts {"limit":10}
+  set $r_getProduct as shopify.getProduct "123456789"
+  set $r_createProduct as shopify.createProduct {"title":"New Product","body_html":"<p>Description</p>","vendor":"My Brand"}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listProducts with validation
@@ -344,13 +382,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-shopify.setCredentials $token
-set $result as shopify.listProducts {"limit":10}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  shopify.setCredentials $token
+enddo
+
+@desc "List products and validate result"
+do
+  set $result as shopify.listProducts {"limit":10}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

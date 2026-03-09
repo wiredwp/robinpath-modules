@@ -241,12 +241,15 @@ All functions throw on failure. Common errors:
 | `Lookup is only supported with Twilio.` | Check the error message for details |
 
 ```robinpath
-set $result as sms.configure "main" {"provider": "twilio", "accountSid": "AC...", "authToken": "..."}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Configure and validate result"
+do
+  set $result as sms.configure "main" {"provider": "twilio", "accountSid": "AC...", "authToken": "..."}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -266,10 +269,13 @@ print "Created: " + $result
 Chain multiple sms operations together.
 
 ```robinpath
-set $r_configure as sms.configure "main" {"provider": "twilio", "accountSid": "AC...", "authToken": "..."}
-set $r_send as sms.send "main" "+15559876543" "Your code is 1234"
-set $r_sendBulk as sms.sendBulk "main" ["+155511111", "+155522222"] "Hello!"
-print "All operations complete"
+@desc "Configure, send, and more"
+do
+  set $r_configure as sms.configure "main" {"provider": "twilio", "accountSid": "AC...", "authToken": "..."}
+  set $r_send as sms.send "main" "+15559876543" "Your code is 1234"
+  set $r_sendBulk as sms.sendBulk "main" ["+155511111", "+155522222"] "Hello!"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe configure with validation
@@ -277,12 +283,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as sms.configure "main" {"provider": "twilio", "accountSid": "AC...", "authToken": "..."}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Configure and validate result"
+do
+  set $result as sms.configure "main" {"provider": "twilio", "accountSid": "AC...", "authToken": "..."}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

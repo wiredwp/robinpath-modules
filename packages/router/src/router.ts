@@ -352,8 +352,8 @@ export const RouterFunctionMetadata = {
   create: {
     description: "Create a new router instance",
     parameters: [
-      { name: "id", dataType: "string", description: "Unique router identifier", optional: true },
-      { name: "prefix", dataType: "string", description: "Base prefix for all routes", optional: true },
+      { name: "id", dataType: "string", description: "Unique router identifier", required: false, formInputType: "text" },
+      { name: "prefix", dataType: "string", description: "Base prefix for all routes", required: false, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -362,10 +362,10 @@ export const RouterFunctionMetadata = {
   add: {
     description: "Add a route with method, path pattern, and handler",
     parameters: [
-      { name: "id", dataType: "string", description: "Router identifier" },
-      { name: "method", dataType: "string", description: "HTTP method (default GET)", optional: true },
-      { name: "path", dataType: "string", description: "Route path pattern (supports :param and *)" },
-      { name: "handler", dataType: "any", description: "Route handler" },
+      { name: "id", dataType: "string", description: "Router identifier", required: true, formInputType: "text" },
+      { name: "method", dataType: "string", description: "HTTP method (default GET)", required: false, formInputType: "text" },
+      { name: "path", dataType: "string", description: "Route path pattern (supports :param and *)", required: true, formInputType: "text" },
+      { name: "handler", dataType: "any", description: "Route handler", required: true, formInputType: "textarea" },
     ],
 
     returnType: "object",
@@ -374,9 +374,9 @@ export const RouterFunctionMetadata = {
   match: {
     description: "Match a URL against registered routes and return the matching route",
     parameters: [
-      { name: "id", dataType: "string", description: "Router identifier" },
-      { name: "method", dataType: "string", description: "HTTP method", optional: true },
-      { name: "url", dataType: "string", description: "URL to match" },
+      { name: "id", dataType: "string", description: "Router identifier", required: true, formInputType: "text" },
+      { name: "method", dataType: "string", description: "HTTP method", required: false, formInputType: "text" },
+      { name: "url", dataType: "string", description: "URL to match", required: true, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -385,8 +385,8 @@ export const RouterFunctionMetadata = {
   params: {
     description: "Extract path parameters from a URL using a pattern",
     parameters: [
-      { name: "pattern", dataType: "string", description: "Route pattern with :param placeholders" },
-      { name: "url", dataType: "string", description: "URL to extract params from" },
+      { name: "pattern", dataType: "string", description: "Route pattern with :param placeholders", required: true, formInputType: "text" },
+      { name: "url", dataType: "string", description: "URL to extract params from", required: true, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -395,7 +395,7 @@ export const RouterFunctionMetadata = {
   parse: {
     description: "Parse a URL into pathname, segments, and query parameters",
     parameters: [
-      { name: "url", dataType: "string", description: "URL to parse" },
+      { name: "url", dataType: "string", description: "URL to parse", required: true, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -404,9 +404,9 @@ export const RouterFunctionMetadata = {
   build: {
     description: "Build a URL from a pattern and parameter values",
     parameters: [
-      { name: "pattern", dataType: "string", description: "Route pattern with :param placeholders" },
-      { name: "params", dataType: "object", description: "Parameter values to substitute" },
-      { name: "query", dataType: "object", description: "Query parameters to append", optional: true },
+      { name: "pattern", dataType: "string", description: "Route pattern with :param placeholders", required: true, formInputType: "text" },
+      { name: "params", dataType: "object", description: "Parameter values to substitute", required: true, formInputType: "json" },
+      { name: "query", dataType: "object", description: "Query parameters to append", required: false, formInputType: "json" },
     ],
 
     returnType: "object",
@@ -415,7 +415,7 @@ export const RouterFunctionMetadata = {
   normalize: {
     description: "Normalize a URL path (collapse slashes, ensure leading slash, strip trailing slash)",
     parameters: [
-      { name: "path", dataType: "string", description: "Path to normalize" },
+      { name: "path", dataType: "string", description: "Path to normalize", required: true, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -424,8 +424,8 @@ export const RouterFunctionMetadata = {
   isMatch: {
     description: "Test if a URL path matches a route pattern",
     parameters: [
-      { name: "pattern", dataType: "string", description: "Route pattern" },
-      { name: "url", dataType: "string", description: "URL to test" },
+      { name: "pattern", dataType: "string", description: "Route pattern", required: true, formInputType: "text" },
+      { name: "url", dataType: "string", description: "URL to test", required: true, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -434,9 +434,9 @@ export const RouterFunctionMetadata = {
   group: {
     description: "Create a route group with a shared prefix",
     parameters: [
-      { name: "id", dataType: "string", description: "Router identifier" },
-      { name: "prefix", dataType: "string", description: "Prefix for all routes in the group" },
-      { name: "routes", dataType: "array", description: "Array of route definitions { method, path, handler }" },
+      { name: "id", dataType: "string", description: "Router identifier", required: true, formInputType: "text" },
+      { name: "prefix", dataType: "string", description: "Prefix for all routes in the group", required: true, formInputType: "text" },
+      { name: "routes", dataType: "array", description: "Array of route definitions { method, path, handler }", required: true, formInputType: "json" },
     ],
 
     returnType: "object",
@@ -445,7 +445,7 @@ export const RouterFunctionMetadata = {
   list: {
     description: "List all routes registered in a router",
     parameters: [
-      { name: "id", dataType: "string", description: "Router identifier" },
+      { name: "id", dataType: "string", description: "Router identifier", required: true, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -454,9 +454,9 @@ export const RouterFunctionMetadata = {
   remove: {
     description: "Remove routes by method and/or path",
     parameters: [
-      { name: "id", dataType: "string", description: "Router identifier" },
-      { name: "method", dataType: "string", description: "HTTP method to filter", optional: true },
-      { name: "path", dataType: "string", description: "Route path to filter", optional: true },
+      { name: "id", dataType: "string", description: "Router identifier", required: true, formInputType: "text" },
+      { name: "method", dataType: "string", description: "HTTP method to filter", required: false, formInputType: "text" },
+      { name: "path", dataType: "string", description: "Route path to filter", required: false, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -465,8 +465,8 @@ export const RouterFunctionMetadata = {
   middleware: {
     description: "Add a middleware function to the router",
     parameters: [
-      { name: "id", dataType: "string", description: "Router identifier" },
-      { name: "handler", dataType: "string", description: "Middleware function (ctx: any) => ctx" },
+      { name: "id", dataType: "string", description: "Router identifier", required: true, formInputType: "text" },
+      { name: "handler", dataType: "string", description: "Middleware function (ctx: any) => ctx", required: true, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -476,5 +476,5 @@ export const RouterFunctionMetadata = {
 
 export const RouterModuleMetadata = {
   description: "URL routing and pattern matching with support for path parameters (:param), wildcards (*), route groups, and middleware. No external dependencies.",
-  version: "1.0.0",
+  methods: ["create", "add", "match", "params", "parse", "build", "normalize", "isMatch", "group", "list", "remove", "middleware"],
 };

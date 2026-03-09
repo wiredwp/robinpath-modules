@@ -491,12 +491,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as table.create [{"name": "Alice", "age": 30}]
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create and validate result"
+do
+  set $result as table.create [{"name": "Alice", "age": 30}]
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -516,10 +519,13 @@ print "Created: " + $result
 Chain multiple table operations together.
 
 ```robinpath
-set $r_create as table.create [{"name": "Alice", "age": 30}]
-set $r_select as table.select $data ["name", "age"]
-set $r_where as table.where $data "age" "gt" 25
-print "All operations complete"
+@desc "Create, select, and more"
+do
+  set $r_create as table.create [{"name": "Alice", "age": 30}]
+  set $r_select as table.select $data ["name", "age"]
+  set $r_where as table.where $data "age" "gt" 25
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe create with validation
@@ -527,12 +533,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as table.create [{"name": "Alice", "age": 30}]
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create and validate result"
+do
+  set $result as table.create [{"name": "Alice", "age": 30}]
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

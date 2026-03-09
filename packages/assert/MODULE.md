@@ -322,12 +322,15 @@ All functions throw on failure. Common errors:
 | `Expected array to include ${JSON.stringify(needle)}` | Check the error message for details |
 
 ```robinpath
-set $result as assert.equal $a $b
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Equal and validate result"
+do
+  set $result as assert.equal $a $b
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -338,10 +341,13 @@ end
 Chain multiple assert operations together.
 
 ```robinpath
-set $r_equal as assert.equal $a $b
-set $r_notEqual as assert.notEqual $a $b
-set $r_deepEqual as assert.deepEqual $obj1 $obj2
-print "All operations complete"
+@desc "Equal, not equal, and more"
+do
+  set $r_equal as assert.equal $a $b
+  set $r_notEqual as assert.notEqual $a $b
+  set $r_deepEqual as assert.deepEqual $obj1 $obj2
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe equal with validation
@@ -349,12 +355,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as assert.equal $a $b
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Equal and validate result"
+do
+  set $result as assert.equal $a $b
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

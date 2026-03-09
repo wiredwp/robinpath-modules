@@ -162,12 +162,15 @@ All functions throw on failure. Common errors:
 | `Unclosed unescaped tag "{{{" at position ...` | Check the error message for details |
 
 ```robinpath
-set $result as template.render "Hello, {{name}}!" { "name": "World" }
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Render and validate result"
+do
+  set $result as template.render "Hello, {{name}}!" { "name": "World" }
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -178,10 +181,13 @@ end
 Chain multiple template operations together.
 
 ```robinpath
-set $r_render as template.render "Hello, {{name}}!" { "name": "World" }
-set $r_renderFile as template.renderFile "/tmp/greeting.mustache" { "name": "World" }
-set $r_escape as template.escape "<script>alert(1)</script>"
-print "All operations complete"
+@desc "Render, render file, and more"
+do
+  set $r_render as template.render "Hello, {{name}}!" { "name": "World" }
+  set $r_renderFile as template.renderFile "/tmp/greeting.mustache" { "name": "World" }
+  set $r_escape as template.escape "<script>alert(1)</script>"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe render with validation
@@ -189,12 +195,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as template.render "Hello, {{name}}!" { "name": "World" }
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Render and validate result"
+do
+  set $result as template.render "Hello, {{name}}!" { "name": "World" }
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

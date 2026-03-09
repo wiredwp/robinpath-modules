@@ -353,12 +353,15 @@ All functions throw on failure. Common errors:
 | `Database "..." not found. Open it first with database.open.` | Check the error message for details |
 
 ```robinpath
-set $result as database.open "mydb" "./data.db"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Open and validate result"
+do
+  set $result as database.open "mydb" "./data.db"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -369,10 +372,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as database.listTables "mydb"
-each $item in $result
-  print $item
-end
+@desc "List tables and iterate results"
+do
+  set $result as database.listTables "mydb"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createTable
@@ -389,9 +395,12 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-set $created as database.createTable "mydb" "users" {"id": "INTEGER PRIMARY KEY", "name": "TEXT NOT NULL", "age": "INTEGER"}
-# Update the created item
-database.update "mydb" "users" {"name": "Bob"} {"id": 1}
+@desc "Create table and update"
+do
+  set $created as database.createTable "mydb" "users" {"id": "INTEGER PRIMARY KEY", "name": "TEXT NOT NULL", "age": "INTEGER"}
+  # Update the created item
+  database.update "mydb" "users" {"name": "Bob"} {"id": 1}
+enddo
 ```
 
 ### 4. Check before creating
@@ -399,13 +408,16 @@ database.update "mydb" "users" {"name": "Bob"} {"id": 1}
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as database.listTables "mydb"
-if $existing == null
-  database.createTable "mydb" "users" {"id": "INTEGER PRIMARY KEY", "name": "TEXT NOT NULL", "age": "INTEGER"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "List tables and create table"
+do
+  set $existing as database.listTables "mydb"
+  if $existing == null
+    database.createTable "mydb" "users" {"id": "INTEGER PRIMARY KEY", "name": "TEXT NOT NULL", "age": "INTEGER"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Database workflow
@@ -413,10 +425,13 @@ end
 Chain multiple database operations together.
 
 ```robinpath
-set $r_open as database.open "mydb" "./data.db"
-set $r_close as database.close "mydb"
-set $r_query as database.query "mydb" "SELECT * FROM users WHERE age > ?" 18
-print "All operations complete"
+@desc "Open, close, and more"
+do
+  set $r_open as database.open "mydb" "./data.db"
+  set $r_close as database.close "mydb"
+  set $r_query as database.query "mydb" "SELECT * FROM users WHERE age > ?" 18
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe open with validation
@@ -424,12 +439,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as database.open "mydb" "./data.db"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Open and validate result"
+do
+  set $result as database.open "mydb" "./data.db"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

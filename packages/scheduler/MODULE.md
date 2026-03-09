@@ -245,12 +245,15 @@ All functions throw on failure. Common errors:
 | `dateOrDelay is required (ISO string or milliseconds)` | Check the error message for details |
 
 ```robinpath
-set $result as scheduler.schedule "cleanup" "*/5 * * * *" { action: "runCleanup" }
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Schedule and validate result"
+do
+  set $result as scheduler.schedule "cleanup" "*/5 * * * *" { action: "runCleanup" }
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -261,10 +264,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as scheduler.list
-each $item in $result
-  print $item
-end
+@desc "List and iterate results"
+do
+  set $result as scheduler.list
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Scheduler workflow
@@ -272,10 +278,13 @@ end
 Chain multiple scheduler operations together.
 
 ```robinpath
-set $r_schedule as scheduler.schedule "cleanup" "*/5 * * * *" { action: "runCleanup" }
-set $r_once as scheduler.once "sendEmail" "2025-12-31T23:59:00Z" { action: "sendNewYearEmail" }
-set $r_cancel as scheduler.cancel "cleanup"
-print "All operations complete"
+@desc "Schedule, once, and more"
+do
+  set $r_schedule as scheduler.schedule "cleanup" "*/5 * * * *" { action: "runCleanup" }
+  set $r_once as scheduler.once "sendEmail" "2025-12-31T23:59:00Z" { action: "sendNewYearEmail" }
+  set $r_cancel as scheduler.cancel "cleanup"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe schedule with validation
@@ -283,12 +292,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as scheduler.schedule "cleanup" "*/5 * * * *" { action: "runCleanup" }
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Schedule and validate result"
+do
+  set $result as scheduler.schedule "cleanup" "*/5 * * * *" { action: "runCleanup" }
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -246,12 +246,15 @@ All functions throw on failure. Common errors:
 | `AI provider "..." not configured.` | Check the error message for details |
 
 ```robinpath
-set $result as ai.configure "openai" {"provider": "openai", "apiKey": $key}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Configure and validate result"
+do
+  set $result as ai.configure "openai" {"provider": "openai", "apiKey": $key}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -262,10 +265,13 @@ end
 Chain multiple ai operations together.
 
 ```robinpath
-set $r_configure as ai.configure "openai" {"provider": "openai", "apiKey": $key}
-set $r_chat as ai.chat "openai" "Explain quantum computing" {"system": "You are a teacher"}
-set $r_complete as ai.complete "openai" "Write a haiku about automation"
-print "All operations complete"
+@desc "Configure, chat, and more"
+do
+  set $r_configure as ai.configure "openai" {"provider": "openai", "apiKey": $key}
+  set $r_chat as ai.chat "openai" "Explain quantum computing" {"system": "You are a teacher"}
+  set $r_complete as ai.complete "openai" "Write a haiku about automation"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe configure with validation
@@ -273,12 +279,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as ai.configure "openai" {"provider": "openai", "apiKey": $key}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Configure and validate result"
+do
+  set $result as ai.configure "openai" {"provider": "openai", "apiKey": $key}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

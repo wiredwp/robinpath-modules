@@ -383,12 +383,15 @@ All functions throw on failure. Common errors:
 | `Freshbooks: "..." not configured. Call freshbooks.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as freshbooks.listClients
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List clients and validate result"
+do
+  set $result as freshbooks.listClients
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -399,11 +402,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-freshbooks.setCredentials $token
-set $result as freshbooks.listClients
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  freshbooks.setCredentials $token
+enddo
+
+@desc "List clients and iterate results"
+do
+  set $result as freshbooks.listClients
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createClient
@@ -411,9 +421,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-freshbooks.setCredentials $token
-set $result as freshbooks.createClient
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  freshbooks.setCredentials $token
+enddo
+
+@desc "Create client"
+do
+  set $result as freshbooks.createClient
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -421,10 +438,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-freshbooks.setCredentials $token
-set $created as freshbooks.createClient
-# Update the created item
-freshbooks.updateClient
+@desc "Setup authentication"
+do
+  freshbooks.setCredentials $token
+enddo
+
+@desc "Create client and update client"
+do
+  set $created as freshbooks.createClient
+  # Update the created item
+  freshbooks.updateClient
+enddo
 ```
 
 ### 4. Check before creating
@@ -432,14 +456,21 @@ freshbooks.updateClient
 List existing items and only create if needed.
 
 ```robinpath
-freshbooks.setCredentials $token
-set $existing as freshbooks.listClients
-if $existing == null
-  freshbooks.createClient
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  freshbooks.setCredentials $token
+enddo
+
+@desc "List clients and create client"
+do
+  set $existing as freshbooks.listClients
+  if $existing == null
+    freshbooks.createClient
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step FreshBooks workflow
@@ -447,11 +478,18 @@ end
 Chain multiple freshbooks operations together.
 
 ```robinpath
-freshbooks.setCredentials $token
-set $r_listClients as freshbooks.listClients
-set $r_getClient as freshbooks.getClient
-set $r_createClient as freshbooks.createClient
-print "All operations complete"
+@desc "Setup authentication"
+do
+  freshbooks.setCredentials $token
+enddo
+
+@desc "List clients, get client, and more"
+do
+  set $r_listClients as freshbooks.listClients
+  set $r_getClient as freshbooks.getClient
+  set $r_createClient as freshbooks.createClient
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listClients with validation
@@ -459,13 +497,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-freshbooks.setCredentials $token
-set $result as freshbooks.listClients
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  freshbooks.setCredentials $token
+enddo
+
+@desc "List clients and validate result"
+do
+  set $result as freshbooks.listClients
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

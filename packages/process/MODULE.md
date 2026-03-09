@@ -321,12 +321,15 @@ All functions throw on failure. Common errors:
 | `Process "..." not found` | Check the error message for details |
 
 ```robinpath
-set $result as process.run "ls -la"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Run and validate result"
+do
+  set $result as process.run "ls -la"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -337,10 +340,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as process.list
-each $item in $result
-  print $item
-end
+@desc "List and iterate results"
+do
+  set $result as process.list
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Process workflow
@@ -348,10 +354,13 @@ end
 Chain multiple process operations together.
 
 ```robinpath
-set $r_run as process.run "ls -la"
-set $r_exec as process.exec "echo hello"
-set $r_spawn as process.spawn "server" "node" ["app.js"]
-print "All operations complete"
+@desc "Run, exec, and more"
+do
+  set $r_run as process.run "ls -la"
+  set $r_exec as process.exec "echo hello"
+  set $r_spawn as process.spawn "server" "node" ["app.js"]
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe run with validation
@@ -359,12 +368,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as process.run "ls -la"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Run and validate result"
+do
+  set $result as process.run "ls -la"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

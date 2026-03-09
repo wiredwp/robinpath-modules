@@ -350,12 +350,15 @@ All functions throw on failure. Common errors:
 | `Sanity: "..." not configured. Call sanity.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as sanity.query
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Query and validate result"
+do
+  set $result as sanity.query
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -366,11 +369,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-sanity.setCredentials $token
-set $result as sanity.getDocument
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  sanity.setCredentials $token
+enddo
+
+@desc "Get document and iterate results"
+do
+  set $result as sanity.getDocument
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createDocument
@@ -378,9 +388,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-sanity.setCredentials $token
-set $result as sanity.createDocument
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  sanity.setCredentials $token
+enddo
+
+@desc "Create document"
+do
+  set $result as sanity.createDocument
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -388,14 +405,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-sanity.setCredentials $token
-set $existing as sanity.getDocument
-if $existing == null
-  sanity.createDocument
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  sanity.setCredentials $token
+enddo
+
+@desc "Get document and create document"
+do
+  set $existing as sanity.getDocument
+  if $existing == null
+    sanity.createDocument
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Sanity workflow
@@ -403,11 +427,18 @@ end
 Chain multiple sanity operations together.
 
 ```robinpath
-sanity.setCredentials $token
-set $r_query as sanity.query
-set $r_getDocument as sanity.getDocument
-set $r_createDocument as sanity.createDocument
-print "All operations complete"
+@desc "Setup authentication"
+do
+  sanity.setCredentials $token
+enddo
+
+@desc "Query, get document, and more"
+do
+  set $r_query as sanity.query
+  set $r_getDocument as sanity.getDocument
+  set $r_createDocument as sanity.createDocument
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe query with validation
@@ -415,13 +446,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-sanity.setCredentials $token
-set $result as sanity.query
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  sanity.setCredentials $token
+enddo
+
+@desc "Query and validate result"
+do
+  set $result as sanity.query
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

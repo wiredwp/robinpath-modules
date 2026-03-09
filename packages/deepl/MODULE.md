@@ -279,12 +279,15 @@ All functions throw on failure. Common errors:
 | `Deepl: "..." not configured. Call deepl.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as deepl.translateText
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Translate text and validate result"
+do
+  set $result as deepl.translateText
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -295,11 +298,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-deepl.setCredentials $token
-set $result as deepl.getUsage
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  deepl.setCredentials $token
+enddo
+
+@desc "Get usage and iterate results"
+do
+  set $result as deepl.getUsage
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createGlossary
@@ -307,9 +317,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-deepl.setCredentials $token
-set $result as deepl.createGlossary
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  deepl.setCredentials $token
+enddo
+
+@desc "Create glossary"
+do
+  set $result as deepl.createGlossary
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -317,14 +334,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-deepl.setCredentials $token
-set $existing as deepl.getUsage
-if $existing == null
-  deepl.createGlossary
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  deepl.setCredentials $token
+enddo
+
+@desc "Get usage and create glossary"
+do
+  set $existing as deepl.getUsage
+  if $existing == null
+    deepl.createGlossary
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step DeepL workflow
@@ -332,11 +356,18 @@ end
 Chain multiple deepl operations together.
 
 ```robinpath
-deepl.setCredentials $token
-set $r_translateText as deepl.translateText
-set $r_translateBatch as deepl.translateBatch
-set $r_getUsage as deepl.getUsage
-print "All operations complete"
+@desc "Setup authentication"
+do
+  deepl.setCredentials $token
+enddo
+
+@desc "Translate text, translate batch, and more"
+do
+  set $r_translateText as deepl.translateText
+  set $r_translateBatch as deepl.translateBatch
+  set $r_getUsage as deepl.getUsage
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe translateText with validation
@@ -344,13 +375,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-deepl.setCredentials $token
-set $result as deepl.translateText
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  deepl.setCredentials $token
+enddo
+
+@desc "Translate text and validate result"
+do
+  set $result as deepl.translateText
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

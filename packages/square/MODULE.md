@@ -418,12 +418,15 @@ All functions throw on failure. Common errors:
 | `Square: "..." not configured. Call square.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as square.listCatalogItems
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List catalog items and validate result"
+do
+  set $result as square.listCatalogItems
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -434,11 +437,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-square.setCredentials $token
-set $result as square.listCatalogItems
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  square.setCredentials $token
+enddo
+
+@desc "List catalog items and iterate results"
+do
+  set $result as square.listCatalogItems
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createCustomer
@@ -446,9 +456,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-square.setCredentials $token
-set $result as square.createCustomer
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  square.setCredentials $token
+enddo
+
+@desc "Create customer"
+do
+  set $result as square.createCustomer
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -456,10 +473,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-square.setCredentials $token
-set $created as square.createCustomer
-# Update the created item
-square.updateCustomer
+@desc "Setup authentication"
+do
+  square.setCredentials $token
+enddo
+
+@desc "Create customer and update customer"
+do
+  set $created as square.createCustomer
+  # Update the created item
+  square.updateCustomer
+enddo
 ```
 
 ### 4. Check before creating
@@ -467,14 +491,21 @@ square.updateCustomer
 List existing items and only create if needed.
 
 ```robinpath
-square.setCredentials $token
-set $existing as square.listCatalogItems
-if $existing == null
-  square.createCustomer
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  square.setCredentials $token
+enddo
+
+@desc "List catalog items and create customer"
+do
+  set $existing as square.listCatalogItems
+  if $existing == null
+    square.createCustomer
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Square workflow
@@ -482,11 +513,18 @@ end
 Chain multiple square operations together.
 
 ```robinpath
-square.setCredentials $token
-set $r_listCatalogItems as square.listCatalogItems
-set $r_getCatalogItem as square.getCatalogItem
-set $r_upsertCatalogObject as square.upsertCatalogObject
-print "All operations complete"
+@desc "Setup authentication"
+do
+  square.setCredentials $token
+enddo
+
+@desc "List catalog items, get catalog item, and more"
+do
+  set $r_listCatalogItems as square.listCatalogItems
+  set $r_getCatalogItem as square.getCatalogItem
+  set $r_upsertCatalogObject as square.upsertCatalogObject
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listCatalogItems with validation
@@ -494,13 +532,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-square.setCredentials $token
-set $result as square.listCatalogItems
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  square.setCredentials $token
+enddo
+
+@desc "List catalog items and validate result"
+do
+  set $result as square.listCatalogItems
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

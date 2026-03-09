@@ -484,12 +484,15 @@ All functions throw on failure. Common errors:
 | `Salesforce: "..." not configured. Call salesforce.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as salesforce.query
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Query and validate result"
+do
+  set $result as salesforce.query
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -500,11 +503,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-salesforce.setCredentials $token
-set $result as salesforce.getRecord
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  salesforce.setCredentials $token
+enddo
+
+@desc "Get record and iterate results"
+do
+  set $result as salesforce.getRecord
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createRecord
@@ -512,9 +522,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-salesforce.setCredentials $token
-set $result as salesforce.createRecord
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  salesforce.setCredentials $token
+enddo
+
+@desc "Create record"
+do
+  set $result as salesforce.createRecord
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -522,10 +539,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-salesforce.setCredentials $token
-set $created as salesforce.createRecord
-# Update the created item
-salesforce.updateRecord
+@desc "Setup authentication"
+do
+  salesforce.setCredentials $token
+enddo
+
+@desc "Create record and update record"
+do
+  set $created as salesforce.createRecord
+  # Update the created item
+  salesforce.updateRecord
+enddo
 ```
 
 ### 4. Check before creating
@@ -533,14 +557,21 @@ salesforce.updateRecord
 List existing items and only create if needed.
 
 ```robinpath
-salesforce.setCredentials $token
-set $existing as salesforce.getRecord
-if $existing == null
-  salesforce.createRecord
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  salesforce.setCredentials $token
+enddo
+
+@desc "Get record and create record"
+do
+  set $existing as salesforce.getRecord
+  if $existing == null
+    salesforce.createRecord
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Salesforce workflow
@@ -548,11 +579,18 @@ end
 Chain multiple salesforce operations together.
 
 ```robinpath
-salesforce.setCredentials $token
-set $r_query as salesforce.query
-set $r_getRecord as salesforce.getRecord
-set $r_createRecord as salesforce.createRecord
-print "All operations complete"
+@desc "Setup authentication"
+do
+  salesforce.setCredentials $token
+enddo
+
+@desc "Query, get record, and more"
+do
+  set $r_query as salesforce.query
+  set $r_getRecord as salesforce.getRecord
+  set $r_createRecord as salesforce.createRecord
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe query with validation
@@ -560,13 +598,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-salesforce.setCredentials $token
-set $result as salesforce.query
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  salesforce.setCredentials $token
+enddo
+
+@desc "Query and validate result"
+do
+  set $result as salesforce.query
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

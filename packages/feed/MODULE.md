@@ -293,12 +293,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as feed.createRss {"title": "My Blog", "link": "https://example.com", "items": [...]}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create rss and validate result"
+do
+  set $result as feed.createRss {"title": "My Blog", "link": "https://example.com", "items": [...]}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -318,10 +321,13 @@ print "Created: " + $result
 Chain multiple feed operations together.
 
 ```robinpath
-set $r_createRss as feed.createRss {"title": "My Blog", "link": "https://example.com", "items": [...]}
-set $r_createAtom as feed.createAtom {"title": "My Blog", "link": "https://example.com", "items": [...]}
-set $r_createJson as feed.createJson {"title": "My Blog", "items": [...]}
-print "All operations complete"
+@desc "Create rss, create atom, and more"
+do
+  set $r_createRss as feed.createRss {"title": "My Blog", "link": "https://example.com", "items": [...]}
+  set $r_createAtom as feed.createAtom {"title": "My Blog", "link": "https://example.com", "items": [...]}
+  set $r_createJson as feed.createJson {"title": "My Blog", "items": [...]}
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe createRss with validation
@@ -329,12 +335,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as feed.createRss {"title": "My Blog", "link": "https://example.com", "items": [...]}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create rss and validate result"
+do
+  set $result as feed.createRss {"title": "My Blog", "link": "https://example.com", "items": [...]}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -563,25 +563,37 @@ All functions throw on failure. Common errors:
 Build a contact form that creates a HubSpot contact on submission.
 
 ```robinpath
-form.config {"title": "Contact Us", "submitLabel": "Send Message"}
+@desc "Config"
+do
+  form.config {"title": "Contact Us", "submitLabel": "Send Message"}
+enddo
 
-$name = form.text "name" {"label": "Full Name", "required": true}
-$email = form.email "email" {"label": "Email", "required": true}
-$phone = form.phone "phone" {"label": "Phone"}
-$country = form.select "country" {"label": "Country", "options": ["US", "UK", "FR", "DE"]}
-$message = form.textarea "message" {"label": "Message", "maxLength": 1000}
+@desc "Execute operation"
+do
+  $name = form.text "name" {"label": "Full Name", "required": true}
+  $email = form.email "email" {"label": "Email", "required": true}
+  $phone = form.phone "phone" {"label": "Phone"}
+  $country = form.select "country" {"label": "Country", "options": ["US", "UK", "FR", "DE"]}
+  $message = form.textarea "message" {"label": "Message", "maxLength": 1000}
+enddo
 
-if $__formSubmitted
-  $v = form.validate $__formData
-  if $v.valid is false
-    return {"success": false, "errors": $v.errors}
+@desc "Create contact and validate result"
+do
+  if $__formSubmitted
+    $v = form.validate $__formData
+    if $v.valid is false
+      return {"success": false, "errors": $v.errors}
+    endif
+  
+    hubspot.createContact {"email": $email, "firstname": $name, "phone": $phone, "country": $country, "notes": $message}
+    return {"success": true, "message": "Thank you!"}
   endif
+enddo
 
-  hubspot.createContact {"email": $email, "firstname": $name, "phone": $phone, "country": $country, "notes": $message}
-  return {"success": true, "message": "Thank you!"}
-endif
-
-form.getForm
+@desc "Get form"
+do
+  form.getForm
+enddo
 ```
 
 ### 2. Slack Team Notification Form
@@ -589,23 +601,35 @@ form.getForm
 Let team members send messages to Slack channels with urgency levels.
 
 ```robinpath
-form.config {"title": "Send Team Notification"}
+@desc "Config"
+do
+  form.config {"title": "Send Team Notification"}
+enddo
 
-$channel = form.select "channel" {"label": "Channel", "options": ["#general", "#dev", "#marketing"]}
-$urgency = form.radio "urgency" {"label": "Urgency", "options": ["low", "medium", "high"]}
-$message = form.textarea "message" {"label": "Message", "required": true}
-$notify = form.checkbox "notify" {"label": "Notify @channel"}
+@desc "Execute operation"
+do
+  $channel = form.select "channel" {"label": "Channel", "options": ["#general", "#dev", "#marketing"]}
+  $urgency = form.radio "urgency" {"label": "Urgency", "options": ["low", "medium", "high"]}
+  $message = form.textarea "message" {"label": "Message", "required": true}
+  $notify = form.checkbox "notify" {"label": "Notify @channel"}
+enddo
 
-if $__formSubmitted
-  $prefix = ""
-  if $notify
-    $prefix = "<!channel> "
+@desc "Send and validate result"
+do
+  if $__formSubmitted
+    $prefix = ""
+    if $notify
+      $prefix = "<!channel> "
+    endif
+    slack.send $channel $prefix + $message
+    return {"success": true}
   endif
-  slack.send $channel $prefix + $message
-  return {"success": true}
-endif
+enddo
 
-form.getForm
+@desc "Get form"
+do
+  form.getForm
+enddo
 ```
 
 ### 3. Multi-Step Product Creator
@@ -613,25 +637,37 @@ form.getForm
 Create a Shopify product through a wizard-style form with steps.
 
 ```robinpath
-form.config {"title": "Add New Product"}
-form.step "Basic Info" {"fields": ["title", "description", "price"]}
-form.step "Details" {"fields": ["category", "tags", "sku"]}
-form.step "Media" {"fields": ["image"]}
+@desc "Config and step"
+do
+  form.config {"title": "Add New Product"}
+  form.step "Basic Info" {"fields": ["title", "description", "price"]}
+  form.step "Details" {"fields": ["category", "tags", "sku"]}
+  form.step "Media" {"fields": ["image"]}
+enddo
 
-$title = form.text "title" {"label": "Product Title", "required": true}
-$description = form.textarea "description" {"label": "Description"}
-$price = form.number "price" {"label": "Price ($)", "min": 0, "step": 0.01, "required": true}
-$category = form.select "category" {"label": "Category", "options": ["Clothing", "Electronics", "Home"]}
-$tags = form.multiselect "tags" {"label": "Tags", "options": ["sale", "new", "featured", "limited"]}
-$sku = form.text "sku" {"label": "SKU"}
-$image = form.file "image" {"label": "Product Image", "accept": "image/*"}
+@desc "Execute operation"
+do
+  $title = form.text "title" {"label": "Product Title", "required": true}
+  $description = form.textarea "description" {"label": "Description"}
+  $price = form.number "price" {"label": "Price ($)", "min": 0, "step": 0.01, "required": true}
+  $category = form.select "category" {"label": "Category", "options": ["Clothing", "Electronics", "Home"]}
+  $tags = form.multiselect "tags" {"label": "Tags", "options": ["sale", "new", "featured", "limited"]}
+  $sku = form.text "sku" {"label": "SKU"}
+  $image = form.file "image" {"label": "Product Image", "accept": "image/*"}
+enddo
 
-if $__formSubmitted
-  shopify.createProduct {"title": $title, "body_html": $description, "variants": [{"price": $price, "sku": $sku}], "tags": $tags}
-  return {"success": true}
-endif
+@desc "Create product and validate result"
+do
+  if $__formSubmitted
+    shopify.createProduct {"title": $title, "body_html": $description, "variants": [{"price": $price, "sku": $sku}], "tags": $tags}
+    return {"success": true}
+  endif
+enddo
 
-form.getForm
+@desc "Get form"
+do
+  form.getForm
+enddo
 ```
 
 ### 4. Meeting Scheduler
@@ -639,21 +675,33 @@ form.getForm
 Schedule meetings with Google Calendar integration.
 
 ```robinpath
-form.config {"title": "Schedule a Meeting"}
+@desc "Config"
+do
+  form.config {"title": "Schedule a Meeting"}
+enddo
 
-$name = form.text "name" {"label": "Your Name", "required": true}
-$email = form.email "email" {"label": "Email", "required": true}
-$date = form.date "date" {"label": "Preferred Date", "required": true}
-$time = form.time "time" {"label": "Preferred Time", "required": true}
-$duration = form.select "duration" {"label": "Duration", "options": ["30 min", "60 min", "90 min"]}
-$notes = form.textarea "notes" {"label": "Meeting Notes"}
+@desc "Execute operation"
+do
+  $name = form.text "name" {"label": "Your Name", "required": true}
+  $email = form.email "email" {"label": "Email", "required": true}
+  $date = form.date "date" {"label": "Preferred Date", "required": true}
+  $time = form.time "time" {"label": "Preferred Time", "required": true}
+  $duration = form.select "duration" {"label": "Duration", "options": ["30 min", "60 min", "90 min"]}
+  $notes = form.textarea "notes" {"label": "Meeting Notes"}
+enddo
 
-if $__formSubmitted
-  google-calendar.createEvent {"summary": "Meeting with " + $name, "date": $date, "time": $time, "duration": $duration, "attendees": [$email], "description": $notes}
-  return {"success": true}
-endif
+@desc "Validate result"
+do
+  if $__formSubmitted
+    google-calendar.createEvent {"summary": "Meeting with " + $name, "date": $date, "time": $time, "duration": $duration, "attendees": [$email], "description": $notes}
+    return {"success": true}
+  endif
+enddo
 
-form.getForm
+@desc "Get form"
+do
+  form.getForm
+enddo
 ```
 
 ### 5. Simple Feedback Form with Validation
@@ -661,22 +709,34 @@ form.getForm
 Collect user feedback with custom pattern validation.
 
 ```robinpath
-form.config {"title": "Feedback", "submitLabel": "Send Feedback"}
+@desc "Config"
+do
+  form.config {"title": "Feedback", "submitLabel": "Send Feedback"}
+enddo
 
-$name = form.text "name" {"label": "Name", "required": true, "minLength": 2}
-$email = form.email "email" {"label": "Email", "required": true}
-$rating = form.range "rating" {"label": "Rating", "min": 1, "max": 10, "step": 1}
-$feedback = form.textarea "feedback" {"label": "Your Feedback", "required": true, "maxLength": 2000}
+@desc "Execute operation"
+do
+  $name = form.text "name" {"label": "Name", "required": true, "minLength": 2}
+  $email = form.email "email" {"label": "Email", "required": true}
+  $rating = form.range "rating" {"label": "Rating", "min": 1, "max": 10, "step": 1}
+  $feedback = form.textarea "feedback" {"label": "Your Feedback", "required": true, "maxLength": 2000}
+enddo
 
-if $__formSubmitted
-  $v = form.validate $__formData
-  if $v.valid is false
-    return {"success": false, "errors": $v.errors}
+@desc "Validate result"
+do
+  if $__formSubmitted
+    $v = form.validate $__formData
+    if $v.valid is false
+      return {"success": false, "errors": $v.errors}
+    endif
+    return {"success": true, "message": "Thanks for your feedback!"}
   endif
-  return {"success": true, "message": "Thanks for your feedback!"}
-endif
+enddo
 
-form.getForm
+@desc "Get form"
+do
+  form.getForm
+enddo
 ```
 
 ### 6. Embeddable Form
@@ -684,13 +744,19 @@ form.getForm
 Generate embed code for placing a form on any website.
 
 ```robinpath
-form.config {"title": "Newsletter Signup"}
-form.text "name" {"label": "Name", "required": true}
-form.email "email" {"label": "Email", "required": true}
-form.checkbox "marketing" {"label": "Send me marketing emails"}
+@desc "Config, text, and more"
+do
+  form.config {"title": "Newsletter Signup"}
+  form.text "name" {"label": "Name", "required": true}
+  form.email "email" {"label": "Email", "required": true}
+  form.checkbox "marketing" {"label": "Send me marketing emails"}
+enddo
 
-$embed = form.toEmbed "https://rpshotter.example.com"
-return $embed
+@desc "Execute operation"
+do
+  $embed = form.toEmbed "https://rpshotter.example.com"
+  return $embed
+enddo
 ```
 
 

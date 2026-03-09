@@ -180,12 +180,15 @@ All functions throw on failure. Common errors:
 | `jwt.verify: invalid signature` | Check the error message for details |
 
 ```robinpath
-set $result as jwt.sign {"sub":"1234","name":"Alice"} "my-secret" {"expiresIn":3600}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Sign and validate result"
+do
+  set $result as jwt.sign {"sub":"1234","name":"Alice"} "my-secret" {"expiresIn":3600}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -196,10 +199,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as jwt.getHeader "eyJhbGciOiJIUzI1NiJ9..."
-each $item in $result
-  print $item
-end
+@desc "Get header and iterate results"
+do
+  set $result as jwt.getHeader "eyJhbGciOiJIUzI1NiJ9..."
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step JWT workflow
@@ -207,10 +213,13 @@ end
 Chain multiple jwt operations together.
 
 ```robinpath
-set $r_sign as jwt.sign {"sub":"1234","name":"Alice"} "my-secret" {"expiresIn":3600}
-set $r_verify as jwt.verify "eyJhbGciOiJIUzI1NiJ9..." "my-secret"
-set $r_decode as jwt.decode "eyJhbGciOiJIUzI1NiJ9..."
-print "All operations complete"
+@desc "Sign, verify, and more"
+do
+  set $r_sign as jwt.sign {"sub":"1234","name":"Alice"} "my-secret" {"expiresIn":3600}
+  set $r_verify as jwt.verify "eyJhbGciOiJIUzI1NiJ9..." "my-secret"
+  set $r_decode as jwt.decode "eyJhbGciOiJIUzI1NiJ9..."
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe sign with validation
@@ -218,12 +227,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as jwt.sign {"sub":"1234","name":"Alice"} "my-secret" {"expiresIn":3600}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Sign and validate result"
+do
+  set $result as jwt.sign {"sub":"1234","name":"Alice"} "my-secret" {"expiresIn":3600}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

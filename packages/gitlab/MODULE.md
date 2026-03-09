@@ -556,12 +556,15 @@ All functions throw on failure. Common errors:
 | `gitlab.retryPipeline requires an ID.` | Check the error message for details |
 
 ```robinpath
-set $result as gitlab.listProjects
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List projects and validate result"
+do
+  set $result as gitlab.listProjects
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -572,11 +575,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-gitlab.setCredentials $token
-set $result as gitlab.listProjects
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  gitlab.setCredentials $token
+enddo
+
+@desc "List projects and iterate results"
+do
+  set $result as gitlab.listProjects
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createProject
@@ -584,9 +594,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-gitlab.setCredentials $token
-set $result as gitlab.createProject
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  gitlab.setCredentials $token
+enddo
+
+@desc "Create project"
+do
+  set $result as gitlab.createProject
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -594,10 +611,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-gitlab.setCredentials $token
-set $created as gitlab.createProject
-# Update the created item
-gitlab.updateIssue
+@desc "Setup authentication"
+do
+  gitlab.setCredentials $token
+enddo
+
+@desc "Create project and update issue"
+do
+  set $created as gitlab.createProject
+  # Update the created item
+  gitlab.updateIssue
+enddo
 ```
 
 ### 4. Check before creating
@@ -605,14 +629,21 @@ gitlab.updateIssue
 List existing items and only create if needed.
 
 ```robinpath
-gitlab.setCredentials $token
-set $existing as gitlab.listProjects
-if $existing == null
-  gitlab.createProject
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  gitlab.setCredentials $token
+enddo
+
+@desc "List projects and create project"
+do
+  set $existing as gitlab.listProjects
+  if $existing == null
+    gitlab.createProject
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step GitLab workflow
@@ -620,11 +651,18 @@ end
 Chain multiple gitlab operations together.
 
 ```robinpath
-gitlab.setCredentials $token
-set $r_listProjects as gitlab.listProjects
-set $r_getProject as gitlab.getProject
-set $r_createProject as gitlab.createProject
-print "All operations complete"
+@desc "Setup authentication"
+do
+  gitlab.setCredentials $token
+enddo
+
+@desc "List projects, get project, and more"
+do
+  set $r_listProjects as gitlab.listProjects
+  set $r_getProject as gitlab.getProject
+  set $r_createProject as gitlab.createProject
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listProjects with validation
@@ -632,13 +670,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-gitlab.setCredentials $token
-set $result as gitlab.listProjects
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  gitlab.setCredentials $token
+enddo
+
+@desc "List projects and validate result"
+do
+  set $result as gitlab.listProjects
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

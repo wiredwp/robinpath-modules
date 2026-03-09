@@ -200,12 +200,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as screen.capture "./screenshot.png"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Capture and validate result"
+do
+  set $result as screen.capture "./screenshot.png"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -216,10 +219,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as screen.listDisplays
-each $item in $result
-  print $item
-end
+@desc "List displays and iterate results"
+do
+  set $result as screen.listDisplays
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Screen workflow
@@ -227,10 +233,13 @@ end
 Chain multiple screen operations together.
 
 ```robinpath
-set $r_capture as screen.capture "./screenshot.png"
-set $r_captureRegion as screen.captureRegion "./region.png" 100 100 400 300
-set $r_captureWindow as screen.captureWindow "./notepad.png" "Untitled - Notepad"
-print "All operations complete"
+@desc "Capture, capture region, and more"
+do
+  set $r_capture as screen.capture "./screenshot.png"
+  set $r_captureRegion as screen.captureRegion "./region.png" 100 100 400 300
+  set $r_captureWindow as screen.captureWindow "./notepad.png" "Untitled - Notepad"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe capture with validation
@@ -238,12 +247,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as screen.capture "./screenshot.png"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Capture and validate result"
+do
+  set $result as screen.capture "./screenshot.png"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

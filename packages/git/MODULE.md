@@ -352,12 +352,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as git.clone
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Clone and validate result"
+do
+  set $result as git.clone
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -377,10 +380,13 @@ print "Created: " + $result
 Chain multiple git operations together.
 
 ```robinpath
-set $r_clone as git.clone
-set $r_init as git.init
-set $r_status as git.status
-print "All operations complete"
+@desc "Clone, init, and more"
+do
+  set $r_clone as git.clone
+  set $r_init as git.init
+  set $r_status as git.status
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe clone with validation
@@ -388,12 +394,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as git.clone
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Clone and validate result"
+do
+  set $result as git.clone
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

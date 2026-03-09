@@ -381,12 +381,15 @@ All functions throw on failure. Common errors:
 | `Apollo: "..." not configured. Call apollo.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as apollo.searchPeople
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Search people and validate result"
+do
+  set $result as apollo.searchPeople
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -397,11 +400,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-apollo.setCredentials $token
-set $result as apollo.getPerson
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  apollo.setCredentials $token
+enddo
+
+@desc "Get person and iterate results"
+do
+  set $result as apollo.getPerson
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with addToSequence
@@ -409,9 +419,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-apollo.setCredentials $token
-set $result as apollo.addToSequence
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  apollo.setCredentials $token
+enddo
+
+@desc "Add to sequence"
+do
+  set $result as apollo.addToSequence
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -419,10 +436,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-apollo.setCredentials $token
-set $created as apollo.addToSequence
-# Update the created item
-apollo.updateContact
+@desc "Setup authentication"
+do
+  apollo.setCredentials $token
+enddo
+
+@desc "Add to sequence and update contact"
+do
+  set $created as apollo.addToSequence
+  # Update the created item
+  apollo.updateContact
+enddo
 ```
 
 ### 4. Check before creating
@@ -430,14 +454,21 @@ apollo.updateContact
 List existing items and only create if needed.
 
 ```robinpath
-apollo.setCredentials $token
-set $existing as apollo.getPerson
-if $existing == null
-  apollo.addToSequence
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  apollo.setCredentials $token
+enddo
+
+@desc "Get person and add to sequence"
+do
+  set $existing as apollo.getPerson
+  if $existing == null
+    apollo.addToSequence
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Apollo workflow
@@ -445,11 +476,18 @@ end
 Chain multiple apollo operations together.
 
 ```robinpath
-apollo.setCredentials $token
-set $r_searchPeople as apollo.searchPeople
-set $r_getPerson as apollo.getPerson
-set $r_enrichPerson as apollo.enrichPerson
-print "All operations complete"
+@desc "Setup authentication"
+do
+  apollo.setCredentials $token
+enddo
+
+@desc "Search people, get person, and more"
+do
+  set $r_searchPeople as apollo.searchPeople
+  set $r_getPerson as apollo.getPerson
+  set $r_enrichPerson as apollo.enrichPerson
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe searchPeople with validation
@@ -457,13 +495,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-apollo.setCredentials $token
-set $result as apollo.searchPeople
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  apollo.setCredentials $token
+enddo
+
+@desc "Search people and validate result"
+do
+  set $result as apollo.searchPeople
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

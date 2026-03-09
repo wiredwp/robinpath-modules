@@ -315,12 +315,15 @@ All functions throw on failure. Common errors:
 | `PostgreSQL connection "..." not found. Call postgres.connect first.` | Check the error message for details |
 
 ```robinpath
-set $result as postgres.query "SELECT * FROM users WHERE id = $1" [1]
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Query and validate result"
+do
+  set $result as postgres.query "SELECT * FROM users WHERE id = $1" [1]
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -331,10 +334,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as postgres.listen "events"
-each $item in $result
-  print $item
-end
+@desc "Listen and iterate results"
+do
+  set $result as postgres.listen "events"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step PostgreSQL workflow
@@ -342,10 +348,13 @@ end
 Chain multiple postgres operations together.
 
 ```robinpath
-set $r_connect as postgres.connect {"host": "localhost", "user": "postgres", "database": "mydb"}
-set $r_query as postgres.query "SELECT * FROM users WHERE id = $1" [1]
-set $r_queryOne as postgres.queryOne "SELECT * FROM users WHERE id = $1" [1]
-print "All operations complete"
+@desc "Connect, query, and more"
+do
+  set $r_connect as postgres.connect {"host": "localhost", "user": "postgres", "database": "mydb"}
+  set $r_query as postgres.query "SELECT * FROM users WHERE id = $1" [1]
+  set $r_queryOne as postgres.queryOne "SELECT * FROM users WHERE id = $1" [1]
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe connect with validation
@@ -353,12 +362,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as postgres.connect {"host": "localhost", "user": "postgres", "database": "mydb"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Connect and validate result"
+do
+  set $result as postgres.connect {"host": "localhost", "user": "postgres", "database": "mydb"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

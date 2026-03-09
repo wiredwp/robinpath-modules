@@ -569,12 +569,15 @@ All functions throw on failure. Common errors:
 | `Redis connection "..." not found. Call redis.connect first.` | Check the error message for details |
 
 ```robinpath
-set $result as redis.get "user:1"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get and validate result"
+do
+  set $result as redis.get "user:1"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -585,10 +588,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as redis.get "user:1"
-each $item in $result
-  print $item
-end
+@desc "Get and iterate results"
+do
+  set $result as redis.get "user:1"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Redis workflow
@@ -596,10 +602,13 @@ end
 Chain multiple redis operations together.
 
 ```robinpath
-set $r_connect as redis.connect {"host": "localhost"}
-set $r_get as redis.get "user:1"
-set $r_del as redis.del "user:1"
-print "All operations complete"
+@desc "Connect, get, and more"
+do
+  set $r_connect as redis.connect {"host": "localhost"}
+  set $r_get as redis.get "user:1"
+  set $r_del as redis.del "user:1"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe connect with validation
@@ -607,12 +616,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as redis.connect {"host": "localhost"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Connect and validate result"
+do
+  set $result as redis.connect {"host": "localhost"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

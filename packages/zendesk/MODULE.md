@@ -453,12 +453,15 @@ All functions throw on failure. Common errors:
 | `Zendesk: "..." not configured. Call zendesk.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as zendesk.listTickets
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List tickets and validate result"
+do
+  set $result as zendesk.listTickets
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -469,11 +472,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-zendesk.setCredentials $token
-set $result as zendesk.listTickets
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  zendesk.setCredentials $token
+enddo
+
+@desc "List tickets and iterate results"
+do
+  set $result as zendesk.listTickets
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createTicket
@@ -481,9 +491,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-zendesk.setCredentials $token
-set $result as zendesk.createTicket
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  zendesk.setCredentials $token
+enddo
+
+@desc "Create ticket"
+do
+  set $result as zendesk.createTicket
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -491,10 +508,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-zendesk.setCredentials $token
-set $created as zendesk.createTicket
-# Update the created item
-zendesk.updateTicket
+@desc "Setup authentication"
+do
+  zendesk.setCredentials $token
+enddo
+
+@desc "Create ticket and update ticket"
+do
+  set $created as zendesk.createTicket
+  # Update the created item
+  zendesk.updateTicket
+enddo
 ```
 
 ### 4. Check before creating
@@ -502,14 +526,21 @@ zendesk.updateTicket
 List existing items and only create if needed.
 
 ```robinpath
-zendesk.setCredentials $token
-set $existing as zendesk.listTickets
-if $existing == null
-  zendesk.createTicket
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  zendesk.setCredentials $token
+enddo
+
+@desc "List tickets and create ticket"
+do
+  set $existing as zendesk.listTickets
+  if $existing == null
+    zendesk.createTicket
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Zendesk workflow
@@ -517,11 +548,18 @@ end
 Chain multiple zendesk operations together.
 
 ```robinpath
-zendesk.setCredentials $token
-set $r_listTickets as zendesk.listTickets
-set $r_getTicket as zendesk.getTicket
-set $r_createTicket as zendesk.createTicket
-print "All operations complete"
+@desc "Setup authentication"
+do
+  zendesk.setCredentials $token
+enddo
+
+@desc "List tickets, get ticket, and more"
+do
+  set $r_listTickets as zendesk.listTickets
+  set $r_getTicket as zendesk.getTicket
+  set $r_createTicket as zendesk.createTicket
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listTickets with validation
@@ -529,13 +567,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-zendesk.setCredentials $token
-set $result as zendesk.listTickets
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  zendesk.setCredentials $token
+enddo
+
+@desc "List tickets and validate result"
+do
+  set $result as zendesk.listTickets
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -319,12 +319,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as s3.configure
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Configure and validate result"
+do
+  set $result as s3.configure
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -335,10 +338,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as s3.list
-each $item in $result
-  print $item
-end
+@desc "List and iterate results"
+do
+  set $result as s3.list
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createBucket
@@ -355,13 +361,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as s3.list
-if $existing == null
-  s3.createBucket
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "List and create bucket"
+do
+  set $existing as s3.list
+  if $existing == null
+    s3.createBucket
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Amazon S3 workflow
@@ -369,10 +378,13 @@ end
 Chain multiple s3 operations together.
 
 ```robinpath
-set $r_configure as s3.configure
-set $r_upload as s3.upload
-set $r_download as s3.download
-print "All operations complete"
+@desc "Configure, upload, and more"
+do
+  set $r_configure as s3.configure
+  set $r_upload as s3.upload
+  set $r_download as s3.download
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe configure with validation
@@ -380,12 +392,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as s3.configure
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Configure and validate result"
+do
+  set $result as s3.configure
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

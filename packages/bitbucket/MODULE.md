@@ -488,12 +488,15 @@ All functions throw on failure. Common errors:
 | `Bitbucket: "..." not configured. Call bitbucket.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as bitbucket.listRepositories
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List repositories and validate result"
+do
+  set $result as bitbucket.listRepositories
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -504,11 +507,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-bitbucket.setCredentials $token
-set $result as bitbucket.listRepositories
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  bitbucket.setCredentials $token
+enddo
+
+@desc "List repositories and iterate results"
+do
+  set $result as bitbucket.listRepositories
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createRepository
@@ -516,9 +526,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-bitbucket.setCredentials $token
-set $result as bitbucket.createRepository
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  bitbucket.setCredentials $token
+enddo
+
+@desc "Create repository"
+do
+  set $result as bitbucket.createRepository
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -526,10 +543,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-bitbucket.setCredentials $token
-set $created as bitbucket.createRepository
-# Update the created item
-bitbucket.updatePullRequest
+@desc "Setup authentication"
+do
+  bitbucket.setCredentials $token
+enddo
+
+@desc "Create repository and update pull request"
+do
+  set $created as bitbucket.createRepository
+  # Update the created item
+  bitbucket.updatePullRequest
+enddo
 ```
 
 ### 4. Check before creating
@@ -537,14 +561,21 @@ bitbucket.updatePullRequest
 List existing items and only create if needed.
 
 ```robinpath
-bitbucket.setCredentials $token
-set $existing as bitbucket.listRepositories
-if $existing == null
-  bitbucket.createRepository
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  bitbucket.setCredentials $token
+enddo
+
+@desc "List repositories and create repository"
+do
+  set $existing as bitbucket.listRepositories
+  if $existing == null
+    bitbucket.createRepository
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Bitbucket workflow
@@ -552,11 +583,18 @@ end
 Chain multiple bitbucket operations together.
 
 ```robinpath
-bitbucket.setCredentials $token
-set $r_listRepositories as bitbucket.listRepositories
-set $r_getRepository as bitbucket.getRepository
-set $r_createRepository as bitbucket.createRepository
-print "All operations complete"
+@desc "Setup authentication"
+do
+  bitbucket.setCredentials $token
+enddo
+
+@desc "List repositories, get repository, and more"
+do
+  set $r_listRepositories as bitbucket.listRepositories
+  set $r_getRepository as bitbucket.getRepository
+  set $r_createRepository as bitbucket.createRepository
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listRepositories with validation
@@ -564,13 +602,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-bitbucket.setCredentials $token
-set $result as bitbucket.listRepositories
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  bitbucket.setCredentials $token
+enddo
+
+@desc "List repositories and validate result"
+do
+  set $result as bitbucket.listRepositories
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

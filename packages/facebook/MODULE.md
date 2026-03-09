@@ -418,12 +418,15 @@ All functions throw on failure. Common errors:
 | `Facebook: "..." not configured. Call facebook.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as facebook.getPageInfo
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get page info and validate result"
+do
+  set $result as facebook.getPageInfo
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -434,11 +437,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-facebook.setCredentials $token
-set $result as facebook.getPageInfo
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  facebook.setCredentials $token
+enddo
+
+@desc "Get page info and iterate results"
+do
+  set $result as facebook.getPageInfo
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createPagePost
@@ -446,9 +456,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-facebook.setCredentials $token
-set $result as facebook.createPagePost
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  facebook.setCredentials $token
+enddo
+
+@desc "Create page post"
+do
+  set $result as facebook.createPagePost
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -456,10 +473,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-facebook.setCredentials $token
-set $created as facebook.createPagePost
-# Update the created item
-facebook.updatePost
+@desc "Setup authentication"
+do
+  facebook.setCredentials $token
+enddo
+
+@desc "Create page post and update post"
+do
+  set $created as facebook.createPagePost
+  # Update the created item
+  facebook.updatePost
+enddo
 ```
 
 ### 4. Check before creating
@@ -467,14 +491,21 @@ facebook.updatePost
 List existing items and only create if needed.
 
 ```robinpath
-facebook.setCredentials $token
-set $existing as facebook.getPageInfo
-if $existing == null
-  facebook.createPagePost
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  facebook.setCredentials $token
+enddo
+
+@desc "Get page info and create page post"
+do
+  set $existing as facebook.getPageInfo
+  if $existing == null
+    facebook.createPagePost
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Facebook workflow
@@ -482,11 +513,18 @@ end
 Chain multiple facebook operations together.
 
 ```robinpath
-facebook.setCredentials $token
-set $r_getPageInfo as facebook.getPageInfo
-set $r_listPagePosts as facebook.listPagePosts
-set $r_createPagePost as facebook.createPagePost
-print "All operations complete"
+@desc "Setup authentication"
+do
+  facebook.setCredentials $token
+enddo
+
+@desc "Get page info, list page posts, and more"
+do
+  set $r_getPageInfo as facebook.getPageInfo
+  set $r_listPagePosts as facebook.listPagePosts
+  set $r_createPagePost as facebook.createPagePost
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe getPageInfo with validation
@@ -494,13 +532,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-facebook.setCredentials $token
-set $result as facebook.getPageInfo
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  facebook.setCredentials $token
+enddo
+
+@desc "Get page info and validate result"
+do
+  set $result as facebook.getPageInfo
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

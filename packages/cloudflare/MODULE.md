@@ -592,12 +592,15 @@ All functions throw on failure. Common errors:
 | `zoneId and recordId are required` | Check the error message for details |
 
 ```robinpath
-set $result as cloudflare.listZones {"name": "example.com"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List zones and validate result"
+do
+  set $result as cloudflare.listZones {"name": "example.com"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -608,11 +611,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-cloudflare.setToken $token
-set $result as cloudflare.listZones {"name": "example.com"}
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  cloudflare.setToken $token
+enddo
+
+@desc "List zones and iterate results"
+do
+  set $result as cloudflare.listZones {"name": "example.com"}
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createZone
@@ -620,9 +630,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-cloudflare.setToken $token
-set $result as cloudflare.createZone "example.com" {"accountId": "abc123"}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  cloudflare.setToken $token
+enddo
+
+@desc "Create zone"
+do
+  set $result as cloudflare.createZone "example.com" {"accountId": "abc123"}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -630,10 +647,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-cloudflare.setToken $token
-set $created as cloudflare.createZone "example.com" {"accountId": "abc123"}
-# Update the created item
-cloudflare.updateDnsRecord "zone-id" "record-id" "A" "example.com" "5.6.7.8" {"proxied": true}
+@desc "Setup authentication"
+do
+  cloudflare.setToken $token
+enddo
+
+@desc "Create zone and update dns record"
+do
+  set $created as cloudflare.createZone "example.com" {"accountId": "abc123"}
+  # Update the created item
+  cloudflare.updateDnsRecord "zone-id" "record-id" "A" "example.com" "5.6.7.8" {"proxied": true}
+enddo
 ```
 
 ### 4. Check before creating
@@ -641,14 +665,21 @@ cloudflare.updateDnsRecord "zone-id" "record-id" "A" "example.com" "5.6.7.8" {"p
 List existing items and only create if needed.
 
 ```robinpath
-cloudflare.setToken $token
-set $existing as cloudflare.listZones {"name": "example.com"}
-if $existing == null
-  cloudflare.createZone "example.com" {"accountId": "abc123"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  cloudflare.setToken $token
+enddo
+
+@desc "List zones and create zone"
+do
+  set $existing as cloudflare.listZones {"name": "example.com"}
+  if $existing == null
+    cloudflare.createZone "example.com" {"accountId": "abc123"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Cloudflare workflow
@@ -656,11 +687,18 @@ end
 Chain multiple cloudflare operations together.
 
 ```robinpath
-cloudflare.setToken $token
-set $r_listZones as cloudflare.listZones {"name": "example.com"}
-set $r_getZone as cloudflare.getZone "zone-id-here"
-set $r_createZone as cloudflare.createZone "example.com" {"accountId": "abc123"}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  cloudflare.setToken $token
+enddo
+
+@desc "List zones, get zone, and more"
+do
+  set $r_listZones as cloudflare.listZones {"name": "example.com"}
+  set $r_getZone as cloudflare.getZone "zone-id-here"
+  set $r_createZone as cloudflare.createZone "example.com" {"accountId": "abc123"}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listZones with validation
@@ -668,13 +706,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-cloudflare.setToken $token
-set $result as cloudflare.listZones {"name": "example.com"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  cloudflare.setToken $token
+enddo
+
+@desc "List zones and validate result"
+do
+  set $result as cloudflare.listZones {"name": "example.com"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

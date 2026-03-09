@@ -315,12 +315,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as string.capitalize "hello"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Capitalize and validate result"
+do
+  set $result as string.capitalize "hello"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -331,10 +334,13 @@ end
 Chain multiple string operations together.
 
 ```robinpath
-set $r_capitalize as string.capitalize "hello"
-set $r_camelCase as string.camelCase "hello world"
-set $r_snakeCase as string.snakeCase "helloWorld"
-print "All operations complete"
+@desc "Capitalize, camel case, and more"
+do
+  set $r_capitalize as string.capitalize "hello"
+  set $r_camelCase as string.camelCase "hello world"
+  set $r_snakeCase as string.snakeCase "helloWorld"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe capitalize with validation
@@ -342,12 +348,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as string.capitalize "hello"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Capitalize and validate result"
+do
+  set $result as string.capitalize "hello"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

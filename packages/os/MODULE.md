@@ -320,12 +320,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as os.hostname
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Hostname and validate result"
+do
+  set $result as os.hostname
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -336,10 +339,13 @@ end
 Chain multiple os operations together.
 
 ```robinpath
-set $r_hostname as os.hostname
-set $r_platform as os.platform
-set $r_arch as os.arch
-print "All operations complete"
+@desc "Hostname, platform, and more"
+do
+  set $r_hostname as os.hostname
+  set $r_platform as os.platform
+  set $r_arch as os.arch
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe hostname with validation
@@ -347,12 +353,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as os.hostname
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Hostname and validate result"
+do
+  set $result as os.hostname
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

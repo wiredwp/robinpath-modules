@@ -383,12 +383,15 @@ All functions throw on failure. Common errors:
 | `Onedrive: "..." not configured. Call onedrive.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as onedrive.listChildren
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List children and validate result"
+do
+  set $result as onedrive.listChildren
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -399,11 +402,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-onedrive.setCredentials $token
-set $result as onedrive.listChildren
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  onedrive.setCredentials $token
+enddo
+
+@desc "List children and iterate results"
+do
+  set $result as onedrive.listChildren
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createFolder
@@ -411,9 +421,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-onedrive.setCredentials $token
-set $result as onedrive.createFolder
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  onedrive.setCredentials $token
+enddo
+
+@desc "Create folder"
+do
+  set $result as onedrive.createFolder
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -421,14 +438,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-onedrive.setCredentials $token
-set $existing as onedrive.listChildren
-if $existing == null
-  onedrive.createFolder
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  onedrive.setCredentials $token
+enddo
+
+@desc "List children and create folder"
+do
+  set $existing as onedrive.listChildren
+  if $existing == null
+    onedrive.createFolder
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step OneDrive workflow
@@ -436,11 +460,18 @@ end
 Chain multiple onedrive operations together.
 
 ```robinpath
-onedrive.setCredentials $token
-set $r_listChildren as onedrive.listChildren
-set $r_getItem as onedrive.getItem
-set $r_getItemByPath as onedrive.getItemByPath
-print "All operations complete"
+@desc "Setup authentication"
+do
+  onedrive.setCredentials $token
+enddo
+
+@desc "List children, get item, and more"
+do
+  set $r_listChildren as onedrive.listChildren
+  set $r_getItem as onedrive.getItem
+  set $r_getItemByPath as onedrive.getItemByPath
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe listChildren with validation
@@ -448,13 +479,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-onedrive.setCredentials $token
-set $result as onedrive.listChildren
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  onedrive.setCredentials $token
+enddo
+
+@desc "List children and validate result"
+do
+  set $result as onedrive.listChildren
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

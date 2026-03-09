@@ -485,12 +485,15 @@ All functions throw on failure. Common errors:
 | `Digitalocean: "..." not configured. Call digitalocean.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as digitalocean.listDroplets
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List droplets and validate result"
+do
+  set $result as digitalocean.listDroplets
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -501,11 +504,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-digitalocean.setCredentials $token
-set $result as digitalocean.listDroplets
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  digitalocean.setCredentials $token
+enddo
+
+@desc "List droplets and iterate results"
+do
+  set $result as digitalocean.listDroplets
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createDroplet
@@ -513,9 +523,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-digitalocean.setCredentials $token
-set $result as digitalocean.createDroplet
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  digitalocean.setCredentials $token
+enddo
+
+@desc "Create droplet"
+do
+  set $result as digitalocean.createDroplet
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -523,14 +540,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-digitalocean.setCredentials $token
-set $existing as digitalocean.listDroplets
-if $existing == null
-  digitalocean.createDroplet
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  digitalocean.setCredentials $token
+enddo
+
+@desc "List droplets and create droplet"
+do
+  set $existing as digitalocean.listDroplets
+  if $existing == null
+    digitalocean.createDroplet
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step DigitalOcean workflow
@@ -538,11 +562,18 @@ end
 Chain multiple digitalocean operations together.
 
 ```robinpath
-digitalocean.setCredentials $token
-set $r_listDroplets as digitalocean.listDroplets
-set $r_getDroplet as digitalocean.getDroplet
-set $r_createDroplet as digitalocean.createDroplet
-print "All operations complete"
+@desc "Setup authentication"
+do
+  digitalocean.setCredentials $token
+enddo
+
+@desc "List droplets, get droplet, and more"
+do
+  set $r_listDroplets as digitalocean.listDroplets
+  set $r_getDroplet as digitalocean.getDroplet
+  set $r_createDroplet as digitalocean.createDroplet
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe listDroplets with validation
@@ -550,13 +581,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-digitalocean.setCredentials $token
-set $result as digitalocean.listDroplets
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  digitalocean.setCredentials $token
+enddo
+
+@desc "List droplets and validate result"
+do
+  set $result as digitalocean.listDroplets
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

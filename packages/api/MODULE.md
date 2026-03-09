@@ -286,12 +286,15 @@ All functions throw on failure. Common errors:
 | `Profile "..." not found. Create it first with api.createProfile.` | Check the error message for details |
 
 ```robinpath
-set $result as api.get "https://api.example.com/users"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get and validate result"
+do
+  set $result as api.get "https://api.example.com/users"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -302,11 +305,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-api.setAuth $token
-set $result as api.get "https://api.example.com/users"
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  api.setAuth $token
+enddo
+
+@desc "Get and iterate results"
+do
+  set $result as api.get "https://api.example.com/users"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with post
@@ -314,9 +324,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-api.setAuth $token
-set $result as api.post "https://api.example.com/users" {"name": "Alice", "email": "alice@example.com"}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  api.setAuth $token
+enddo
+
+@desc "Post"
+do
+  set $result as api.post "https://api.example.com/users" {"name": "Alice", "email": "alice@example.com"}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -324,14 +341,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-api.setAuth $token
-set $existing as api.get "https://api.example.com/users"
-if $existing == null
-  api.post "https://api.example.com/users" {"name": "Alice", "email": "alice@example.com"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  api.setAuth $token
+enddo
+
+@desc "Get and post"
+do
+  set $existing as api.get "https://api.example.com/users"
+  if $existing == null
+    api.post "https://api.example.com/users" {"name": "Alice", "email": "alice@example.com"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step API workflow
@@ -339,11 +363,18 @@ end
 Chain multiple api operations together.
 
 ```robinpath
-api.setAuth $token
-set $r_get as api.get "https://api.example.com/users"
-set $r_post as api.post "https://api.example.com/users" {"name": "Alice", "email": "alice@example.com"}
-set $r_put as api.put "https://api.example.com/users/1" {"name": "Bob"}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  api.setAuth $token
+enddo
+
+@desc "Get, post, and more"
+do
+  set $r_get as api.get "https://api.example.com/users"
+  set $r_post as api.post "https://api.example.com/users" {"name": "Alice", "email": "alice@example.com"}
+  set $r_put as api.put "https://api.example.com/users/1" {"name": "Bob"}
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe get with validation
@@ -351,13 +382,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-api.setAuth $token
-set $result as api.get "https://api.example.com/users"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  api.setAuth $token
+enddo
+
+@desc "Get and validate result"
+do
+  set $result as api.get "https://api.example.com/users"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

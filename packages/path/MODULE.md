@@ -223,12 +223,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as path.join "/usr" "local" "bin"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Join and validate result"
+do
+  set $result as path.join "/usr" "local" "bin"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -239,10 +242,13 @@ end
 Chain multiple path operations together.
 
 ```robinpath
-set $r_join as path.join "/usr" "local" "bin"
-set $r_resolve as path.resolve "src" "index.ts"
-set $r_dirname as path.dirname "/usr/local/bin/node"
-print "All operations complete"
+@desc "Join, resolve, and more"
+do
+  set $r_join as path.join "/usr" "local" "bin"
+  set $r_resolve as path.resolve "src" "index.ts"
+  set $r_dirname as path.dirname "/usr/local/bin/node"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe join with validation
@@ -250,12 +256,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as path.join "/usr" "local" "bin"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Join and validate result"
+do
+  set $result as path.join "/usr" "local" "bin"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

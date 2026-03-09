@@ -24,12 +24,7 @@
   "peerDependencies": {
     "@wiredwp/robinpath": ">=0.20.0"
   },
-  "dependencies": {
-    "docx": "^9.0.0",
-    "mammoth": "^1.8.0",
-    "exceljs": "^4.4.0",
-    "pptxgenjs": "^3.12.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@wiredwp/robinpath": "^0.30.1",
     "tsx": "^4.19.0",

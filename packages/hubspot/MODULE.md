@@ -272,12 +272,15 @@ All functions throw on failure. Common errors:
 | `hubspot.createDeal requires properties.` | Check the error message for details |
 
 ```robinpath
-set $result as hubspot.createContact {"email":"john@example.com","firstname":"John","lastname":"Doe"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create contact and validate result"
+do
+  set $result as hubspot.createContact {"email":"john@example.com","firstname":"John","lastname":"Doe"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -288,11 +291,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-hubspot.setToken $token
-set $result as hubspot.getContact "123"
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  hubspot.setToken $token
+enddo
+
+@desc "Get contact and iterate results"
+do
+  set $result as hubspot.getContact "123"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createContact
@@ -300,9 +310,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-hubspot.setToken $token
-set $result as hubspot.createContact {"email":"john@example.com","firstname":"John","lastname":"Doe"}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  hubspot.setToken $token
+enddo
+
+@desc "Create contact"
+do
+  set $result as hubspot.createContact {"email":"john@example.com","firstname":"John","lastname":"Doe"}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -310,10 +327,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-hubspot.setToken $token
-set $created as hubspot.createContact {"email":"john@example.com","firstname":"John","lastname":"Doe"}
-# Update the created item
-hubspot.updateContact "123" {"phone":"+1234567890"}
+@desc "Setup authentication"
+do
+  hubspot.setToken $token
+enddo
+
+@desc "Create contact and update contact"
+do
+  set $created as hubspot.createContact {"email":"john@example.com","firstname":"John","lastname":"Doe"}
+  # Update the created item
+  hubspot.updateContact "123" {"phone":"+1234567890"}
+enddo
 ```
 
 ### 4. Check before creating
@@ -321,14 +345,21 @@ hubspot.updateContact "123" {"phone":"+1234567890"}
 List existing items and only create if needed.
 
 ```robinpath
-hubspot.setToken $token
-set $existing as hubspot.getContact "123"
-if $existing == null
-  hubspot.createContact {"email":"john@example.com","firstname":"John","lastname":"Doe"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  hubspot.setToken $token
+enddo
+
+@desc "Get contact and create contact"
+do
+  set $existing as hubspot.getContact "123"
+  if $existing == null
+    hubspot.createContact {"email":"john@example.com","firstname":"John","lastname":"Doe"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step HubSpot workflow
@@ -336,11 +367,18 @@ end
 Chain multiple hubspot operations together.
 
 ```robinpath
-hubspot.setToken $token
-set $r_createContact as hubspot.createContact {"email":"john@example.com","firstname":"John","lastname":"Doe"}
-set $r_getContact as hubspot.getContact "123"
-set $r_updateContact as hubspot.updateContact "123" {"phone":"+1234567890"}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  hubspot.setToken $token
+enddo
+
+@desc "Create contact, get contact, and more"
+do
+  set $r_createContact as hubspot.createContact {"email":"john@example.com","firstname":"John","lastname":"Doe"}
+  set $r_getContact as hubspot.getContact "123"
+  set $r_updateContact as hubspot.updateContact "123" {"phone":"+1234567890"}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe createContact with validation
@@ -348,13 +386,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-hubspot.setToken $token
-set $result as hubspot.createContact {"email":"john@example.com","firstname":"John","lastname":"Doe"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  hubspot.setToken $token
+enddo
+
+@desc "Create contact and validate result"
+do
+  set $result as hubspot.createContact {"email":"john@example.com","firstname":"John","lastname":"Doe"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

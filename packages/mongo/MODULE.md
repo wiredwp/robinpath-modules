@@ -373,12 +373,15 @@ All functions throw on failure. Common errors:
 | `MongoDB connection "..." not found. Call mongo.connect first.` | Check the error message for details |
 
 ```robinpath
-set $result as mongo.find "users" {"age": {"$gt": 18}} {"limit": 10}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Find and validate result"
+do
+  set $result as mongo.find "users" {"age": {"$gt": 18}} {"limit": 10}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -398,9 +401,12 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-set $created as mongo.createIndex "users" {"email": 1} {"unique": true}
-# Update the created item
-mongo.updateOne "users" {"_id": "..."} {"name": "Bob"}
+@desc "Create index and update one"
+do
+  set $created as mongo.createIndex "users" {"email": 1} {"unique": true}
+  # Update the created item
+  mongo.updateOne "users" {"_id": "..."} {"name": "Bob"}
+enddo
 ```
 
 ### 3. Multi-step Mongo workflow
@@ -408,10 +414,13 @@ mongo.updateOne "users" {"_id": "..."} {"name": "Bob"}
 Chain multiple mongo operations together.
 
 ```robinpath
-set $r_connect as mongo.connect {"uri": "mongodb://localhost:27017", "database": "mydb"}
-set $r_find as mongo.find "users" {"age": {"$gt": 18}} {"limit": 10}
-set $r_findOne as mongo.findOne "users" {"email": "alice@example.com"}
-print "All operations complete"
+@desc "Connect, find, and more"
+do
+  set $r_connect as mongo.connect {"uri": "mongodb://localhost:27017", "database": "mydb"}
+  set $r_find as mongo.find "users" {"age": {"$gt": 18}} {"limit": 10}
+  set $r_findOne as mongo.findOne "users" {"email": "alice@example.com"}
+  print "All operations complete"
+enddo
 ```
 
 ### 4. Safe connect with validation
@@ -419,12 +428,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as mongo.connect {"uri": "mongodb://localhost:27017", "database": "mydb"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Connect and validate result"
+do
+  set $result as mongo.connect {"uri": "mongodb://localhost:27017", "database": "mydb"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

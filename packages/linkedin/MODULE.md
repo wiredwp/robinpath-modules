@@ -418,12 +418,15 @@ All functions throw on failure. Common errors:
 | `Post text is required` | Check the error message for details |
 
 ```robinpath
-set $result as linkedin.getProfile
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get profile and validate result"
+do
+  set $result as linkedin.getProfile
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -434,11 +437,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-linkedin.setToken $token
-set $result as linkedin.getProfile
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  linkedin.setToken $token
+enddo
+
+@desc "Get profile and iterate results"
+do
+  set $result as linkedin.getProfile
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createPost
@@ -446,9 +456,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-linkedin.setToken $token
-set $result as linkedin.createPost "urn:li:person:abc123" "Hello LinkedIn!" {"visibility": "PUBLIC"}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  linkedin.setToken $token
+enddo
+
+@desc "Create post"
+do
+  set $result as linkedin.createPost "urn:li:person:abc123" "Hello LinkedIn!" {"visibility": "PUBLIC"}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -456,14 +473,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-linkedin.setToken $token
-set $existing as linkedin.getProfile
-if $existing == null
-  linkedin.createPost "urn:li:person:abc123" "Hello LinkedIn!" {"visibility": "PUBLIC"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  linkedin.setToken $token
+enddo
+
+@desc "Get profile and create post"
+do
+  set $existing as linkedin.getProfile
+  if $existing == null
+    linkedin.createPost "urn:li:person:abc123" "Hello LinkedIn!" {"visibility": "PUBLIC"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step LinkedIn workflow
@@ -471,11 +495,18 @@ end
 Chain multiple linkedin operations together.
 
 ```robinpath
-linkedin.setToken $token
-set $r_getProfile as linkedin.getProfile
-set $r_getOrganization as linkedin.getOrganization "12345678"
-set $r_createPost as linkedin.createPost "urn:li:person:abc123" "Hello LinkedIn!" {"visibility": "PUBLIC"}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  linkedin.setToken $token
+enddo
+
+@desc "Get profile, get organization, and more"
+do
+  set $r_getProfile as linkedin.getProfile
+  set $r_getOrganization as linkedin.getOrganization "12345678"
+  set $r_createPost as linkedin.createPost "urn:li:person:abc123" "Hello LinkedIn!" {"visibility": "PUBLIC"}
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe getProfile with validation
@@ -483,13 +514,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-linkedin.setToken $token
-set $result as linkedin.getProfile
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  linkedin.setToken $token
+enddo
+
+@desc "Get profile and validate result"
+do
+  set $result as linkedin.getProfile
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

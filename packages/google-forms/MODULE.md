@@ -281,12 +281,15 @@ All functions throw on failure. Common errors:
 | `GoogleForms: "..." not configured. Call google-forms.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as google-forms.getForm
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Validate result"
+do
+  set $result as google-forms.getForm
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -297,11 +300,14 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-google-forms.setCredentials $token
-set $result as google-forms.getForm
-each $item in $result
-  print $item
-end
+@desc "Iterate results"
+do
+  google-forms.setCredentials $token
+  set $result as google-forms.getForm
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createForm
@@ -309,9 +315,12 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-google-forms.setCredentials $token
-set $result as google-forms.createForm
-print "Created: " + $result
+@desc "Execute operation"
+do
+  google-forms.setCredentials $token
+  set $result as google-forms.createForm
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -319,10 +328,13 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-google-forms.setCredentials $token
-set $created as google-forms.createForm
-# Update the created item
-google-forms.updateForm
+@desc "Execute operation"
+do
+  google-forms.setCredentials $token
+  set $created as google-forms.createForm
+  # Update the created item
+  google-forms.updateForm
+enddo
 ```
 
 ### 4. Check before creating
@@ -330,14 +342,17 @@ google-forms.updateForm
 List existing items and only create if needed.
 
 ```robinpath
-google-forms.setCredentials $token
-set $existing as google-forms.getForm
-if $existing == null
-  google-forms.createForm
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Validate result"
+do
+  google-forms.setCredentials $token
+  set $existing as google-forms.getForm
+  if $existing == null
+    google-forms.createForm
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Google Forms workflow
@@ -345,11 +360,14 @@ end
 Chain multiple google-forms operations together.
 
 ```robinpath
-google-forms.setCredentials $token
-set $r_getForm as google-forms.getForm
-set $r_createForm as google-forms.createForm
-set $r_updateForm as google-forms.updateForm
-print "All operations complete"
+@desc "Execute operation"
+do
+  google-forms.setCredentials $token
+  set $r_getForm as google-forms.getForm
+  set $r_createForm as google-forms.createForm
+  set $r_updateForm as google-forms.updateForm
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe getForm with validation
@@ -357,13 +375,16 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-google-forms.setCredentials $token
-set $result as google-forms.getForm
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Validate result"
+do
+  google-forms.setCredentials $token
+  set $result as google-forms.getForm
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

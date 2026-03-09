@@ -591,12 +591,15 @@ All functions throw on failure. Common errors:
 | `domain is required` | Check the error message for details |
 
 ```robinpath
-set $result as vercel.listProjects {"limit": 20, "search": "my-app"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List projects and validate result"
+do
+  set $result as vercel.listProjects {"limit": 20, "search": "my-app"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -607,11 +610,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-vercel.setToken $token
-set $result as vercel.listProjects {"limit": 20, "search": "my-app"}
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  vercel.setToken $token
+enddo
+
+@desc "List projects and iterate results"
+do
+  set $result as vercel.listProjects {"limit": 20, "search": "my-app"}
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createProject
@@ -619,9 +629,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-vercel.setToken $token
-set $result as vercel.createProject "my-app" {"framework": "nextjs"}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  vercel.setToken $token
+enddo
+
+@desc "Create project"
+do
+  set $result as vercel.createProject "my-app" {"framework": "nextjs"}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -629,10 +646,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-vercel.setToken $token
-set $created as vercel.createProject "my-app" {"framework": "nextjs"}
-# Update the created item
-vercel.updateProject "my-project" {"buildCommand": "npm run build"}
+@desc "Setup authentication"
+do
+  vercel.setToken $token
+enddo
+
+@desc "Create project and update project"
+do
+  set $created as vercel.createProject "my-app" {"framework": "nextjs"}
+  # Update the created item
+  vercel.updateProject "my-project" {"buildCommand": "npm run build"}
+enddo
 ```
 
 ### 4. Check before creating
@@ -640,14 +664,21 @@ vercel.updateProject "my-project" {"buildCommand": "npm run build"}
 List existing items and only create if needed.
 
 ```robinpath
-vercel.setToken $token
-set $existing as vercel.listProjects {"limit": 20, "search": "my-app"}
-if $existing == null
-  vercel.createProject "my-app" {"framework": "nextjs"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  vercel.setToken $token
+enddo
+
+@desc "List projects and create project"
+do
+  set $existing as vercel.listProjects {"limit": 20, "search": "my-app"}
+  if $existing == null
+    vercel.createProject "my-app" {"framework": "nextjs"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Vercel workflow
@@ -655,11 +686,18 @@ end
 Chain multiple vercel operations together.
 
 ```robinpath
-vercel.setToken $token
-set $r_listProjects as vercel.listProjects {"limit": 20, "search": "my-app"}
-set $r_getProject as vercel.getProject "my-project"
-set $r_createProject as vercel.createProject "my-app" {"framework": "nextjs"}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  vercel.setToken $token
+enddo
+
+@desc "List projects, get project, and more"
+do
+  set $r_listProjects as vercel.listProjects {"limit": 20, "search": "my-app"}
+  set $r_getProject as vercel.getProject "my-project"
+  set $r_createProject as vercel.createProject "my-app" {"framework": "nextjs"}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listProjects with validation
@@ -667,13 +705,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-vercel.setToken $token
-set $result as vercel.listProjects {"limit": 20, "search": "my-app"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  vercel.setToken $token
+enddo
+
+@desc "List projects and validate result"
+do
+  set $result as vercel.listProjects {"limit": 20, "search": "my-app"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

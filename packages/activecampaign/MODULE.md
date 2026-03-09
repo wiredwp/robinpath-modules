@@ -723,11 +723,18 @@ All API functions throw on failure. Wrap calls in a `try/catch` or use `if` guar
 | `Activecampaign API error (422)` | Validation error (missing required fields) | Check required fields in the data object |
 
 ```robinpath
-activecampaign.setCredentials $account $token
-set $result as activecampaign.getContact "99999"
-if $result.contact == null
-  print "Contact not found"
-end
+@desc "Setup authentication"
+do
+  activecampaign.setCredentials $account $token
+enddo
+
+@desc "Get contact and validate result"
+do
+  set $result as activecampaign.getContact "99999"
+  if $result.contact == null
+    print "Contact not found"
+  end
+enddo
 ```
 
 
@@ -738,11 +745,18 @@ end
 Create a contact and immediately add them to a marketing automation workflow.
 
 ```robinpath
-activecampaign.setCredentials "myaccount" "tok_abc123"
-set $result as activecampaign.createContact {"email": "newuser@example.com", "firstName": "Alex"}
-set $contactId as $result.contact.id
-activecampaign.addContactToAutomation {"contact": $contactId, "automation": "1"}
-print "Enrolled contact " + $contactId + " into Welcome Series"
+@desc "Setup authentication"
+do
+  activecampaign.setCredentials "myaccount" "tok_abc123"
+enddo
+
+@desc "Create contact and add contact to automation"
+do
+  set $result as activecampaign.createContact {"email": "newuser@example.com", "firstName": "Alex"}
+  set $contactId as $result.contact.id
+  activecampaign.addContactToAutomation {"contact": $contactId, "automation": "1"}
+  print "Enrolled contact " + $contactId + " into Welcome Series"
+enddo
 ```
 
 ### 2. Tag and segment contacts into a list
@@ -750,10 +764,17 @@ print "Enrolled contact " + $contactId + " into Welcome Series"
 Add a VIP tag to a contact and subscribe them to a premium mailing list.
 
 ```robinpath
-activecampaign.setCredentials $account $token
-set $tagResult as activecampaign.addTagToContact {"contact": "123", "tag": "5"}
-activecampaign.addContactToList {"list": "2", "contact": "123", "status": "1"}
-print "Contact 123 tagged as VIP and added to premium list"
+@desc "Setup authentication"
+do
+  activecampaign.setCredentials $account $token
+enddo
+
+@desc "Add tag to contact and add contact to list"
+do
+  set $tagResult as activecampaign.addTagToContact {"contact": "123", "tag": "5"}
+  activecampaign.addContactToList {"list": "2", "contact": "123", "status": "1"}
+  print "Contact 123 tagged as VIP and added to premium list"
+enddo
 ```
 
 ### 3. Bulk-create contacts from a data source
@@ -761,12 +782,19 @@ print "Contact 123 tagged as VIP and added to premium list"
 Loop through a list of leads and create contacts for each one.
 
 ```robinpath
-activecampaign.setCredentials $account $token
-set $leads as [{"email": "a@test.com", "firstName": "Alice"}, {"email": "b@test.com", "firstName": "Bob"}, {"email": "c@test.com", "firstName": "Carol"}]
-each $lead in $leads
-  set $result as activecampaign.createContact $lead
-  print "Created: " + $result.contact.email + " (ID: " + $result.contact.id + ")"
-end
+@desc "Setup authentication"
+do
+  activecampaign.setCredentials $account $token
+enddo
+
+@desc "Create contact and iterate results"
+do
+  set $leads as [{"email": "a@test.com", "firstName": "Alice"}, {"email": "b@test.com", "firstName": "Bob"}, {"email": "c@test.com", "firstName": "Carol"}]
+  each $lead in $leads
+    set $result as activecampaign.createContact $lead
+    print "Created: " + $result.contact.email + " (ID: " + $result.contact.id + ")"
+  end
+enddo
 ```
 
 ### 4. Create a deal linked to a contact
@@ -774,10 +802,17 @@ end
 Create a contact and then open a sales deal tied to them.
 
 ```robinpath
-activecampaign.setCredentials $account $token
-set $contact as activecampaign.createContact {"email": "buyer@corp.com", "firstName": "Dana", "lastName": "Smith"}
-set $deal as activecampaign.createDeal {"title": "Dana Smith - Annual Plan", "value": 12000, "currency": "usd", "contact": $contact.contact.id}
-print "Deal created: " + $deal.deal.title + " ($" + $deal.deal.value + ")"
+@desc "Setup authentication"
+do
+  activecampaign.setCredentials $account $token
+enddo
+
+@desc "Create contact and create deal"
+do
+  set $contact as activecampaign.createContact {"email": "buyer@corp.com", "firstName": "Dana", "lastName": "Smith"}
+  set $deal as activecampaign.createDeal {"title": "Dana Smith - Annual Plan", "value": 12000, "currency": "usd", "contact": $contact.contact.id}
+  print "Deal created: " + $deal.deal.title + " ($" + $deal.deal.value + ")"
+enddo
 ```
 
 ### 5. Move a deal through pipeline stages
@@ -785,14 +820,21 @@ print "Deal created: " + $deal.deal.title + " ($" + $deal.deal.value + ")"
 Update a deal's stage and value as it progresses.
 
 ```robinpath
-activecampaign.setCredentials $account $token
-set $deals as activecampaign.listDeals
-each $deal in $deals.deals
-  if $deal.stage == "1"
-    activecampaign.updateDeal $deal.id {"stage": "2", "value": 25000}
-    print "Advanced deal: " + $deal.title
+@desc "Setup authentication"
+do
+  activecampaign.setCredentials $account $token
+enddo
+
+@desc "List deals and update deal"
+do
+  set $deals as activecampaign.listDeals
+  each $deal in $deals.deals
+    if $deal.stage == "1"
+      activecampaign.updateDeal $deal.id {"stage": "2", "value": 25000}
+      print "Advanced deal: " + $deal.title
+    end
   end
-end
+enddo
 ```
 
 ### 6. Build a contact report with tags
@@ -800,12 +842,23 @@ end
 List all contacts and display their information.
 
 ```robinpath
-activecampaign.setCredentials $account $token
-set $result as activecampaign.listContacts
-each $contact in $result.contacts
-  print $contact.firstName + " " + $contact.lastName + " <" + $contact.email + "> (ID: " + $contact.id + ")"
-end
-print "Total contacts: " + $result.meta.total
+@desc "Setup authentication"
+do
+  activecampaign.setCredentials $account $token
+enddo
+
+@desc "List contacts and iterate results"
+do
+  set $result as activecampaign.listContacts
+  each $contact in $result.contacts
+    print $contact.firstName + " " + $contact.lastName + " <" + $contact.email + "> (ID: " + $contact.id + ")"
+  end
+enddo
+
+@desc "Output result"
+do
+  print "Total contacts: " + $result.meta.total
+enddo
 ```
 
 ### 7. Create a tag, then apply it to multiple contacts
@@ -813,14 +866,21 @@ print "Total contacts: " + $result.meta.total
 Create a new campaign tag and assign it to a list of contact IDs.
 
 ```robinpath
-activecampaign.setCredentials $account $token
-set $tag as activecampaign.createTag {"tag": "Summer-Sale-2024", "tagType": "contact"}
-set $tagId as $tag.tag.id
-set $contactIds as ["10", "22", "35", "48"]
-each $id in $contactIds
-  activecampaign.addTagToContact {"contact": $id, "tag": $tagId}
-  print "Tagged contact " + $id
-end
+@desc "Setup authentication"
+do
+  activecampaign.setCredentials $account $token
+enddo
+
+@desc "Create tag and add tag to contact"
+do
+  set $tag as activecampaign.createTag {"tag": "Summer-Sale-2024", "tagType": "contact"}
+  set $tagId as $tag.tag.id
+  set $contactIds as ["10", "22", "35", "48"]
+  each $id in $contactIds
+    activecampaign.addTagToContact {"contact": $id, "tag": $tagId}
+    print "Tagged contact " + $id
+  end
+enddo
 ```
 
 ### 8. Full lead onboarding workflow
@@ -828,26 +888,42 @@ end
 Complete workflow: create contact, add to list, apply tag, enroll in automation, and open a deal.
 
 ```robinpath
-activecampaign.setCredentials $account $token
+@desc "Setup authentication"
+do
+  activecampaign.setCredentials $account $token
+enddo
 
-# Step 1: Create the contact
-set $contact as activecampaign.createContact {"email": $leadEmail, "firstName": $leadName, "phone": $leadPhone}
-set $cid as $contact.contact.id
-print "Created contact: " + $cid
+@desc "Step 1: Create the contact"
+do
+  set $contact as activecampaign.createContact {"email": $leadEmail, "firstName": $leadName, "phone": $leadPhone}
+  set $cid as $contact.contact.id
+  print "Created contact: " + $cid
+enddo
 
-# Step 2: Subscribe to mailing list
-activecampaign.addContactToList {"list": "1", "contact": $cid, "status": "1"}
+@desc "Step 2: Subscribe to mailing list"
+do
+  activecampaign.addContactToList {"list": "1", "contact": $cid, "status": "1"}
+enddo
 
-# Step 3: Apply lead source tag
-activecampaign.addTagToContact {"contact": $cid, "tag": "3"}
+@desc "Step 3: Apply lead source tag"
+do
+  activecampaign.addTagToContact {"contact": $cid, "tag": "3"}
+enddo
 
-# Step 4: Enroll in welcome automation
-activecampaign.addContactToAutomation {"contact": $cid, "automation": "1"}
+@desc "Step 4: Enroll in welcome automation"
+do
+  activecampaign.addContactToAutomation {"contact": $cid, "automation": "1"}
+enddo
 
-# Step 5: Open a deal
-activecampaign.createDeal {"title": $leadName + " - New Lead", "value": 5000, "currency": "usd", "contact": $cid}
+@desc "Step 5: Open a deal"
+do
+  activecampaign.createDeal {"title": $leadName + " - New Lead", "value": 5000, "currency": "usd", "contact": $cid}
+enddo
 
-print "Lead onboarding complete for " + $leadEmail
+@desc "Output result"
+do
+  print "Lead onboarding complete for " + $leadEmail
+enddo
 ```
 
 

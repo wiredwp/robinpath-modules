@@ -263,12 +263,15 @@ All functions throw on failure. Common errors:
 | `Transport "..." not found.` | Check the error message for details |
 
 ```robinpath
-set $result as email.createTransport "gmail" {"service": "gmail", "user": "me@gmail.com", "pass": "app-password"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create transport and validate result"
+do
+  set $result as email.createTransport "gmail" {"service": "gmail", "user": "me@gmail.com", "pass": "app-password"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -279,10 +282,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as email.getTestUrl $messageId
-each $item in $result
-  print $item
-end
+@desc "Get test url and iterate results"
+do
+  set $result as email.getTestUrl $messageId
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createTransport
@@ -299,13 +305,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as email.getTestUrl $messageId
-if $existing == null
-  email.createTransport "gmail" {"service": "gmail", "user": "me@gmail.com", "pass": "app-password"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Get test url and create transport"
+do
+  set $existing as email.getTestUrl $messageId
+  if $existing == null
+    email.createTransport "gmail" {"service": "gmail", "user": "me@gmail.com", "pass": "app-password"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Email workflow
@@ -313,10 +322,13 @@ end
 Chain multiple email operations together.
 
 ```robinpath
-set $r_createTransport as email.createTransport "gmail" {"service": "gmail", "user": "me@gmail.com", "pass": "app-password"}
-set $r_send as email.send "gmail" {"to": "bob@example.com", "subject": "Hello", "text": "Hi there"}
-set $r_sendQuick as email.sendQuick "gmail" "bob@example.com" "Hello" "Hi Bob!"
-print "All operations complete"
+@desc "Create transport, send, and more"
+do
+  set $r_createTransport as email.createTransport "gmail" {"service": "gmail", "user": "me@gmail.com", "pass": "app-password"}
+  set $r_send as email.send "gmail" {"to": "bob@example.com", "subject": "Hello", "text": "Hi there"}
+  set $r_sendQuick as email.sendQuick "gmail" "bob@example.com" "Hello" "Hi Bob!"
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe createTransport with validation
@@ -324,12 +336,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as email.createTransport "gmail" {"service": "gmail", "user": "me@gmail.com", "pass": "app-password"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create transport and validate result"
+do
+  set $result as email.createTransport "gmail" {"service": "gmail", "user": "me@gmail.com", "pass": "app-password"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

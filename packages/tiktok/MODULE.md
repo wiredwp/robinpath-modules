@@ -347,12 +347,15 @@ All functions throw on failure. Common errors:
 | `Tiktok: "..." not configured. Call tiktok.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as tiktok.getUserInfo
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get user info and validate result"
+do
+  set $result as tiktok.getUserInfo
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -363,11 +366,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-tiktok.setCredentials $token
-set $result as tiktok.getUserInfo
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  tiktok.setCredentials $token
+enddo
+
+@desc "Get user info and iterate results"
+do
+  set $result as tiktok.getUserInfo
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step TikTok workflow
@@ -375,11 +385,18 @@ end
 Chain multiple tiktok operations together.
 
 ```robinpath
-tiktok.setCredentials $token
-set $r_getUserInfo as tiktok.getUserInfo
-set $r_listVideos as tiktok.listVideos
-set $r_getVideoById as tiktok.getVideoById
-print "All operations complete"
+@desc "Setup authentication"
+do
+  tiktok.setCredentials $token
+enddo
+
+@desc "Get user info, list videos, and more"
+do
+  set $r_getUserInfo as tiktok.getUserInfo
+  set $r_listVideos as tiktok.listVideos
+  set $r_getVideoById as tiktok.getVideoById
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe getUserInfo with validation
@@ -387,13 +404,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-tiktok.setCredentials $token
-set $result as tiktok.getUserInfo
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  tiktok.setCredentials $token
+enddo
+
+@desc "Get user info and validate result"
+do
+  set $result as tiktok.getUserInfo
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -41,6 +41,8 @@
     "category": "web",
     "type": "utility",
     "auth": "none",
-    "functionCount": 20
+    "functionCount": 20,
+    "runtime": "node",
+    "runtimeReason": "Requires Puppeteer (native binary — Chromium download)"
   }
 }

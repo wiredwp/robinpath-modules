@@ -273,12 +273,15 @@ All functions throw on failure. Common errors:
 | `trello.createCard requires listId and name.` | Check the error message for details |
 
 ```robinpath
-set $result as trello.listBoards
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List boards and validate result"
+do
+  set $result as trello.listBoards
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -289,11 +292,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-trello.setCredentials $token
-set $result as trello.listBoards
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  trello.setCredentials $token
+enddo
+
+@desc "List boards and iterate results"
+do
+  set $result as trello.listBoards
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createList
@@ -301,9 +311,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-trello.setCredentials $token
-set $result as trello.createList "board-id" "Done"
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  trello.setCredentials $token
+enddo
+
+@desc "Create list"
+do
+  set $result as trello.createList "board-id" "Done"
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -311,10 +328,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-trello.setCredentials $token
-set $created as trello.createList "board-id" "Done"
-# Update the created item
-trello.updateCard "card-id" {"name":"Updated Title","closed":false}
+@desc "Setup authentication"
+do
+  trello.setCredentials $token
+enddo
+
+@desc "Create list and update card"
+do
+  set $created as trello.createList "board-id" "Done"
+  # Update the created item
+  trello.updateCard "card-id" {"name":"Updated Title","closed":false}
+enddo
 ```
 
 ### 4. Check before creating
@@ -322,14 +346,21 @@ trello.updateCard "card-id" {"name":"Updated Title","closed":false}
 List existing items and only create if needed.
 
 ```robinpath
-trello.setCredentials $token
-set $existing as trello.listBoards
-if $existing == null
-  trello.createList "board-id" "Done"
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  trello.setCredentials $token
+enddo
+
+@desc "List boards and create list"
+do
+  set $existing as trello.listBoards
+  if $existing == null
+    trello.createList "board-id" "Done"
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Trello workflow
@@ -337,11 +368,18 @@ end
 Chain multiple trello operations together.
 
 ```robinpath
-trello.setCredentials $token
-set $r_listBoards as trello.listBoards
-set $r_getBoard as trello.getBoard "board-id"
-set $r_listLists as trello.listLists "board-id"
-print "All operations complete"
+@desc "Setup authentication"
+do
+  trello.setCredentials $token
+enddo
+
+@desc "List boards, get board, and more"
+do
+  set $r_listBoards as trello.listBoards
+  set $r_getBoard as trello.getBoard "board-id"
+  set $r_listLists as trello.listLists "board-id"
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listBoards with validation
@@ -349,13 +387,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-trello.setCredentials $token
-set $result as trello.listBoards
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  trello.setCredentials $token
+enddo
+
+@desc "List boards and validate result"
+do
+  set $result as trello.listBoards
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

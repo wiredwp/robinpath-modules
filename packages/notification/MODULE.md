@@ -200,12 +200,15 @@ All functions throw on failure. Common errors:
 | `Teams webhook URL is required` | Check the error message for details |
 
 ```robinpath
-set $result as notification.slack $webhookUrl "Deploy complete!"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Slack and validate result"
+do
+  set $result as notification.slack $webhookUrl "Deploy complete!"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -225,10 +228,13 @@ print "Created: " + $result
 Chain multiple notification operations together.
 
 ```robinpath
-set $r_slack as notification.slack $webhookUrl "Deploy complete!"
-set $r_slackRich as notification.slackRich $url {"title": "Deploy", "text": "v1.2.3 deployed"}
-set $r_discord as notification.discord $webhookUrl "Build passed!"
-print "All operations complete"
+@desc "Slack, slack rich, and more"
+do
+  set $r_slack as notification.slack $webhookUrl "Deploy complete!"
+  set $r_slackRich as notification.slackRich $url {"title": "Deploy", "text": "v1.2.3 deployed"}
+  set $r_discord as notification.discord $webhookUrl "Build passed!"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe slack with validation
@@ -236,12 +242,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as notification.slack $webhookUrl "Deploy complete!"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Slack and validate result"
+do
+  set $result as notification.slack $webhookUrl "Deploy complete!"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

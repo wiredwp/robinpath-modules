@@ -313,12 +313,15 @@ All functions throw on failure. Common errors:
 | `GoogleAnalytics: "..." not configured. Call google-analytics.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as google-analytics.runReport
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Validate result"
+do
+  set $result as google-analytics.runReport
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -329,11 +332,14 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-google-analytics.setCredentials $token
-set $result as google-analytics.getMetadata
-each $item in $result
-  print $item
-end
+@desc "Iterate results"
+do
+  google-analytics.setCredentials $token
+  set $result as google-analytics.getMetadata
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Google Analytics workflow
@@ -341,11 +347,14 @@ end
 Chain multiple google-analytics operations together.
 
 ```robinpath
-google-analytics.setCredentials $token
-set $r_runReport as google-analytics.runReport
-set $r_runRealtimeReport as google-analytics.runRealtimeReport
-set $r_batchRunReports as google-analytics.batchRunReports
-print "All operations complete"
+@desc "Execute operation"
+do
+  google-analytics.setCredentials $token
+  set $r_runReport as google-analytics.runReport
+  set $r_runRealtimeReport as google-analytics.runRealtimeReport
+  set $r_batchRunReports as google-analytics.batchRunReports
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe runReport with validation
@@ -353,13 +362,16 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-google-analytics.setCredentials $token
-set $result as google-analytics.runReport
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Validate result"
+do
+  google-analytics.setCredentials $token
+  set $result as google-analytics.runReport
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

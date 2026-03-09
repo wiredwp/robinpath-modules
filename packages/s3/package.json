@@ -1,6 +1,6 @@
 {
   "name": "@robinpath/s3",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "publishConfig": {
     "access": "public"
   },
@@ -20,10 +20,7 @@
     "build": "tsc",
     "test": "node --import tsx --test tests/*.test.ts"
   },
-  "dependencies": {
-    "@aws-sdk/client-s3": "^3.500.0",
-    "@aws-sdk/s3-request-presigner": "^3.500.0"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "@wiredwp/robinpath": ">=0.20.0"
   },
@@ -32,7 +29,7 @@
     "tsx": "^4.19.0",
     "typescript": "^5.6.0"
   },
-  "description": "S3-compatible object storage operations using AWS SDK",
+  "description": "S3-compatible object storage operations using AWS Signature V4 over HTTPS",
   "keywords": [
     "s3",
     "cloud storage"

@@ -408,12 +408,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as encode.base64Encode
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Base64 encode and validate result"
+do
+  set $result as encode.base64Encode
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -424,10 +427,13 @@ end
 Chain multiple encode operations together.
 
 ```robinpath
-set $r_base64Encode as encode.base64Encode
-set $r_base64Decode as encode.base64Decode
-set $r_base64UrlEncode as encode.base64UrlEncode
-print "All operations complete"
+@desc "Base64 encode, base64 decode, and more"
+do
+  set $r_base64Encode as encode.base64Encode
+  set $r_base64Decode as encode.base64Decode
+  set $r_base64UrlEncode as encode.base64UrlEncode
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe base64Encode with validation
@@ -435,12 +441,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as encode.base64Encode
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Base64 encode and validate result"
+do
+  set $result as encode.base64Encode
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

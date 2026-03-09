@@ -385,12 +385,15 @@ All functions throw on failure. Common errors:
 | `box.lockFile requires an ID.` | Check the error message for details |
 
 ```robinpath
-set $result as box.listFolderItems
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List folder items and validate result"
+do
+  set $result as box.listFolderItems
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -401,11 +404,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-box.setCredentials $token
-set $result as box.listFolderItems
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  box.setCredentials $token
+enddo
+
+@desc "List folder items and iterate results"
+do
+  set $result as box.listFolderItems
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createFolder
@@ -413,9 +423,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-box.setCredentials $token
-set $result as box.createFolder
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  box.setCredentials $token
+enddo
+
+@desc "Create folder"
+do
+  set $result as box.createFolder
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -423,10 +440,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-box.setCredentials $token
-set $created as box.createFolder
-# Update the created item
-box.updateFileInfo
+@desc "Setup authentication"
+do
+  box.setCredentials $token
+enddo
+
+@desc "Create folder and update file info"
+do
+  set $created as box.createFolder
+  # Update the created item
+  box.updateFileInfo
+enddo
 ```
 
 ### 4. Check before creating
@@ -434,14 +458,21 @@ box.updateFileInfo
 List existing items and only create if needed.
 
 ```robinpath
-box.setCredentials $token
-set $existing as box.listFolderItems
-if $existing == null
-  box.createFolder
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  box.setCredentials $token
+enddo
+
+@desc "List folder items and create folder"
+do
+  set $existing as box.listFolderItems
+  if $existing == null
+    box.createFolder
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Box workflow
@@ -449,11 +480,18 @@ end
 Chain multiple box operations together.
 
 ```robinpath
-box.setCredentials $token
-set $r_listFolderItems as box.listFolderItems
-set $r_getFolderInfo as box.getFolderInfo
-set $r_createFolder as box.createFolder
-print "All operations complete"
+@desc "Setup authentication"
+do
+  box.setCredentials $token
+enddo
+
+@desc "List folder items, get folder info, and more"
+do
+  set $r_listFolderItems as box.listFolderItems
+  set $r_getFolderInfo as box.getFolderInfo
+  set $r_createFolder as box.createFolder
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listFolderItems with validation
@@ -461,13 +499,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-box.setCredentials $token
-set $result as box.listFolderItems
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  box.setCredentials $token
+enddo
+
+@desc "List folder items and validate result"
+do
+  set $result as box.listFolderItems
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

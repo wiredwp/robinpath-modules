@@ -291,12 +291,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as barcode.qrGenerate "https://example.com"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Qr generate and validate result"
+do
+  set $result as barcode.qrGenerate "https://example.com"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -307,10 +310,13 @@ end
 Chain multiple barcode operations together.
 
 ```robinpath
-set $r_qrGenerate as barcode.qrGenerate "https://example.com"
-set $r_qrToFile as barcode.qrToFile "https://example.com" "./qr.png"
-set $r_qrToSvg as barcode.qrToSvg "hello"
-print "All operations complete"
+@desc "Qr generate, qr to file, and more"
+do
+  set $r_qrGenerate as barcode.qrGenerate "https://example.com"
+  set $r_qrToFile as barcode.qrToFile "https://example.com" "./qr.png"
+  set $r_qrToSvg as barcode.qrToSvg "hello"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe qrGenerate with validation
@@ -318,12 +324,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as barcode.qrGenerate "https://example.com"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Qr generate and validate result"
+do
+  set $result as barcode.qrGenerate "https://example.com"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

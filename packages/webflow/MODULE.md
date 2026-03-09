@@ -385,12 +385,15 @@ All functions throw on failure. Common errors:
 | `Webflow: "..." not configured. Call webflow.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as webflow.listSites
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List sites and validate result"
+do
+  set $result as webflow.listSites
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -401,11 +404,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-webflow.setCredentials $token
-set $result as webflow.listSites
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  webflow.setCredentials $token
+enddo
+
+@desc "List sites and iterate results"
+do
+  set $result as webflow.listSites
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createCollectionItem
@@ -413,9 +423,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-webflow.setCredentials $token
-set $result as webflow.createCollectionItem
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  webflow.setCredentials $token
+enddo
+
+@desc "Create collection item"
+do
+  set $result as webflow.createCollectionItem
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -423,10 +440,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-webflow.setCredentials $token
-set $created as webflow.createCollectionItem
-# Update the created item
-webflow.updateCollectionItem
+@desc "Setup authentication"
+do
+  webflow.setCredentials $token
+enddo
+
+@desc "Create collection item and update collection item"
+do
+  set $created as webflow.createCollectionItem
+  # Update the created item
+  webflow.updateCollectionItem
+enddo
 ```
 
 ### 4. Check before creating
@@ -434,14 +458,21 @@ webflow.updateCollectionItem
 List existing items and only create if needed.
 
 ```robinpath
-webflow.setCredentials $token
-set $existing as webflow.listSites
-if $existing == null
-  webflow.createCollectionItem
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  webflow.setCredentials $token
+enddo
+
+@desc "List sites and create collection item"
+do
+  set $existing as webflow.listSites
+  if $existing == null
+    webflow.createCollectionItem
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Webflow workflow
@@ -449,11 +480,18 @@ end
 Chain multiple webflow operations together.
 
 ```robinpath
-webflow.setCredentials $token
-set $r_listSites as webflow.listSites
-set $r_getSite as webflow.getSite
-set $r_publishSite as webflow.publishSite
-print "All operations complete"
+@desc "Setup authentication"
+do
+  webflow.setCredentials $token
+enddo
+
+@desc "List sites, get site, and more"
+do
+  set $r_listSites as webflow.listSites
+  set $r_getSite as webflow.getSite
+  set $r_publishSite as webflow.publishSite
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listSites with validation
@@ -461,13 +499,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-webflow.setCredentials $token
-set $result as webflow.listSites
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  webflow.setCredentials $token
+enddo
+
+@desc "List sites and validate result"
+do
+  set $result as webflow.listSites
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

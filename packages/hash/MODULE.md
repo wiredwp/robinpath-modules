@@ -342,12 +342,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as hash.md5
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Md5 and validate result"
+do
+  set $result as hash.md5
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -358,10 +361,13 @@ end
 Chain multiple hash operations together.
 
 ```robinpath
-set $r_md5 as hash.md5
-set $r_sha1 as hash.sha1
-set $r_sha256 as hash.sha256
-print "All operations complete"
+@desc "Md5, sha1, and more"
+do
+  set $r_md5 as hash.md5
+  set $r_sha1 as hash.sha1
+  set $r_sha256 as hash.sha256
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe md5 with validation
@@ -369,12 +375,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as hash.md5
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Md5 and validate result"
+do
+  set $result as hash.md5
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

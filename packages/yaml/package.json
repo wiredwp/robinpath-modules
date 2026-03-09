@@ -42,6 +42,8 @@
     "category": "utility",
     "type": "utility",
     "auth": "none",
-    "functionCount": 9
+    "functionCount": 9,
+    "runtime": "node",
+    "runtimeReason": "Requires js-yaml (npm package)"
   }
 }

@@ -506,12 +506,15 @@ All functions throw on failure. Common errors:
 | `jira.assignIssue requires issueKey and accountId.` | Check the error message for details |
 
 ```robinpath
-set $result as jira.createIssue "PROJ" "Task" "Fix login bug" {"description":"Login page returns 500","priority":"High"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create issue and validate result"
+do
+  set $result as jira.createIssue "PROJ" "Task" "Fix login bug" {"description":"Login page returns 500","priority":"High"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -522,11 +525,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-jira.setCredentials $token
-set $result as jira.getIssue "PROJ-123"
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  jira.setCredentials $token
+enddo
+
+@desc "Get issue and iterate results"
+do
+  set $result as jira.getIssue "PROJ-123"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createIssue
@@ -534,9 +544,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-jira.setCredentials $token
-set $result as jira.createIssue "PROJ" "Task" "Fix login bug" {"description":"Login page returns 500","priority":"High"}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  jira.setCredentials $token
+enddo
+
+@desc "Create issue"
+do
+  set $result as jira.createIssue "PROJ" "Task" "Fix login bug" {"description":"Login page returns 500","priority":"High"}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -544,10 +561,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-jira.setCredentials $token
-set $created as jira.createIssue "PROJ" "Task" "Fix login bug" {"description":"Login page returns 500","priority":"High"}
-# Update the created item
-jira.updateIssue "PROJ-123" {"summary":"Updated summary","priority":{"name":"High"}}
+@desc "Setup authentication"
+do
+  jira.setCredentials $token
+enddo
+
+@desc "Create issue and update issue"
+do
+  set $created as jira.createIssue "PROJ" "Task" "Fix login bug" {"description":"Login page returns 500","priority":"High"}
+  # Update the created item
+  jira.updateIssue "PROJ-123" {"summary":"Updated summary","priority":{"name":"High"}}
+enddo
 ```
 
 ### 4. Check before creating
@@ -555,14 +579,21 @@ jira.updateIssue "PROJ-123" {"summary":"Updated summary","priority":{"name":"Hig
 List existing items and only create if needed.
 
 ```robinpath
-jira.setCredentials $token
-set $existing as jira.getIssue "PROJ-123"
-if $existing == null
-  jira.createIssue "PROJ" "Task" "Fix login bug" {"description":"Login page returns 500","priority":"High"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  jira.setCredentials $token
+enddo
+
+@desc "Get issue and create issue"
+do
+  set $existing as jira.getIssue "PROJ-123"
+  if $existing == null
+    jira.createIssue "PROJ" "Task" "Fix login bug" {"description":"Login page returns 500","priority":"High"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Jira workflow
@@ -570,11 +601,18 @@ end
 Chain multiple jira operations together.
 
 ```robinpath
-jira.setCredentials $token
-set $r_createIssue as jira.createIssue "PROJ" "Task" "Fix login bug" {"description":"Login page returns 500","priority":"High"}
-set $r_getIssue as jira.getIssue "PROJ-123"
-set $r_updateIssue as jira.updateIssue "PROJ-123" {"summary":"Updated summary","priority":{"name":"High"}}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  jira.setCredentials $token
+enddo
+
+@desc "Create issue, get issue, and more"
+do
+  set $r_createIssue as jira.createIssue "PROJ" "Task" "Fix login bug" {"description":"Login page returns 500","priority":"High"}
+  set $r_getIssue as jira.getIssue "PROJ-123"
+  set $r_updateIssue as jira.updateIssue "PROJ-123" {"summary":"Updated summary","priority":{"name":"High"}}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe createIssue with validation
@@ -582,13 +620,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-jira.setCredentials $token
-set $result as jira.createIssue "PROJ" "Task" "Fix login bug" {"description":"Login page returns 500","priority":"High"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  jira.setCredentials $token
+enddo
+
+@desc "Create issue and validate result"
+do
+  set $result as jira.createIssue "PROJ" "Task" "Fix login bug" {"description":"Login page returns 500","priority":"High"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

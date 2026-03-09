@@ -312,12 +312,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as sanitize.html
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Html and validate result"
+do
+  set $result as sanitize.html
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -328,10 +331,13 @@ end
 Chain multiple sanitize operations together.
 
 ```robinpath
-set $r_html as sanitize.html
-set $r_xss as sanitize.xss
-set $r_sql as sanitize.sql
-print "All operations complete"
+@desc "Html, xss, and more"
+do
+  set $r_html as sanitize.html
+  set $r_xss as sanitize.xss
+  set $r_sql as sanitize.sql
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe html with validation
@@ -339,12 +345,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as sanitize.html
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Html and validate result"
+do
+  set $result as sanitize.html
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

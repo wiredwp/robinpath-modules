@@ -301,12 +301,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as config.create "app" {"port": 3000, "debug": false}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create and validate result"
+do
+  set $result as config.create "app" {"port": 3000, "debug": false}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -317,10 +320,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as config.get "database.host" "localhost"
-each $item in $result
-  print $item
-end
+@desc "Get and iterate results"
+do
+  set $result as config.get "database.host" "localhost"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with create
@@ -337,13 +343,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as config.get "database.host" "localhost"
-if $existing == null
-  config.create "app" {"port": 3000, "debug": false}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Get and create"
+do
+  set $existing as config.get "database.host" "localhost"
+  if $existing == null
+    config.create "app" {"port": 3000, "debug": false}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Config workflow
@@ -351,10 +360,13 @@ end
 Chain multiple config operations together.
 
 ```robinpath
-set $r_create as config.create "app" {"port": 3000, "debug": false}
-set $r_load as config.load "./config.json"
-set $r_loadEnv as config.loadEnv "APP_"
-print "All operations complete"
+@desc "Create, load, and more"
+do
+  set $r_create as config.create "app" {"port": 3000, "debug": false}
+  set $r_load as config.load "./config.json"
+  set $r_loadEnv as config.loadEnv "APP_"
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe create with validation
@@ -362,12 +374,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as config.create "app" {"port": 3000, "debug": false}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create and validate result"
+do
+  set $result as config.create "app" {"port": 3000, "debug": false}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

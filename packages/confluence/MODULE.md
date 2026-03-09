@@ -384,12 +384,15 @@ All functions throw on failure. Common errors:
 | `Confluence: "..." not configured. Call confluence.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as confluence.listSpaces
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List spaces and validate result"
+do
+  set $result as confluence.listSpaces
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -400,11 +403,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-confluence.setCredentials $token
-set $result as confluence.listSpaces
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  confluence.setCredentials $token
+enddo
+
+@desc "List spaces and iterate results"
+do
+  set $result as confluence.listSpaces
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createSpace
@@ -412,9 +422,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-confluence.setCredentials $token
-set $result as confluence.createSpace
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  confluence.setCredentials $token
+enddo
+
+@desc "Create space"
+do
+  set $result as confluence.createSpace
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -422,10 +439,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-confluence.setCredentials $token
-set $created as confluence.createSpace
-# Update the created item
-confluence.updatePage
+@desc "Setup authentication"
+do
+  confluence.setCredentials $token
+enddo
+
+@desc "Create space and update page"
+do
+  set $created as confluence.createSpace
+  # Update the created item
+  confluence.updatePage
+enddo
 ```
 
 ### 4. Check before creating
@@ -433,14 +457,21 @@ confluence.updatePage
 List existing items and only create if needed.
 
 ```robinpath
-confluence.setCredentials $token
-set $existing as confluence.listSpaces
-if $existing == null
-  confluence.createSpace
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  confluence.setCredentials $token
+enddo
+
+@desc "List spaces and create space"
+do
+  set $existing as confluence.listSpaces
+  if $existing == null
+    confluence.createSpace
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Confluence workflow
@@ -448,11 +479,18 @@ end
 Chain multiple confluence operations together.
 
 ```robinpath
-confluence.setCredentials $token
-set $r_listSpaces as confluence.listSpaces
-set $r_getSpace as confluence.getSpace
-set $r_createSpace as confluence.createSpace
-print "All operations complete"
+@desc "Setup authentication"
+do
+  confluence.setCredentials $token
+enddo
+
+@desc "List spaces, get space, and more"
+do
+  set $r_listSpaces as confluence.listSpaces
+  set $r_getSpace as confluence.getSpace
+  set $r_createSpace as confluence.createSpace
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listSpaces with validation
@@ -460,13 +498,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-confluence.setCredentials $token
-set $result as confluence.listSpaces
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  confluence.setCredentials $token
+enddo
+
+@desc "List spaces and validate result"
+do
+  set $result as confluence.listSpaces
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

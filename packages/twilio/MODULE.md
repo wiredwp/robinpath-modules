@@ -382,12 +382,15 @@ All functions throw on failure. Common errors:
 | `Twilio: "..." not configured. Call twilio.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as twilio.sendSms
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Send sms and validate result"
+do
+  set $result as twilio.sendSms
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -398,11 +401,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-twilio.setCredentials $token
-set $result as twilio.listMessages
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  twilio.setCredentials $token
+enddo
+
+@desc "List messages and iterate results"
+do
+  set $result as twilio.listMessages
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with sendSms
@@ -410,9 +420,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-twilio.setCredentials $token
-set $result as twilio.sendSms
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  twilio.setCredentials $token
+enddo
+
+@desc "Send sms"
+do
+  set $result as twilio.sendSms
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -420,14 +437,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-twilio.setCredentials $token
-set $existing as twilio.listMessages
-if $existing == null
-  twilio.sendSms
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  twilio.setCredentials $token
+enddo
+
+@desc "List messages and send sms"
+do
+  set $existing as twilio.listMessages
+  if $existing == null
+    twilio.sendSms
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Twilio workflow
@@ -435,11 +459,18 @@ end
 Chain multiple twilio operations together.
 
 ```robinpath
-twilio.setCredentials $token
-set $r_sendSms as twilio.sendSms
-set $r_sendMms as twilio.sendMms
-set $r_listMessages as twilio.listMessages
-print "All operations complete"
+@desc "Setup authentication"
+do
+  twilio.setCredentials $token
+enddo
+
+@desc "Send sms, send mms, and more"
+do
+  set $r_sendSms as twilio.sendSms
+  set $r_sendMms as twilio.sendMms
+  set $r_listMessages as twilio.listMessages
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe sendSms with validation
@@ -447,13 +478,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-twilio.setCredentials $token
-set $result as twilio.sendSms
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  twilio.setCredentials $token
+enddo
+
+@desc "Send sms and validate result"
+do
+  set $result as twilio.sendSms
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

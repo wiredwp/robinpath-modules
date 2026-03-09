@@ -316,12 +316,15 @@ All functions throw on failure. Common errors:
 | `Invalid release type: ${release}. Must be one of: major, minor, patch, prerelease` | Check the error message for details |
 
 ```robinpath
-set $result as semver.parse "1.2.3-beta.1+build.42"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Parse and validate result"
+do
+  set $result as semver.parse "1.2.3-beta.1+build.42"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -332,10 +335,13 @@ end
 Chain multiple semver operations together.
 
 ```robinpath
-set $r_parse as semver.parse "1.2.3-beta.1+build.42"
-set $r_isValid as semver.isValid "1.2.3"
-set $r_compare as semver.compare "1.2.3" "1.3.0"
-print "All operations complete"
+@desc "Parse, is valid, and more"
+do
+  set $r_parse as semver.parse "1.2.3-beta.1+build.42"
+  set $r_isValid as semver.isValid "1.2.3"
+  set $r_compare as semver.compare "1.2.3" "1.3.0"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe parse with validation
@@ -343,12 +349,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as semver.parse "1.2.3-beta.1+build.42"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Parse and validate result"
+do
+  set $result as semver.parse "1.2.3-beta.1+build.42"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

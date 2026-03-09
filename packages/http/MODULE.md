@@ -316,12 +316,15 @@ All functions throw on failure. Common errors:
 | `HTTP server not found` | Check the error message for details |
 
 ```robinpath
-set $result as any "myapi" {"port": 8080}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Validate result"
+do
+  set $result as any "myapi" {"port": 8080}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -332,10 +335,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as any "myapi" "/api/products" [{"id": 1}]
-each $item in $result
-  print $item
-end
+@desc "Iterate results"
+do
+  set $result as any "myapi" "/api/products" [{"id": 1}]
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createServer
@@ -352,13 +358,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as any "myapi" "/api/products" [{"id": 1}]
-if $existing == null
-  any "myapi" {"port": 8080}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Validate result"
+do
+  set $existing as any "myapi" "/api/products" [{"id": 1}]
+  if $existing == null
+    any "myapi" {"port": 8080}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step HTTP workflow
@@ -366,10 +375,13 @@ end
 Chain multiple http operations together.
 
 ```robinpath
-set $r_createServer as any "myapi" {"port": 8080}
-set $r_get as any "myapi" "/api/products" [{"id": 1}]
-set $r_post as any "myapi" "/api/products" {"created": true}
-print "All operations complete"
+@desc "Execute operation"
+do
+  set $r_createServer as any "myapi" {"port": 8080}
+  set $r_get as any "myapi" "/api/products" [{"id": 1}]
+  set $r_post as any "myapi" "/api/products" {"created": true}
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe createServer with validation
@@ -377,12 +389,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as any "myapi" {"port": 8080}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Validate result"
+do
+  set $result as any "myapi" {"port": 8080}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

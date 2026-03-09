@@ -387,10 +387,13 @@ print $result
 Print messages with different colors based on severity level.
 
 ```robinpath
-print color.red "[ERROR] Database connection failed"
-print color.yellow "[WARN] Cache miss for key: user_123"
-print color.green "[OK] Server started on port 3000"
-print color.gray "[DEBUG] Request payload: {id: 1}"
+@desc "Output result"
+do
+  print color.red "[ERROR] Database connection failed"
+  print color.yellow "[WARN] Cache miss for key: user_123"
+  print color.green "[OK] Server started on port 3000"
+  print color.gray "[DEBUG] Request payload: {id: 1}"
+enddo
 ```
 
 ### 2. Styled headers and sections
@@ -398,11 +401,14 @@ print color.gray "[DEBUG] Request payload: {id: 1}"
 Use bold and underline for section headers in CLI output.
 
 ```robinpath
-print color.bold color.underline "=== Build Report ==="
-print color.green "Tests: 42 passed"
-print color.yellow "Warnings: 3"
-print color.red "Errors: 0"
-print color.dim "Generated at 2024-06-20 14:30"
+@desc "Output result"
+do
+  print color.bold color.underline "=== Build Report ==="
+  print color.green "Tests: 42 passed"
+  print color.yellow "Warnings: 3"
+  print color.red "Errors: 0"
+  print color.dim "Generated at 2024-06-20 14:30"
+enddo
 ```
 
 ### 3. Custom brand colors with RGB
@@ -410,10 +416,13 @@ print color.dim "Generated at 2024-06-20 14:30"
 Apply exact brand colors using RGB values.
 
 ```robinpath
-set $brand as color.rgb "Anthropic" 191 144 0
-set $accent as color.rgb "Claude" 100 180 255
-print $brand
-print $accent
+@desc "Rgb"
+do
+  set $brand as color.rgb "Anthropic" 191 144 0
+  set $accent as color.rgb "Claude" 100 180 255
+  print $brand
+  print $accent
+enddo
 ```
 
 ### 4. Highlight errors in a list
@@ -421,18 +430,21 @@ print $accent
 Loop through items and color-code based on status.
 
 ```robinpath
-set $items as [{"name": "API", "status": "ok"}, {"name": "DB", "status": "error"}, {"name": "Cache", "status": "warning"}]
-each $item in $items
-  if $item.status == "ok"
-    print color.green $item.name + ": " + $item.status
+@desc "Validate result"
+do
+  set $items as [{"name": "API", "status": "ok"}, {"name": "DB", "status": "error"}, {"name": "Cache", "status": "warning"}]
+  each $item in $items
+    if $item.status == "ok"
+      print color.green $item.name + ": " + $item.status
+    end
+    if $item.status == "error"
+      print color.red $item.name + ": " + $item.status
+    end
+    if $item.status == "warning"
+      print color.yellow $item.name + ": " + $item.status
+    end
   end
-  if $item.status == "error"
-    print color.red $item.name + ": " + $item.status
-  end
-  if $item.status == "warning"
-    print color.yellow $item.name + ": " + $item.status
-  end
-end
+enddo
 ```
 
 ### 5. Background highlights for alerts
@@ -449,10 +461,13 @@ print color.bgGreen " RESOLVED: Service restored "
 Remove ANSI codes before writing to a file or sending to an API.
 
 ```robinpath
-set $colored as color.green "Success: 42 tests passed"
-print $colored
-set $plain as color.strip $colored
-# $plain is now "Success: 42 tests passed" without ANSI codes
+@desc "Green and strip"
+do
+  set $colored as color.green "Success: 42 tests passed"
+  print $colored
+  set $plain as color.strip $colored
+  # $plain is now "Success: 42 tests passed" without ANSI codes
+enddo
 ```
 
 

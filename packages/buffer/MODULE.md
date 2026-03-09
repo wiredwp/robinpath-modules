@@ -257,12 +257,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as buffer.fromString "hello"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "From string and validate result"
+do
+  set $result as buffer.fromString "hello"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -273,10 +276,13 @@ end
 Chain multiple buffer operations together.
 
 ```robinpath
-set $r_fromString as buffer.fromString "hello"
-set $r_toString as buffer.toString "aGVsbG8="
-set $r_fromHex as buffer.fromHex "48656c6c6f"
-print "All operations complete"
+@desc "From string, to string, and more"
+do
+  set $r_fromString as buffer.fromString "hello"
+  set $r_toString as buffer.toString "aGVsbG8="
+  set $r_fromHex as buffer.fromHex "48656c6c6f"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe fromString with validation
@@ -284,12 +290,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as buffer.fromString "hello"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "From string and validate result"
+do
+  set $result as buffer.fromString "hello"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

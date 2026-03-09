@@ -319,12 +319,15 @@ All functions throw on failure. Common errors:
 | `Unknown unit: ${unit}` | Check the error message for details |
 
 ```robinpath
-set $result as date.parse "2024-01-15"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Parse and validate result"
+do
+  set $result as date.parse "2024-01-15"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -344,10 +347,13 @@ print "Created: " + $result
 Chain multiple date operations together.
 
 ```robinpath
-set $r_parse as date.parse "2024-01-15"
-set $r_format as date.format $date "YYYY-MM-DD"
-set $r_add as date.add $date 5 "days"
-print "All operations complete"
+@desc "Parse, format, and more"
+do
+  set $r_parse as date.parse "2024-01-15"
+  set $r_format as date.format $date "YYYY-MM-DD"
+  set $r_add as date.add $date 5 "days"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe parse with validation
@@ -355,12 +361,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as date.parse "2024-01-15"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Parse and validate result"
+do
+  set $result as date.parse "2024-01-15"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

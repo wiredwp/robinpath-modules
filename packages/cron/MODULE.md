@@ -194,12 +194,15 @@ All functions throw on failure. Common errors:
 | `Invalid cron expression` | Check the error message for details |
 
 ```robinpath
-set $result as cron.isValid "*/5 * * * *"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Is valid and validate result"
+do
+  set $result as cron.isValid "*/5 * * * *"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -210,10 +213,13 @@ end
 Chain multiple cron operations together.
 
 ```robinpath
-set $r_isValid as cron.isValid "*/5 * * * *"
-set $r_parse as cron.parse "0 9 * * 1-5"
-set $r_next as cron.next "*/5 * * * *"
-print "All operations complete"
+@desc "Is valid, parse, and more"
+do
+  set $r_isValid as cron.isValid "*/5 * * * *"
+  set $r_parse as cron.parse "0 9 * * 1-5"
+  set $r_next as cron.next "*/5 * * * *"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe isValid with validation
@@ -221,12 +227,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as cron.isValid "*/5 * * * *"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Is valid and validate result"
+do
+  set $result as cron.isValid "*/5 * * * *"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

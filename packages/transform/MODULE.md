@@ -323,12 +323,15 @@ All functions throw on failure. Common errors:
 | `Cannot coerce "..." to float` | Check the error message for details |
 
 ```robinpath
-set $result as transform.pick $data ["name", "email", "address.city"]
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Pick and validate result"
+do
+  set $result as transform.pick $data ["name", "email", "address.city"]
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -339,10 +342,13 @@ end
 Chain multiple transform operations together.
 
 ```robinpath
-set $r_pick as transform.pick $data ["name", "email", "address.city"]
-set $r_omit as transform.omit $data ["password", "secret"]
-set $r_rename as transform.rename $data {"firstName": "first_name", "lastName": "last_name"}
-print "All operations complete"
+@desc "Pick, omit, and more"
+do
+  set $r_pick as transform.pick $data ["name", "email", "address.city"]
+  set $r_omit as transform.omit $data ["password", "secret"]
+  set $r_rename as transform.rename $data {"firstName": "first_name", "lastName": "last_name"}
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe pick with validation
@@ -350,12 +356,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as transform.pick $data ["name", "email", "address.city"]
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Pick and validate result"
+do
+  set $result as transform.pick $data ["name", "email", "address.city"]
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

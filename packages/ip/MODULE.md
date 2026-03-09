@@ -256,12 +256,15 @@ All functions throw on failure. Common errors:
 | `Ip: "..." not configured. Call ip.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as ip.getMyIp
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get my ip and validate result"
+do
+  set $result as ip.getMyIp
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -272,10 +275,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as ip.getMyIp
-each $item in $result
-  print $item
-end
+@desc "Get my ip and iterate results"
+do
+  set $result as ip.getMyIp
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step IP workflow
@@ -283,10 +289,13 @@ end
 Chain multiple ip operations together.
 
 ```robinpath
-set $r_getMyIp as ip.getMyIp
-set $r_geolocate as ip.geolocate
-set $r_geolocateBatch as ip.geolocateBatch
-print "All operations complete"
+@desc "Get my ip, geolocate, and more"
+do
+  set $r_getMyIp as ip.getMyIp
+  set $r_geolocate as ip.geolocate
+  set $r_geolocateBatch as ip.geolocateBatch
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe getMyIp with validation
@@ -294,12 +303,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as ip.getMyIp
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Get my ip and validate result"
+do
+  set $result as ip.getMyIp
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

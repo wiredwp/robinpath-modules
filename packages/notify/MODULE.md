@@ -220,12 +220,15 @@ All functions throw on failure. Common errors:
 | `Notify: "..." not configured. Call notify.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as notify.send
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Send and validate result"
+do
+  set $result as notify.send
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -236,10 +239,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as notify.getClipboard
-each $item in $result
-  print $item
-end
+@desc "Get clipboard and iterate results"
+do
+  set $result as notify.getClipboard
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with send
@@ -256,13 +262,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as notify.getClipboard
-if $existing == null
-  notify.send
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Get clipboard and send"
+do
+  set $existing as notify.getClipboard
+  if $existing == null
+    notify.send
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Notify workflow
@@ -270,10 +279,13 @@ end
 Chain multiple notify operations together.
 
 ```robinpath
-set $r_send as notify.send
-set $r_sendUrgent as notify.sendUrgent
-set $r_sendSilent as notify.sendSilent
-print "All operations complete"
+@desc "Send, send urgent, and more"
+do
+  set $r_send as notify.send
+  set $r_sendUrgent as notify.sendUrgent
+  set $r_sendSilent as notify.sendSilent
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe send with validation
@@ -281,12 +293,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as notify.send
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Send and validate result"
+do
+  set $result as notify.send
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

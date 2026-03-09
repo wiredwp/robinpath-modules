@@ -412,12 +412,15 @@ All functions throw on failure. Common errors:
 | `Page "..." not found` | Check the error message for details |
 
 ```robinpath
-set $result as browser.launch "main" {"headless": true}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Launch and validate result"
+do
+  set $result as browser.launch "main" {"headless": true}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -428,10 +431,13 @@ end
 Chain multiple browser operations together.
 
 ```robinpath
-set $r_launch as browser.launch "main" {"headless": true}
-set $r_newPage as browser.newPage "main" "page1"
-set $r_goto as browser.goto "page1" "https://example.com" {"waitUntil": "networkidle2"}
-print "All operations complete"
+@desc "Launch, new page, and more"
+do
+  set $r_launch as browser.launch "main" {"headless": true}
+  set $r_newPage as browser.newPage "main" "page1"
+  set $r_goto as browser.goto "page1" "https://example.com" {"waitUntil": "networkidle2"}
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe launch with validation
@@ -439,12 +445,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as browser.launch "main" {"headless": true}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Launch and validate result"
+do
+  set $result as browser.launch "main" {"headless": true}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

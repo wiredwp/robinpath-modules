@@ -349,12 +349,15 @@ All functions throw on failure. Common errors:
 | `Convertkit: "..." not configured. Call convertkit.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as convertkit.listSubscribers
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List subscribers and validate result"
+do
+  set $result as convertkit.listSubscribers
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -365,11 +368,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-convertkit.setCredentials $token
-set $result as convertkit.listSubscribers
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  convertkit.setCredentials $token
+enddo
+
+@desc "List subscribers and iterate results"
+do
+  set $result as convertkit.listSubscribers
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createSubscriber
@@ -377,9 +387,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-convertkit.setCredentials $token
-set $result as convertkit.createSubscriber
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  convertkit.setCredentials $token
+enddo
+
+@desc "Create subscriber"
+do
+  set $result as convertkit.createSubscriber
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -387,10 +404,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-convertkit.setCredentials $token
-set $created as convertkit.createSubscriber
-# Update the created item
-convertkit.updateSubscriber
+@desc "Setup authentication"
+do
+  convertkit.setCredentials $token
+enddo
+
+@desc "Create subscriber and update subscriber"
+do
+  set $created as convertkit.createSubscriber
+  # Update the created item
+  convertkit.updateSubscriber
+enddo
 ```
 
 ### 4. Check before creating
@@ -398,14 +422,21 @@ convertkit.updateSubscriber
 List existing items and only create if needed.
 
 ```robinpath
-convertkit.setCredentials $token
-set $existing as convertkit.listSubscribers
-if $existing == null
-  convertkit.createSubscriber
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  convertkit.setCredentials $token
+enddo
+
+@desc "List subscribers and create subscriber"
+do
+  set $existing as convertkit.listSubscribers
+  if $existing == null
+    convertkit.createSubscriber
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Convertkit workflow
@@ -413,11 +444,18 @@ end
 Chain multiple convertkit operations together.
 
 ```robinpath
-convertkit.setCredentials $token
-set $r_listSubscribers as convertkit.listSubscribers
-set $r_getSubscriber as convertkit.getSubscriber
-set $r_createSubscriber as convertkit.createSubscriber
-print "All operations complete"
+@desc "Setup authentication"
+do
+  convertkit.setCredentials $token
+enddo
+
+@desc "List subscribers, get subscriber, and more"
+do
+  set $r_listSubscribers as convertkit.listSubscribers
+  set $r_getSubscriber as convertkit.getSubscriber
+  set $r_createSubscriber as convertkit.createSubscriber
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listSubscribers with validation
@@ -425,13 +463,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-convertkit.setCredentials $token
-set $result as convertkit.listSubscribers
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  convertkit.setCredentials $token
+enddo
+
+@desc "List subscribers and validate result"
+do
+  set $result as convertkit.listSubscribers
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

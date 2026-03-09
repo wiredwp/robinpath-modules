@@ -230,12 +230,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as encrypt.aesEncrypt "secret data" "my-password"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Aes encrypt and validate result"
+do
+  set $result as encrypt.aesEncrypt "secret data" "my-password"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -246,10 +249,13 @@ end
 Chain multiple encrypt operations together.
 
 ```robinpath
-set $r_aesEncrypt as encrypt.aesEncrypt "secret data" "my-password"
-set $r_aesDecrypt as encrypt.aesDecrypt $encryptedData "my-password"
-set $r_aesEncryptRaw as encrypt.aesEncryptRaw "data" $hexKey
-print "All operations complete"
+@desc "Aes encrypt, aes decrypt, and more"
+do
+  set $r_aesEncrypt as encrypt.aesEncrypt "secret data" "my-password"
+  set $r_aesDecrypt as encrypt.aesDecrypt $encryptedData "my-password"
+  set $r_aesEncryptRaw as encrypt.aesEncryptRaw "data" $hexKey
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe aesEncrypt with validation
@@ -257,12 +263,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as encrypt.aesEncrypt "secret data" "my-password"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Aes encrypt and validate result"
+do
+  set $result as encrypt.aesEncrypt "secret data" "my-password"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

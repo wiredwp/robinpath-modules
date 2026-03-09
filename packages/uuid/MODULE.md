@@ -173,12 +173,15 @@ All functions throw on failure. Common errors:
 | `Invalid UUID: ${value}` | Check the error message for details |
 
 ```robinpath
-set $result as uuid.v4
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "V4 and validate result"
+do
+  set $result as uuid.v4
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -189,10 +192,13 @@ end
 Chain multiple uuid operations together.
 
 ```robinpath
-set $r_v4 as uuid.v4
-set $r_v5 as uuid.v5 "hello" "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
-set $r_isValid as uuid.isValid "550e8400-e29b-41d4-a716-446655440000"
-print "All operations complete"
+@desc "V4, v5, and more"
+do
+  set $r_v4 as uuid.v4
+  set $r_v5 as uuid.v5 "hello" "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+  set $r_isValid as uuid.isValid "550e8400-e29b-41d4-a716-446655440000"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe v4 with validation
@@ -200,12 +206,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as uuid.v4
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "V4 and validate result"
+do
+  set $result as uuid.v4
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

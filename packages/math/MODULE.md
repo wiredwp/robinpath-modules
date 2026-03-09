@@ -315,12 +315,15 @@ All functions throw on failure. Common errors:
 | `Factorial is not defined for negative numbers` | Check the error message for details |
 
 ```robinpath
-set $result as math.clamp 15 0 10
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Clamp and validate result"
+do
+  set $result as math.clamp 15 0 10
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -331,10 +334,13 @@ end
 Chain multiple math operations together.
 
 ```robinpath
-set $r_clamp as math.clamp 15 0 10
-set $r_round as math.round 3.14159 2
-set $r_randomInt as math.randomInt 1 100
-print "All operations complete"
+@desc "Clamp, round, and more"
+do
+  set $r_clamp as math.clamp 15 0 10
+  set $r_round as math.round 3.14159 2
+  set $r_randomInt as math.randomInt 1 100
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe clamp with validation
@@ -342,12 +348,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as math.clamp 15 0 10
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Clamp and validate result"
+do
+  set $result as math.clamp 15 0 10
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

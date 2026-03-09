@@ -188,12 +188,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as toml.parse "title = \"My App\""
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Parse and validate result"
+do
+  set $result as toml.parse "title = \"My App\""
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -204,10 +207,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as toml.get $toml "database.host"
-each $item in $result
-  print $item
-end
+@desc "Get and iterate results"
+do
+  set $result as toml.get $toml "database.host"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Toml workflow
@@ -215,10 +221,13 @@ end
 Chain multiple toml operations together.
 
 ```robinpath
-set $r_parse as toml.parse "title = \"My App\""
-set $r_stringify as toml.stringify $config
-set $r_parseFile as toml.parseFile "config.toml"
-print "All operations complete"
+@desc "Parse, stringify, and more"
+do
+  set $r_parse as toml.parse "title = \"My App\""
+  set $r_stringify as toml.stringify $config
+  set $r_parseFile as toml.parseFile "config.toml"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe parse with validation
@@ -226,12 +235,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as toml.parse "title = \"My App\""
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Parse and validate result"
+do
+  set $result as toml.parse "title = \"My App\""
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

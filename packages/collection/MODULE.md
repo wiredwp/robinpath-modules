@@ -589,12 +589,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as collection.pluck $arr "name"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Pluck and validate result"
+do
+  set $result as collection.pluck $arr "name"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -605,10 +608,13 @@ end
 Chain multiple collection operations together.
 
 ```robinpath
-set $r_pluck as collection.pluck $arr "name"
-set $r_where as collection.where $arr "age" 25
-set $r_whereGt as collection.whereGt $arr "age" 25
-print "All operations complete"
+@desc "Pluck, where, and more"
+do
+  set $r_pluck as collection.pluck $arr "name"
+  set $r_where as collection.where $arr "age" 25
+  set $r_whereGt as collection.whereGt $arr "age" 25
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe pluck with validation
@@ -616,12 +622,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as collection.pluck $arr "name"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Pluck and validate result"
+do
+  set $result as collection.pluck $arr "name"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

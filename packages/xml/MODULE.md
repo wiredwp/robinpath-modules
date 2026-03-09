@@ -225,12 +225,15 @@ All functions throw on failure. Common errors:
 | `writeFile requires a JS object as the second argument` | Check the error message for details |
 
 ```robinpath
-set $result as xml.parse "<root><item>hello</item></root>"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Parse and validate result"
+do
+  set $result as xml.parse "<root><item>hello</item></root>"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -241,10 +244,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as xml.getAttribute "<root><item id=\"1\"/></root>" "root.item" "id"
-each $item in $result
-  print $item
-end
+@desc "Get attribute and iterate results"
+do
+  set $result as xml.getAttribute "<root><item id=\"1\"/></root>" "root.item" "id"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step XML workflow
@@ -252,10 +258,13 @@ end
 Chain multiple xml operations together.
 
 ```robinpath
-set $r_parse as xml.parse "<root><item>hello</item></root>"
-set $r_stringify as xml.stringify $data
-set $r_parseFile as xml.parseFile "/tmp/data.xml"
-print "All operations complete"
+@desc "Parse, stringify, and more"
+do
+  set $r_parse as xml.parse "<root><item>hello</item></root>"
+  set $r_stringify as xml.stringify $data
+  set $r_parseFile as xml.parseFile "/tmp/data.xml"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe parse with validation
@@ -263,12 +272,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as xml.parse "<root><item>hello</item></root>"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Parse and validate result"
+do
+  set $result as xml.parse "<root><item>hello</item></root>"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

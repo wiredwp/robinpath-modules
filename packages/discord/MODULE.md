@@ -573,12 +573,15 @@ All functions throw on failure. Common errors:
 | `guildId is required.` | Check the error message for details |
 
 ```robinpath
-set $result as discord.sendWebhook "https://discord.com/api/webhooks/..." "Hello!" {"username": "MyBot"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Send webhook and validate result"
+do
+  set $result as discord.sendWebhook "https://discord.com/api/webhooks/..." "Hello!" {"username": "MyBot"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -589,11 +592,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-discord.setToken $token
-set $result as discord.getChannel "123456789"
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  discord.setToken $token
+enddo
+
+@desc "Get channel and iterate results"
+do
+  set $result as discord.getChannel "123456789"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with sendWebhook
@@ -601,9 +611,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-discord.setToken $token
-set $result as discord.sendWebhook "https://discord.com/api/webhooks/..." "Hello!" {"username": "MyBot"}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  discord.setToken $token
+enddo
+
+@desc "Send webhook"
+do
+  set $result as discord.sendWebhook "https://discord.com/api/webhooks/..." "Hello!" {"username": "MyBot"}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -611,10 +628,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-discord.setToken $token
-set $created as discord.sendWebhook "https://discord.com/api/webhooks/..." "Hello!" {"username": "MyBot"}
-# Update the created item
-discord.editMessage "123456789" "987654321" "Updated text"
+@desc "Setup authentication"
+do
+  discord.setToken $token
+enddo
+
+@desc "Send webhook and edit message"
+do
+  set $created as discord.sendWebhook "https://discord.com/api/webhooks/..." "Hello!" {"username": "MyBot"}
+  # Update the created item
+  discord.editMessage "123456789" "987654321" "Updated text"
+enddo
 ```
 
 ### 4. Check before creating
@@ -622,14 +646,21 @@ discord.editMessage "123456789" "987654321" "Updated text"
 List existing items and only create if needed.
 
 ```robinpath
-discord.setToken $token
-set $existing as discord.getChannel "123456789"
-if $existing == null
-  discord.sendWebhook "https://discord.com/api/webhooks/..." "Hello!" {"username": "MyBot"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  discord.setToken $token
+enddo
+
+@desc "Get channel and send webhook"
+do
+  set $existing as discord.getChannel "123456789"
+  if $existing == null
+    discord.sendWebhook "https://discord.com/api/webhooks/..." "Hello!" {"username": "MyBot"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Discord workflow
@@ -637,11 +668,18 @@ end
 Chain multiple discord operations together.
 
 ```robinpath
-discord.setToken $token
-set $r_sendWebhook as discord.sendWebhook "https://discord.com/api/webhooks/..." "Hello!" {"username": "MyBot"}
-set $r_sendMessage as discord.sendMessage "123456789" "Hello from RobinPath!"
-set $r_editMessage as discord.editMessage "123456789" "987654321" "Updated text"
-print "All operations complete"
+@desc "Setup authentication"
+do
+  discord.setToken $token
+enddo
+
+@desc "Send webhook, send message, and more"
+do
+  set $r_sendWebhook as discord.sendWebhook "https://discord.com/api/webhooks/..." "Hello!" {"username": "MyBot"}
+  set $r_sendMessage as discord.sendMessage "123456789" "Hello from RobinPath!"
+  set $r_editMessage as discord.editMessage "123456789" "987654321" "Updated text"
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe sendWebhook with validation
@@ -649,13 +687,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-discord.setToken $token
-set $result as discord.sendWebhook "https://discord.com/api/webhooks/..." "Hello!" {"username": "MyBot"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  discord.setToken $token
+enddo
+
+@desc "Send webhook and validate result"
+do
+  set $result as discord.sendWebhook "https://discord.com/api/webhooks/..." "Hello!" {"username": "MyBot"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

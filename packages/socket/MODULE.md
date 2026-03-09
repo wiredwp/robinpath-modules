@@ -199,12 +199,15 @@ All functions throw on failure. Common errors:
 | `Connection "..." is not open` | Check the error message for details |
 
 ```robinpath
-set $result as socket.send "slack" {"type": "message", "text": "Hello"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Send and validate result"
+do
+  set $result as socket.send "slack" {"type": "message", "text": "Hello"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -224,10 +227,13 @@ print "Created: " + $result
 Chain multiple socket operations together.
 
 ```robinpath
-set $r_connect as socket.connect "slack" "wss://wss.slack.com/link"
-set $r_send as socket.send "slack" {"type": "message", "text": "Hello"}
-set $r_receive as socket.receive "slack" 5000
-print "All operations complete"
+@desc "Connect, send, and more"
+do
+  set $r_connect as socket.connect "slack" "wss://wss.slack.com/link"
+  set $r_send as socket.send "slack" {"type": "message", "text": "Hello"}
+  set $r_receive as socket.receive "slack" 5000
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe connect with validation
@@ -235,12 +241,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as socket.connect "slack" "wss://wss.slack.com/link"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Connect and validate result"
+do
+  set $result as socket.connect "slack" "wss://wss.slack.com/link"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

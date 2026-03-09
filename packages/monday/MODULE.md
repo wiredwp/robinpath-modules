@@ -384,12 +384,15 @@ All functions throw on failure. Common errors:
 | `Monday: "..." not configured. Call monday.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as monday.listBoards
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List boards and validate result"
+do
+  set $result as monday.listBoards
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -400,11 +403,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-monday.setCredentials $token
-set $result as monday.listBoards
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  monday.setCredentials $token
+enddo
+
+@desc "List boards and iterate results"
+do
+  set $result as monday.listBoards
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createBoard
@@ -412,9 +422,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-monday.setCredentials $token
-set $result as monday.createBoard
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  monday.setCredentials $token
+enddo
+
+@desc "Create board"
+do
+  set $result as monday.createBoard
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -422,10 +439,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-monday.setCredentials $token
-set $created as monday.createBoard
-# Update the created item
-monday.updateItem
+@desc "Setup authentication"
+do
+  monday.setCredentials $token
+enddo
+
+@desc "Create board and update item"
+do
+  set $created as monday.createBoard
+  # Update the created item
+  monday.updateItem
+enddo
 ```
 
 ### 4. Check before creating
@@ -433,14 +457,21 @@ monday.updateItem
 List existing items and only create if needed.
 
 ```robinpath
-monday.setCredentials $token
-set $existing as monday.listBoards
-if $existing == null
-  monday.createBoard
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  monday.setCredentials $token
+enddo
+
+@desc "List boards and create board"
+do
+  set $existing as monday.listBoards
+  if $existing == null
+    monday.createBoard
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Monday.com workflow
@@ -448,11 +479,18 @@ end
 Chain multiple monday operations together.
 
 ```robinpath
-monday.setCredentials $token
-set $r_listBoards as monday.listBoards
-set $r_getBoard as monday.getBoard
-set $r_createBoard as monday.createBoard
-print "All operations complete"
+@desc "Setup authentication"
+do
+  monday.setCredentials $token
+enddo
+
+@desc "List boards, get board, and more"
+do
+  set $r_listBoards as monday.listBoards
+  set $r_getBoard as monday.getBoard
+  set $r_createBoard as monday.createBoard
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listBoards with validation
@@ -460,13 +498,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-monday.setCredentials $token
-set $result as monday.listBoards
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  monday.setCredentials $token
+enddo
+
+@desc "List boards and validate result"
+do
+  set $result as monday.listBoards
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

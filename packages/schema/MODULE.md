@@ -224,12 +224,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as schema.validate $data $schema
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Validate and validate result"
+do
+  set $result as schema.validate $data $schema
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -240,10 +243,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as schema.getErrors $data $schema
-each $item in $result
-  print $item
-end
+@desc "Get errors and iterate results"
+do
+  set $result as schema.getErrors $data $schema
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Schema workflow
@@ -251,10 +257,13 @@ end
 Chain multiple schema operations together.
 
 ```robinpath
-set $r_validate as schema.validate $data $schema
-set $r_isValid as schema.isValid $data $schema
-set $r_string as schema.string {"minLength": 1}
-print "All operations complete"
+@desc "Validate, is valid, and more"
+do
+  set $r_validate as schema.validate $data $schema
+  set $r_isValid as schema.isValid $data $schema
+  set $r_string as schema.string {"minLength": 1}
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe validate with validation
@@ -262,12 +271,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as schema.validate $data $schema
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Validate and validate result"
+do
+  set $result as schema.validate $data $schema
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

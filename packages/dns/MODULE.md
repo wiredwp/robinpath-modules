@@ -256,12 +256,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as dns.resolve "example.com" "A"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Resolve and validate result"
+do
+  set $result as dns.resolve "example.com" "A"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -272,10 +275,13 @@ end
 Chain multiple dns operations together.
 
 ```robinpath
-set $r_resolve as dns.resolve "example.com" "A"
-set $r_resolve4 as dns.resolve4 "example.com"
-set $r_resolve6 as dns.resolve6 "example.com"
-print "All operations complete"
+@desc "Resolve, resolve4, and more"
+do
+  set $r_resolve as dns.resolve "example.com" "A"
+  set $r_resolve4 as dns.resolve4 "example.com"
+  set $r_resolve6 as dns.resolve6 "example.com"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe resolve with validation
@@ -283,12 +289,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as dns.resolve "example.com" "A"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Resolve and validate result"
+do
+  set $result as dns.resolve "example.com" "A"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

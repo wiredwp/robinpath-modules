@@ -350,12 +350,15 @@ All functions throw on failure. Common errors:
 | `State machine "..." not found` | Check the error message for details |
 
 ```robinpath
-set $result as state.create {"name": "light", "states": ["red", "green", "yellow"], "initial": "red", "transitions": [{"from": "red", "to": "green", "event": "next"}]}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create and validate result"
+do
+  set $result as state.create {"name": "light", "states": ["red", "green", "yellow"], "initial": "red", "transitions": [{"from": "red", "to": "green", "event": "next"}]}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -366,10 +369,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as state.list
-each $item in $result
-  print $item
-end
+@desc "List and iterate results"
+do
+  set $result as state.list
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with create
@@ -386,13 +392,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as state.list
-if $existing == null
-  state.create {"name": "light", "states": ["red", "green", "yellow"], "initial": "red", "transitions": [{"from": "red", "to": "green", "event": "next"}]}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "List and create"
+do
+  set $existing as state.list
+  if $existing == null
+    state.create {"name": "light", "states": ["red", "green", "yellow"], "initial": "red", "transitions": [{"from": "red", "to": "green", "event": "next"}]}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step State workflow
@@ -400,10 +409,13 @@ end
 Chain multiple state operations together.
 
 ```robinpath
-set $r_create as state.create {"name": "light", "states": ["red", "green", "yellow"], "initial": "red", "transitions": [{"from": "red", "to": "green", "event": "next"}]}
-set $r_send as state.send "next" "light"
-set $r_current as state.current "light"
-print "All operations complete"
+@desc "Create, send, and more"
+do
+  set $r_create as state.create {"name": "light", "states": ["red", "green", "yellow"], "initial": "red", "transitions": [{"from": "red", "to": "green", "event": "next"}]}
+  set $r_send as state.send "next" "light"
+  set $r_current as state.current "light"
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe create with validation
@@ -411,12 +423,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as state.create {"name": "light", "states": ["red", "green", "yellow"], "initial": "red", "transitions": [{"from": "red", "to": "green", "event": "next"}]}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create and validate result"
+do
+  set $result as state.create {"name": "light", "states": ["red", "green", "yellow"], "initial": "red", "transitions": [{"from": "red", "to": "green", "event": "next"}]}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

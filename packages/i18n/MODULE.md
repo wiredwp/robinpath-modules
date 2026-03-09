@@ -325,12 +325,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as i18n.getLocale
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get locale and validate result"
+do
+  set $result as i18n.getLocale
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -341,10 +344,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as i18n.getLocale
-each $item in $result
-  print $item
-end
+@desc "Get locale and iterate results"
+do
+  set $result as i18n.getLocale
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step i18n workflow
@@ -352,10 +358,13 @@ end
 Chain multiple i18n operations together.
 
 ```robinpath
-set $r_getLocale as i18n.getLocale
-set $r_loadTranslations as i18n.loadTranslations "es" {"hello": "Hola", "bye": "Adiós"}
-set $r_t as i18n.t "hello" "es"
-print "All operations complete"
+@desc "Get locale, load translations, and more"
+do
+  set $r_getLocale as i18n.getLocale
+  set $r_loadTranslations as i18n.loadTranslations "es" {"hello": "Hola", "bye": "Adiós"}
+  set $r_t as i18n.t "hello" "es"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe getLocale with validation
@@ -363,12 +372,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as i18n.getLocale
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Get locale and validate result"
+do
+  set $result as i18n.getLocale
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -210,12 +210,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as diff.lines $old $new
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Lines and validate result"
+do
+  set $result as diff.lines $old $new
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -226,10 +229,13 @@ end
 Chain multiple diff operations together.
 
 ```robinpath
-set $r_lines as diff.lines $old $new
-set $r_chars as diff.chars "cat" "car"
-set $r_words as diff.words $old $new
-print "All operations complete"
+@desc "Lines, chars, and more"
+do
+  set $r_lines as diff.lines $old $new
+  set $r_chars as diff.chars "cat" "car"
+  set $r_words as diff.words $old $new
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe lines with validation
@@ -237,12 +243,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as diff.lines $old $new
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Lines and validate result"
+do
+  set $result as diff.lines $old $new
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

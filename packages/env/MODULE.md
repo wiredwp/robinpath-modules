@@ -174,12 +174,15 @@ All functions throw on failure. Common errors:
 | `Cannot delete protected system variable: "..."` | Check the error message for details |
 
 ```robinpath
-set $result as env.get "NODE_ENV"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get and validate result"
+do
+  set $result as env.get "NODE_ENV"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -190,10 +193,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as env.get "NODE_ENV"
-each $item in $result
-  print $item
-end
+@desc "Get and iterate results"
+do
+  set $result as env.get "NODE_ENV"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Env workflow
@@ -201,10 +207,13 @@ end
 Chain multiple env operations together.
 
 ```robinpath
-set $r_get as env.get "NODE_ENV"
-set $r_has as env.has "NODE_ENV"
-set $r_all as env.all
-print "All operations complete"
+@desc "Get, has, and more"
+do
+  set $r_get as env.get "NODE_ENV"
+  set $r_has as env.has "NODE_ENV"
+  set $r_all as env.all
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe get with validation
@@ -212,12 +221,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as env.get "NODE_ENV"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Get and validate result"
+do
+  set $result as env.get "NODE_ENV"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -174,12 +174,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as pdf.generate "./report.pdf" {"title": "Monthly Report", "content": "..."}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Generate and validate result"
+do
+  set $result as pdf.generate "./report.pdf" {"title": "Monthly Report", "content": "..."}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -190,10 +193,13 @@ end
 Chain multiple pdf operations together.
 
 ```robinpath
-set $r_generate as pdf.generate "./report.pdf" {"title": "Monthly Report", "content": "..."}
-set $r_parse as pdf.parse "./document.pdf"
-set $r_extractText as pdf.extractText "./document.pdf"
-print "All operations complete"
+@desc "Generate, parse, and more"
+do
+  set $r_generate as pdf.generate "./report.pdf" {"title": "Monthly Report", "content": "..."}
+  set $r_parse as pdf.parse "./document.pdf"
+  set $r_extractText as pdf.extractText "./document.pdf"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe generate with validation
@@ -201,12 +207,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as pdf.generate "./report.pdf" {"title": "Monthly Report", "content": "..."}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Generate and validate result"
+do
+  set $result as pdf.generate "./report.pdf" {"title": "Monthly Report", "content": "..."}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

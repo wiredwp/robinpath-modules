@@ -450,12 +450,15 @@ All functions throw on failure. Common errors:
 | `Clickup: "..." not configured. Call clickup.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as clickup.listWorkspaces
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List workspaces and validate result"
+do
+  set $result as clickup.listWorkspaces
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -466,11 +469,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-clickup.setCredentials $token
-set $result as clickup.listWorkspaces
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  clickup.setCredentials $token
+enddo
+
+@desc "List workspaces and iterate results"
+do
+  set $result as clickup.listWorkspaces
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createSpace
@@ -478,9 +488,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-clickup.setCredentials $token
-set $result as clickup.createSpace
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  clickup.setCredentials $token
+enddo
+
+@desc "Create space"
+do
+  set $result as clickup.createSpace
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -488,10 +505,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-clickup.setCredentials $token
-set $created as clickup.createSpace
-# Update the created item
-clickup.updateTask
+@desc "Setup authentication"
+do
+  clickup.setCredentials $token
+enddo
+
+@desc "Create space and update task"
+do
+  set $created as clickup.createSpace
+  # Update the created item
+  clickup.updateTask
+enddo
 ```
 
 ### 4. Check before creating
@@ -499,14 +523,21 @@ clickup.updateTask
 List existing items and only create if needed.
 
 ```robinpath
-clickup.setCredentials $token
-set $existing as clickup.listWorkspaces
-if $existing == null
-  clickup.createSpace
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  clickup.setCredentials $token
+enddo
+
+@desc "List workspaces and create space"
+do
+  set $existing as clickup.listWorkspaces
+  if $existing == null
+    clickup.createSpace
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step ClickUp workflow
@@ -514,11 +545,18 @@ end
 Chain multiple clickup operations together.
 
 ```robinpath
-clickup.setCredentials $token
-set $r_listWorkspaces as clickup.listWorkspaces
-set $r_listSpaces as clickup.listSpaces
-set $r_getSpace as clickup.getSpace
-print "All operations complete"
+@desc "Setup authentication"
+do
+  clickup.setCredentials $token
+enddo
+
+@desc "List workspaces, list spaces, and more"
+do
+  set $r_listWorkspaces as clickup.listWorkspaces
+  set $r_listSpaces as clickup.listSpaces
+  set $r_getSpace as clickup.getSpace
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listWorkspaces with validation
@@ -526,13 +564,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-clickup.setCredentials $token
-set $result as clickup.listWorkspaces
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  clickup.setCredentials $token
+enddo
+
+@desc "List workspaces and validate result"
+do
+  set $result as clickup.listWorkspaces
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

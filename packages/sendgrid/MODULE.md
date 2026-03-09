@@ -415,12 +415,15 @@ All functions throw on failure. Common errors:
 | `Email is required` | Check the error message for details |
 
 ```robinpath
-set $result as sendgrid.sendEmail "bob@example.com" "noreply@myapp.com" "Welcome!" {"html": "<h1>Hello!</h1>"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Send email and validate result"
+do
+  set $result as sendgrid.sendEmail "bob@example.com" "noreply@myapp.com" "Welcome!" {"html": "<h1>Hello!</h1>"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -431,11 +434,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-sendgrid.setApiKey $token
-set $result as sendgrid.listContacts {"pageSize": 50}
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  sendgrid.setApiKey $token
+enddo
+
+@desc "List contacts and iterate results"
+do
+  set $result as sendgrid.listContacts {"pageSize": 50}
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with sendEmail
@@ -443,9 +453,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-sendgrid.setApiKey $token
-set $result as sendgrid.sendEmail "bob@example.com" "noreply@myapp.com" "Welcome!" {"html": "<h1>Hello!</h1>"}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  sendgrid.setApiKey $token
+enddo
+
+@desc "Send email"
+do
+  set $result as sendgrid.sendEmail "bob@example.com" "noreply@myapp.com" "Welcome!" {"html": "<h1>Hello!</h1>"}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -453,14 +470,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-sendgrid.setApiKey $token
-set $existing as sendgrid.listContacts {"pageSize": 50}
-if $existing == null
-  sendgrid.sendEmail "bob@example.com" "noreply@myapp.com" "Welcome!" {"html": "<h1>Hello!</h1>"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  sendgrid.setApiKey $token
+enddo
+
+@desc "List contacts and send email"
+do
+  set $existing as sendgrid.listContacts {"pageSize": 50}
+  if $existing == null
+    sendgrid.sendEmail "bob@example.com" "noreply@myapp.com" "Welcome!" {"html": "<h1>Hello!</h1>"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step SendGrid workflow
@@ -468,11 +492,18 @@ end
 Chain multiple sendgrid operations together.
 
 ```robinpath
-sendgrid.setApiKey $token
-set $r_sendEmail as sendgrid.sendEmail "bob@example.com" "noreply@myapp.com" "Welcome!" {"html": "<h1>Hello!</h1>"}
-set $r_sendTemplate as sendgrid.sendTemplate "bob@example.com" "noreply@myapp.com" "d-abc123" {"name": "Bob", "orderId": "12345"}
-set $r_addContact as sendgrid.addContact "bob@example.com" {"firstName": "Bob", "lastName": "Smith"}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  sendgrid.setApiKey $token
+enddo
+
+@desc "Send email, send template, and more"
+do
+  set $r_sendEmail as sendgrid.sendEmail "bob@example.com" "noreply@myapp.com" "Welcome!" {"html": "<h1>Hello!</h1>"}
+  set $r_sendTemplate as sendgrid.sendTemplate "bob@example.com" "noreply@myapp.com" "d-abc123" {"name": "Bob", "orderId": "12345"}
+  set $r_addContact as sendgrid.addContact "bob@example.com" {"firstName": "Bob", "lastName": "Smith"}
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe sendEmail with validation
@@ -480,13 +511,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-sendgrid.setApiKey $token
-set $result as sendgrid.sendEmail "bob@example.com" "noreply@myapp.com" "Welcome!" {"html": "<h1>Hello!</h1>"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  sendgrid.setApiKey $token
+enddo
+
+@desc "Send email and validate result"
+do
+  set $result as sendgrid.sendEmail "bob@example.com" "noreply@myapp.com" "Welcome!" {"html": "<h1>Hello!</h1>"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

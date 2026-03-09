@@ -139,12 +139,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as csv.parse "name,age\nAlice,30\nBob,25"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Parse and validate result"
+do
+  set $result as csv.parse "name,age\nAlice,30\nBob,25"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -155,10 +158,13 @@ end
 Chain multiple csv operations together.
 
 ```robinpath
-set $r_parse as csv.parse "name,age\nAlice,30\nBob,25"
-set $r_stringify as csv.stringify $data
-set $r_headers as csv.headers "name,age\nAlice,30"
-print "All operations complete"
+@desc "Parse, stringify, and more"
+do
+  set $r_parse as csv.parse "name,age\nAlice,30\nBob,25"
+  set $r_stringify as csv.stringify $data
+  set $r_headers as csv.headers "name,age\nAlice,30"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe parse with validation
@@ -166,12 +172,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as csv.parse "name,age\nAlice,30\nBob,25"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Parse and validate result"
+do
+  set $result as csv.parse "name,age\nAlice,30\nBob,25"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

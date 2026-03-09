@@ -1000,12 +1000,15 @@ All functions throw on failure. Common errors:
 | `wordpress.updatePage requires pageId and page object.` | Check the error message for details |
 
 ```robinpath
-set $result as wordpress.listPosts {"per_page":5,"status":"publish"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List posts and validate result"
+do
+  set $result as wordpress.listPosts {"per_page":5,"status":"publish"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -1016,11 +1019,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-wordpress.setCredentials $token
-set $result as wordpress.listPosts {"per_page":5,"status":"publish"}
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  wordpress.setCredentials $token
+enddo
+
+@desc "List posts and iterate results"
+do
+  set $result as wordpress.listPosts {"per_page":5,"status":"publish"}
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createPost
@@ -1028,9 +1038,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-wordpress.setCredentials $token
-set $result as wordpress.createPost {"title":"My Post","content":"<p>Hello</p>","status":"draft"}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  wordpress.setCredentials $token
+enddo
+
+@desc "Create post"
+do
+  set $result as wordpress.createPost {"title":"My Post","content":"<p>Hello</p>","status":"draft"}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -1038,10 +1055,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-wordpress.setCredentials $token
-set $created as wordpress.createPost {"title":"My Post","content":"<p>Hello</p>","status":"draft"}
-# Update the created item
-wordpress.updatePost "123" {"title":"Updated","status":"publish"}
+@desc "Setup authentication"
+do
+  wordpress.setCredentials $token
+enddo
+
+@desc "Create post and update post"
+do
+  set $created as wordpress.createPost {"title":"My Post","content":"<p>Hello</p>","status":"draft"}
+  # Update the created item
+  wordpress.updatePost "123" {"title":"Updated","status":"publish"}
+enddo
 ```
 
 ### 4. Check before creating
@@ -1049,14 +1073,21 @@ wordpress.updatePost "123" {"title":"Updated","status":"publish"}
 List existing items and only create if needed.
 
 ```robinpath
-wordpress.setCredentials $token
-set $existing as wordpress.listPosts {"per_page":5,"status":"publish"}
-if $existing == null
-  wordpress.createPost {"title":"My Post","content":"<p>Hello</p>","status":"draft"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  wordpress.setCredentials $token
+enddo
+
+@desc "List posts and create post"
+do
+  set $existing as wordpress.listPosts {"per_page":5,"status":"publish"}
+  if $existing == null
+    wordpress.createPost {"title":"My Post","content":"<p>Hello</p>","status":"draft"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step WordPress workflow
@@ -1064,11 +1095,18 @@ end
 Chain multiple wordpress operations together.
 
 ```robinpath
-wordpress.setCredentials $token
-set $r_listPosts as wordpress.listPosts {"per_page":5,"status":"publish"}
-set $r_getPost as wordpress.getPost "123"
-set $r_createPost as wordpress.createPost {"title":"My Post","content":"<p>Hello</p>","status":"draft"}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  wordpress.setCredentials $token
+enddo
+
+@desc "List posts, get post, and more"
+do
+  set $r_listPosts as wordpress.listPosts {"per_page":5,"status":"publish"}
+  set $r_getPost as wordpress.getPost "123"
+  set $r_createPost as wordpress.createPost {"title":"My Post","content":"<p>Hello</p>","status":"draft"}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listPosts with validation
@@ -1076,13 +1114,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-wordpress.setCredentials $token
-set $result as wordpress.listPosts {"per_page":5,"status":"publish"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  wordpress.setCredentials $token
+enddo
+
+@desc "List posts and validate result"
+do
+  set $result as wordpress.listPosts {"per_page":5,"status":"publish"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

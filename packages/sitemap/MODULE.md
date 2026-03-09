@@ -279,12 +279,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as sitemap.create [{"loc": "https://example.com/", "priority": 1.0}]
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create and validate result"
+do
+  set $result as sitemap.create [{"loc": "https://example.com/", "priority": 1.0}]
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -304,10 +307,13 @@ print "Created: " + $result
 Chain multiple sitemap operations together.
 
 ```robinpath
-set $r_create as sitemap.create [{"loc": "https://example.com/", "priority": 1.0}]
-set $r_createIndex as sitemap.createIndex [{"loc": "https://example.com/sitemap1.xml"}]
-set $r_parse as sitemap.parse $xml
-print "All operations complete"
+@desc "Create, create index, and more"
+do
+  set $r_create as sitemap.create [{"loc": "https://example.com/", "priority": 1.0}]
+  set $r_createIndex as sitemap.createIndex [{"loc": "https://example.com/sitemap1.xml"}]
+  set $r_parse as sitemap.parse $xml
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe create with validation
@@ -315,12 +321,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as sitemap.create [{"loc": "https://example.com/", "priority": 1.0}]
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create and validate result"
+do
+  set $result as sitemap.create [{"loc": "https://example.com/", "priority": 1.0}]
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

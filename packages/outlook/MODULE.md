@@ -417,12 +417,15 @@ All functions throw on failure. Common errors:
 | `Outlook: "..." not configured. Call outlook.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as outlook.listMessages
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List messages and validate result"
+do
+  set $result as outlook.listMessages
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -433,11 +436,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-outlook.setCredentials $token
-set $result as outlook.listMessages
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  outlook.setCredentials $token
+enddo
+
+@desc "List messages and iterate results"
+do
+  set $result as outlook.listMessages
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with sendEmail
@@ -445,9 +455,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-outlook.setCredentials $token
-set $result as outlook.sendEmail
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  outlook.setCredentials $token
+enddo
+
+@desc "Send email"
+do
+  set $result as outlook.sendEmail
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -455,14 +472,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-outlook.setCredentials $token
-set $existing as outlook.listMessages
-if $existing == null
-  outlook.sendEmail
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  outlook.setCredentials $token
+enddo
+
+@desc "List messages and send email"
+do
+  set $existing as outlook.listMessages
+  if $existing == null
+    outlook.sendEmail
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Outlook workflow
@@ -470,11 +494,18 @@ end
 Chain multiple outlook operations together.
 
 ```robinpath
-outlook.setCredentials $token
-set $r_listMessages as outlook.listMessages
-set $r_getMessage as outlook.getMessage
-set $r_sendEmail as outlook.sendEmail
-print "All operations complete"
+@desc "Setup authentication"
+do
+  outlook.setCredentials $token
+enddo
+
+@desc "List messages, get message, and more"
+do
+  set $r_listMessages as outlook.listMessages
+  set $r_getMessage as outlook.getMessage
+  set $r_sendEmail as outlook.sendEmail
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe listMessages with validation
@@ -482,13 +513,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-outlook.setCredentials $token
-set $result as outlook.listMessages
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  outlook.setCredentials $token
+enddo
+
+@desc "List messages and validate result"
+do
+  set $result as outlook.listMessages
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

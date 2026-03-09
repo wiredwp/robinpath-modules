@@ -254,12 +254,15 @@ All functions throw on failure. Common errors:
 | `InvoiceParser: "..." not configured. Call invoice-parser.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as invoice-parser.parseInvoiceText
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Validate result"
+do
+  set $result as invoice-parser.parseInvoiceText
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -270,10 +273,13 @@ end
 Chain multiple invoice-parser operations together.
 
 ```robinpath
-set $r_parseInvoiceText as invoice-parser.parseInvoiceText
-set $r_extractTotal as invoice-parser.extractTotal
-set $r_extractDate as invoice-parser.extractDate
-print "All operations complete"
+@desc "Execute operation"
+do
+  set $r_parseInvoiceText as invoice-parser.parseInvoiceText
+  set $r_extractTotal as invoice-parser.extractTotal
+  set $r_extractDate as invoice-parser.extractDate
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe parseInvoiceText with validation
@@ -281,12 +287,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as invoice-parser.parseInvoiceText
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Validate result"
+do
+  set $result as invoice-parser.parseInvoiceText
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -671,12 +671,15 @@ All functions throw on failure. Common errors:
 | `owner, repo, and sha are required` | Check the error message for details |
 
 ```robinpath
-set $result as github.getRepo "octocat" "Hello-World"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get repo and validate result"
+do
+  set $result as github.getRepo "octocat" "Hello-World"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -687,11 +690,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-github.setToken $token
-set $result as github.getRepo "octocat" "Hello-World"
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  github.setToken $token
+enddo
+
+@desc "Get repo and iterate results"
+do
+  set $result as github.getRepo "octocat" "Hello-World"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createRepo
@@ -699,9 +709,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-github.setToken $token
-set $result as github.createRepo "my-project" {"description": "A new project", "private": true, "autoInit": true}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  github.setToken $token
+enddo
+
+@desc "Create repo"
+do
+  set $result as github.createRepo "my-project" {"description": "A new project", "private": true, "autoInit": true}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -709,10 +726,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-github.setToken $token
-set $created as github.createRepo "my-project" {"description": "A new project", "private": true, "autoInit": true}
-# Update the created item
-github.updateIssue "myuser" "my-repo" 42 {"title": "Updated title", "labels": ["bug", "priority"]}
+@desc "Setup authentication"
+do
+  github.setToken $token
+enddo
+
+@desc "Create repo and update issue"
+do
+  set $created as github.createRepo "my-project" {"description": "A new project", "private": true, "autoInit": true}
+  # Update the created item
+  github.updateIssue "myuser" "my-repo" 42 {"title": "Updated title", "labels": ["bug", "priority"]}
+enddo
 ```
 
 ### 4. Check before creating
@@ -720,14 +744,21 @@ github.updateIssue "myuser" "my-repo" 42 {"title": "Updated title", "labels": ["
 List existing items and only create if needed.
 
 ```robinpath
-github.setToken $token
-set $existing as github.getRepo "octocat" "Hello-World"
-if $existing == null
-  github.createRepo "my-project" {"description": "A new project", "private": true, "autoInit": true}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  github.setToken $token
+enddo
+
+@desc "Get repo and create repo"
+do
+  set $existing as github.getRepo "octocat" "Hello-World"
+  if $existing == null
+    github.createRepo "my-project" {"description": "A new project", "private": true, "autoInit": true}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step GitHub workflow
@@ -735,11 +766,18 @@ end
 Chain multiple github operations together.
 
 ```robinpath
-github.setToken $token
-set $r_getRepo as github.getRepo "octocat" "Hello-World"
-set $r_listRepos as github.listRepos "octocat"
-set $r_createRepo as github.createRepo "my-project" {"description": "A new project", "private": true, "autoInit": true}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  github.setToken $token
+enddo
+
+@desc "Get repo, list repos, and more"
+do
+  set $r_getRepo as github.getRepo "octocat" "Hello-World"
+  set $r_listRepos as github.listRepos "octocat"
+  set $r_createRepo as github.createRepo "my-project" {"description": "A new project", "private": true, "autoInit": true}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe getRepo with validation
@@ -747,13 +785,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-github.setToken $token
-set $result as github.getRepo "octocat" "Hello-World"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  github.setToken $token
+enddo
+
+@desc "Get repo and validate result"
+do
+  set $result as github.getRepo "octocat" "Hello-World"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

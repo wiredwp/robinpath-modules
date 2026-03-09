@@ -1145,12 +1145,15 @@ All functions throw on failure. Common errors:
 | `Workbook "..." not found` | Check the error message for details |
 
 ```robinpath
-set $result as office.createDoc "report" {"margins": {"top": 1, "bottom": 1}} into $doc
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create doc and validate result"
+do
+  set $result as office.createDoc "report" {"margins": {"top": 1, "bottom": 1}} into $doc
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -1170,10 +1173,13 @@ print "Created: " + $result
 Chain multiple office operations together.
 
 ```robinpath
-set $r_createDoc as office.createDoc "report" {"margins": {"top": 1, "bottom": 1}} into $doc
-set $r_readDoc as office.readDoc "./contract.docx" "text" into $content
-set $r_addHeading as office.addHeading $doc "Sales Report" 1 {"color": "#2196F3", "alignment": "center"}
-print "All operations complete"
+@desc "Create doc, read doc, and more"
+do
+  set $r_createDoc as office.createDoc "report" {"margins": {"top": 1, "bottom": 1}} into $doc
+  set $r_readDoc as office.readDoc "./contract.docx" "text" into $content
+  set $r_addHeading as office.addHeading $doc "Sales Report" 1 {"color": "#2196F3", "alignment": "center"}
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe createDoc with validation
@@ -1181,12 +1187,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as office.createDoc "report" {"margins": {"top": 1, "bottom": 1}} into $doc
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create doc and validate result"
+do
+  set $result as office.createDoc "report" {"margins": {"top": 1, "bottom": 1}} into $doc
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

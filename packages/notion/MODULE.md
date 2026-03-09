@@ -255,12 +255,15 @@ All functions throw on failure. Common errors:
 | `notion.queryDatabase requires a databaseId.` | Check the error message for details |
 
 ```robinpath
-set $result as notion.getPage "page-id-here"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get page and validate result"
+do
+  set $result as notion.getPage "page-id-here"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -271,11 +274,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-notion.setToken $token
-set $result as notion.getPage "page-id-here"
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  notion.setToken $token
+enddo
+
+@desc "Get page and iterate results"
+do
+  set $result as notion.getPage "page-id-here"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createPage
@@ -283,9 +293,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-notion.setToken $token
-set $result as notion.createPage "db-id" {"Name":{"title":[{"text":{"content":"New Page"}}]}}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  notion.setToken $token
+enddo
+
+@desc "Create page"
+do
+  set $result as notion.createPage "db-id" {"Name":{"title":[{"text":{"content":"New Page"}}]}}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -293,10 +310,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-notion.setToken $token
-set $created as notion.createPage "db-id" {"Name":{"title":[{"text":{"content":"New Page"}}]}}
-# Update the created item
-notion.updatePage "page-id" {"Status":{"select":{"name":"Done"}}}
+@desc "Setup authentication"
+do
+  notion.setToken $token
+enddo
+
+@desc "Create page and update page"
+do
+  set $created as notion.createPage "db-id" {"Name":{"title":[{"text":{"content":"New Page"}}]}}
+  # Update the created item
+  notion.updatePage "page-id" {"Status":{"select":{"name":"Done"}}}
+enddo
 ```
 
 ### 4. Check before creating
@@ -304,14 +328,21 @@ notion.updatePage "page-id" {"Status":{"select":{"name":"Done"}}}
 List existing items and only create if needed.
 
 ```robinpath
-notion.setToken $token
-set $existing as notion.getPage "page-id-here"
-if $existing == null
-  notion.createPage "db-id" {"Name":{"title":[{"text":{"content":"New Page"}}]}}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  notion.setToken $token
+enddo
+
+@desc "Get page and create page"
+do
+  set $existing as notion.getPage "page-id-here"
+  if $existing == null
+    notion.createPage "db-id" {"Name":{"title":[{"text":{"content":"New Page"}}]}}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Notion workflow
@@ -319,11 +350,18 @@ end
 Chain multiple notion operations together.
 
 ```robinpath
-notion.setToken $token
-set $r_getPage as notion.getPage "page-id-here"
-set $r_createPage as notion.createPage "db-id" {"Name":{"title":[{"text":{"content":"New Page"}}]}}
-set $r_updatePage as notion.updatePage "page-id" {"Status":{"select":{"name":"Done"}}}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  notion.setToken $token
+enddo
+
+@desc "Get page, create page, and more"
+do
+  set $r_getPage as notion.getPage "page-id-here"
+  set $r_createPage as notion.createPage "db-id" {"Name":{"title":[{"text":{"content":"New Page"}}]}}
+  set $r_updatePage as notion.updatePage "page-id" {"Status":{"select":{"name":"Done"}}}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe getPage with validation
@@ -331,13 +369,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-notion.setToken $token
-set $result as notion.getPage "page-id-here"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  notion.setToken $token
+enddo
+
+@desc "Get page and validate result"
+do
+  set $result as notion.getPage "page-id-here"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

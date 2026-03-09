@@ -313,12 +313,15 @@ All functions throw on failure. Common errors:
 | `Pandadoc: "..." not configured. Call pandadoc.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as pandadoc.listDocuments
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List documents and validate result"
+do
+  set $result as pandadoc.listDocuments
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -329,11 +332,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-pandadoc.setCredentials $token
-set $result as pandadoc.listDocuments
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  pandadoc.setCredentials $token
+enddo
+
+@desc "List documents and iterate results"
+do
+  set $result as pandadoc.listDocuments
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createDocument
@@ -341,9 +351,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-pandadoc.setCredentials $token
-set $result as pandadoc.createDocument
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  pandadoc.setCredentials $token
+enddo
+
+@desc "Create document"
+do
+  set $result as pandadoc.createDocument
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -351,14 +368,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-pandadoc.setCredentials $token
-set $existing as pandadoc.listDocuments
-if $existing == null
-  pandadoc.createDocument
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  pandadoc.setCredentials $token
+enddo
+
+@desc "List documents and create document"
+do
+  set $existing as pandadoc.listDocuments
+  if $existing == null
+    pandadoc.createDocument
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step PandaDoc workflow
@@ -366,11 +390,18 @@ end
 Chain multiple pandadoc operations together.
 
 ```robinpath
-pandadoc.setCredentials $token
-set $r_listDocuments as pandadoc.listDocuments
-set $r_getDocument as pandadoc.getDocument
-set $r_createDocument as pandadoc.createDocument
-print "All operations complete"
+@desc "Setup authentication"
+do
+  pandadoc.setCredentials $token
+enddo
+
+@desc "List documents, get document, and more"
+do
+  set $r_listDocuments as pandadoc.listDocuments
+  set $r_getDocument as pandadoc.getDocument
+  set $r_createDocument as pandadoc.createDocument
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe listDocuments with validation
@@ -378,13 +409,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-pandadoc.setCredentials $token
-set $result as pandadoc.listDocuments
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  pandadoc.setCredentials $token
+enddo
+
+@desc "List documents and validate result"
+do
+  set $result as pandadoc.listDocuments
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

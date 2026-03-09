@@ -316,12 +316,15 @@ All functions throw on failure. Common errors:
 | `Hellosign: "..." not configured. Call hellosign.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as hellosign.getSignatureRequest
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get signature request and validate result"
+do
+  set $result as hellosign.getSignatureRequest
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -332,11 +335,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-hellosign.setCredentials $token
-set $result as hellosign.getSignatureRequest
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  hellosign.setCredentials $token
+enddo
+
+@desc "Get signature request and iterate results"
+do
+  set $result as hellosign.getSignatureRequest
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with sendSignatureRequest
@@ -344,9 +354,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-hellosign.setCredentials $token
-set $result as hellosign.sendSignatureRequest
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  hellosign.setCredentials $token
+enddo
+
+@desc "Send signature request"
+do
+  set $result as hellosign.sendSignatureRequest
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -354,10 +371,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-hellosign.setCredentials $token
-set $created as hellosign.sendSignatureRequest
-# Update the created item
-hellosign.updateAccount
+@desc "Setup authentication"
+do
+  hellosign.setCredentials $token
+enddo
+
+@desc "Send signature request and update account"
+do
+  set $created as hellosign.sendSignatureRequest
+  # Update the created item
+  hellosign.updateAccount
+enddo
 ```
 
 ### 4. Check before creating
@@ -365,14 +389,21 @@ hellosign.updateAccount
 List existing items and only create if needed.
 
 ```robinpath
-hellosign.setCredentials $token
-set $existing as hellosign.getSignatureRequest
-if $existing == null
-  hellosign.sendSignatureRequest
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  hellosign.setCredentials $token
+enddo
+
+@desc "Get signature request and send signature request"
+do
+  set $existing as hellosign.getSignatureRequest
+  if $existing == null
+    hellosign.sendSignatureRequest
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step HelloSign workflow
@@ -380,11 +411,18 @@ end
 Chain multiple hellosign operations together.
 
 ```robinpath
-hellosign.setCredentials $token
-set $r_getSignatureRequest as hellosign.getSignatureRequest
-set $r_listSignatureRequests as hellosign.listSignatureRequests
-set $r_sendSignatureRequest as hellosign.sendSignatureRequest
-print "All operations complete"
+@desc "Setup authentication"
+do
+  hellosign.setCredentials $token
+enddo
+
+@desc "Get signature request, list signature requests, and more"
+do
+  set $r_getSignatureRequest as hellosign.getSignatureRequest
+  set $r_listSignatureRequests as hellosign.listSignatureRequests
+  set $r_sendSignatureRequest as hellosign.sendSignatureRequest
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe getSignatureRequest with validation
@@ -392,13 +430,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-hellosign.setCredentials $token
-set $result as hellosign.getSignatureRequest
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  hellosign.setCredentials $token
+enddo
+
+@desc "Get signature request and validate result"
+do
+  set $result as hellosign.getSignatureRequest
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

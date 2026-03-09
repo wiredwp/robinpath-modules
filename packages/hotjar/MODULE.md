@@ -279,12 +279,15 @@ All functions throw on failure. Common errors:
 | `Hotjar: "..." not configured. Call hotjar.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as hotjar.listSurveys
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List surveys and validate result"
+do
+  set $result as hotjar.listSurveys
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -295,11 +298,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-hotjar.setCredentials $token
-set $result as hotjar.listSurveys
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  hotjar.setCredentials $token
+enddo
+
+@desc "List surveys and iterate results"
+do
+  set $result as hotjar.listSurveys
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Hotjar workflow
@@ -307,11 +317,18 @@ end
 Chain multiple hotjar operations together.
 
 ```robinpath
-hotjar.setCredentials $token
-set $r_listSurveys as hotjar.listSurveys
-set $r_getSurvey as hotjar.getSurvey
-set $r_getSurveyResponses as hotjar.getSurveyResponses
-print "All operations complete"
+@desc "Setup authentication"
+do
+  hotjar.setCredentials $token
+enddo
+
+@desc "List surveys, get survey, and more"
+do
+  set $r_listSurveys as hotjar.listSurveys
+  set $r_getSurvey as hotjar.getSurvey
+  set $r_getSurveyResponses as hotjar.getSurveyResponses
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe listSurveys with validation
@@ -319,13 +336,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-hotjar.setCredentials $token
-set $result as hotjar.listSurveys
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  hotjar.setCredentials $token
+enddo
+
+@desc "List surveys and validate result"
+do
+  set $result as hotjar.listSurveys
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

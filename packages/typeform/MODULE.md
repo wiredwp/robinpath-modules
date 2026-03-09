@@ -315,12 +315,15 @@ All functions throw on failure. Common errors:
 | `Typeform: "..." not configured. Call typeform.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as typeform.listForms
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List forms and validate result"
+do
+  set $result as typeform.listForms
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -331,11 +334,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-typeform.setCredentials $token
-set $result as typeform.listForms
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  typeform.setCredentials $token
+enddo
+
+@desc "List forms and iterate results"
+do
+  set $result as typeform.listForms
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createForm
@@ -343,9 +353,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-typeform.setCredentials $token
-set $result as typeform.createForm
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  typeform.setCredentials $token
+enddo
+
+@desc "Create form"
+do
+  set $result as typeform.createForm
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -353,10 +370,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-typeform.setCredentials $token
-set $created as typeform.createForm
-# Update the created item
-typeform.updateForm
+@desc "Setup authentication"
+do
+  typeform.setCredentials $token
+enddo
+
+@desc "Create form and update form"
+do
+  set $created as typeform.createForm
+  # Update the created item
+  typeform.updateForm
+enddo
 ```
 
 ### 4. Check before creating
@@ -364,14 +388,21 @@ typeform.updateForm
 List existing items and only create if needed.
 
 ```robinpath
-typeform.setCredentials $token
-set $existing as typeform.listForms
-if $existing == null
-  typeform.createForm
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  typeform.setCredentials $token
+enddo
+
+@desc "List forms and create form"
+do
+  set $existing as typeform.listForms
+  if $existing == null
+    typeform.createForm
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Typeform workflow
@@ -379,11 +410,18 @@ end
 Chain multiple typeform operations together.
 
 ```robinpath
-typeform.setCredentials $token
-set $r_listForms as typeform.listForms
-set $r_getForm as typeform.getForm
-set $r_createForm as typeform.createForm
-print "All operations complete"
+@desc "Setup authentication"
+do
+  typeform.setCredentials $token
+enddo
+
+@desc "List forms, get form, and more"
+do
+  set $r_listForms as typeform.listForms
+  set $r_getForm as typeform.getForm
+  set $r_createForm as typeform.createForm
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listForms with validation
@@ -391,13 +429,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-typeform.setCredentials $token
-set $result as typeform.listForms
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  typeform.setCredentials $token
+enddo
+
+@desc "List forms and validate result"
+do
+  set $result as typeform.listForms
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

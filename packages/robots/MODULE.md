@@ -280,12 +280,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as robots.parse $text
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Parse and validate result"
+do
+  set $result as robots.parse $text
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -296,10 +299,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as robots.getCrawlDelay $robots "Googlebot"
-each $item in $result
-  print $item
-end
+@desc "Get crawl delay and iterate results"
+do
+  set $result as robots.getCrawlDelay $robots "Googlebot"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with create
@@ -316,13 +322,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as robots.getCrawlDelay $robots "Googlebot"
-if $existing == null
-  robots.create {"rules": [{"userAgent": "*", "disallow": ["/admin"]}]}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Get crawl delay and create"
+do
+  set $existing as robots.getCrawlDelay $robots "Googlebot"
+  if $existing == null
+    robots.create {"rules": [{"userAgent": "*", "disallow": ["/admin"]}]}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Robots workflow
@@ -330,10 +339,13 @@ end
 Chain multiple robots operations together.
 
 ```robinpath
-set $r_parse as robots.parse $text
-set $r_create as robots.create {"rules": [{"userAgent": "*", "disallow": ["/admin"]}]}
-set $r_isAllowed as robots.isAllowed $robots "/page" "Googlebot"
-print "All operations complete"
+@desc "Parse, create, and more"
+do
+  set $r_parse as robots.parse $text
+  set $r_create as robots.create {"rules": [{"userAgent": "*", "disallow": ["/admin"]}]}
+  set $r_isAllowed as robots.isAllowed $robots "/page" "Googlebot"
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe parse with validation
@@ -341,12 +353,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as robots.parse $text
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Parse and validate result"
+do
+  set $result as robots.parse $text
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -325,12 +325,15 @@ All functions throw on failure. Common errors:
 | `Value is required.` | Check the error message for details |
 
 ```robinpath
-set $result as ldap.search
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Search and validate result"
+do
+  set $result as ldap.search
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -350,9 +353,12 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-set $created as ldap.add
-# Update the created item
-ldap.modify
+@desc "Add and modify"
+do
+  set $created as ldap.add
+  # Update the created item
+  ldap.modify
+enddo
 ```
 
 ### 3. Multi-step LDAP workflow
@@ -360,10 +366,13 @@ ldap.modify
 Chain multiple ldap operations together.
 
 ```robinpath
-set $r_connect as ldap.connect
-set $r_search as ldap.search
-set $r_bind as ldap.bind
-print "All operations complete"
+@desc "Connect, search, and more"
+do
+  set $r_connect as ldap.connect
+  set $r_search as ldap.search
+  set $r_bind as ldap.bind
+  print "All operations complete"
+enddo
 ```
 
 ### 4. Safe connect with validation
@@ -371,12 +380,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as ldap.connect
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Connect and validate result"
+do
+  set $result as ldap.connect
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

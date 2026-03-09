@@ -242,12 +242,15 @@ All functions throw on failure. Common errors:
 | `googleSheets.getSheets requires spreadsheetId.` | Check the error message for details |
 
 ```robinpath
-set $result as googleSheets.getValues "spreadsheet_id" "Sheet1!A1:C10"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get values and validate result"
+do
+  set $result as googleSheets.getValues "spreadsheet_id" "Sheet1!A1:C10"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -258,11 +261,14 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-google-sheets.setCredentials $token
-set $result as googleSheets.getValues "spreadsheet_id" "Sheet1!A1:C10"
-each $item in $result
-  print $item
-end
+@desc "Get values and iterate results"
+do
+  google-sheets.setCredentials $token
+  set $result as googleSheets.getValues "spreadsheet_id" "Sheet1!A1:C10"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with create
@@ -270,9 +276,12 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-google-sheets.setCredentials $token
-set $result as googleSheets.create "My New Sheet"
-print "Created: " + $result
+@desc "Create"
+do
+  google-sheets.setCredentials $token
+  set $result as googleSheets.create "My New Sheet"
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -280,14 +289,17 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-google-sheets.setCredentials $token
-set $existing as googleSheets.getValues "spreadsheet_id" "Sheet1!A1:C10"
-if $existing == null
-  googleSheets.create "My New Sheet"
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Get values and create"
+do
+  google-sheets.setCredentials $token
+  set $existing as googleSheets.getValues "spreadsheet_id" "Sheet1!A1:C10"
+  if $existing == null
+    googleSheets.create "My New Sheet"
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Google Sheets workflow
@@ -295,11 +307,14 @@ end
 Chain multiple google-sheets operations together.
 
 ```robinpath
-google-sheets.setCredentials $token
-set $r_getValues as googleSheets.getValues "spreadsheet_id" "Sheet1!A1:C10"
-set $r_appendRow as googleSheets.appendRow "spreadsheet_id" "Sheet1!A:C" ["Alice", 25, "alice@example.com"]
-set $r_clearRange as googleSheets.clearRange "spreadsheet_id" "Sheet1!A1:C10"
-print "All operations complete"
+@desc "Get values, append row, and more"
+do
+  google-sheets.setCredentials $token
+  set $r_getValues as googleSheets.getValues "spreadsheet_id" "Sheet1!A1:C10"
+  set $r_appendRow as googleSheets.appendRow "spreadsheet_id" "Sheet1!A:C" ["Alice", 25, "alice@example.com"]
+  set $r_clearRange as googleSheets.clearRange "spreadsheet_id" "Sheet1!A1:C10"
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe getValues with validation
@@ -307,13 +322,16 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-google-sheets.setCredentials $token
-set $result as googleSheets.getValues "spreadsheet_id" "Sheet1!A1:C10"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Get values and validate result"
+do
+  google-sheets.setCredentials $token
+  set $result as googleSheets.getValues "spreadsheet_id" "Sheet1!A1:C10"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

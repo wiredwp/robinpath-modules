@@ -398,12 +398,15 @@ All functions throw on failure. Common errors:
 | `Timer "..." not found` | Check the error message for details |
 
 ```robinpath
-set $result as debug.inspect $data
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Inspect and validate result"
+do
+  set $result as debug.inspect $data
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -414,10 +417,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as debug.getLogs
-each $item in $result
-  print $item
-end
+@desc "Get logs and iterate results"
+do
+  set $result as debug.getLogs
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Debug workflow
@@ -425,10 +431,13 @@ end
 Chain multiple debug operations together.
 
 ```robinpath
-set $r_inspect as debug.inspect $data
-set $r_typeOf as debug.typeOf $data
-set $r_timeStart as debug.timeStart "fetch"
-print "All operations complete"
+@desc "Inspect, type of, and more"
+do
+  set $r_inspect as debug.inspect $data
+  set $r_typeOf as debug.typeOf $data
+  set $r_timeStart as debug.timeStart "fetch"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe inspect with validation
@@ -436,12 +445,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as debug.inspect $data
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Inspect and validate result"
+do
+  set $result as debug.inspect $data
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

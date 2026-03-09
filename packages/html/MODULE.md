@@ -259,12 +259,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as html.stripTags "<p>Hello <b>world</b></p>"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Strip tags and validate result"
+do
+  set $result as html.stripTags "<p>Hello <b>world</b></p>"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -275,10 +278,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as html.getAttribute "<div class=\"a\"></div><div class=\"b\"></div>" "div" "class"
-each $item in $result
-  print $item
-end
+@desc "Get attribute and iterate results"
+do
+  set $result as html.getAttribute "<div class=\"a\"></div><div class=\"b\"></div>" "div" "class"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step HTML workflow
@@ -286,10 +292,13 @@ end
 Chain multiple html operations together.
 
 ```robinpath
-set $r_stripTags as html.stripTags "<p>Hello <b>world</b></p>"
-set $r_extractText as html.extractText "<p>One</p><p>Two</p>" "p"
-set $r_extractLinks as html.extractLinks "<a href=\"https://example.com\">Example</a>"
-print "All operations complete"
+@desc "Strip tags, extract text, and more"
+do
+  set $r_stripTags as html.stripTags "<p>Hello <b>world</b></p>"
+  set $r_extractText as html.extractText "<p>One</p><p>Two</p>" "p"
+  set $r_extractLinks as html.extractLinks "<a href=\"https://example.com\">Example</a>"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe stripTags with validation
@@ -297,12 +306,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as html.stripTags "<p>Hello <b>world</b></p>"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Strip tags and validate result"
+do
+  set $result as html.stripTags "<p>Hello <b>world</b></p>"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

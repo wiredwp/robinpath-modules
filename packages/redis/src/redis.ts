@@ -1,60 +1,374 @@
 // @ts-nocheck
 import type { BuiltinHandler, FunctionMetadata, ModuleMetadata } from "@wiredwp/robinpath";
-import Redis from "ioredis";
+import * as net from "node:net";
+import * as tls from "node:tls";
 
-const connections = new Map<string, Redis>();
+// ---------------------------------------------------------------------------
+// RESP v2 protocol implementation over raw TCP / TLS
+// ---------------------------------------------------------------------------
 
-function getConn(name: string): any {
+interface RedisConnection {
+  socket: net.Socket;
+  buffer: Buffer;
+  pending: Array<{ resolve: (v: any) => void; reject: (e: Error) => void }>;
+  prefix: string;
+}
+
+const connections = new Map<string, RedisConnection>();
+
+// ---- RESP encoder ----------------------------------------------------------
+
+function encodeCommand(args: string[]): string {
+  let out = `*${args.length}\r\n`;
+  for (const a of args) {
+    const buf = Buffer.from(a, "utf8");
+    out += `$${buf.length}\r\n${a}\r\n`;
+  }
+  return out;
+}
+
+// ---- RESP decoder ----------------------------------------------------------
+
+interface ParseResult {
+  value: any;
+  consumed: number;
+}
+
+function findCRLF(buf: Buffer, start: number): number {
+  for (let i = start; i < buf.length - 1; i++) {
+    if (buf[i] === 0x0d && buf[i + 1] === 0x0a) return i;
+  }
+  return -1;
+}
+
+function parseResp(buf: Buffer, offset: number): ParseResult | null {
+  if (offset >= buf.length) return null;
+  const type = buf[offset];
+
+  // Simple String  +OK\r\n
+  if (type === 0x2b) {
+    const end = findCRLF(buf, offset);
+    if (end === -1) return null;
+    return { value: buf.subarray(offset + 1, end).toString("utf8"), consumed: end + 2 - offset };
+  }
+
+  // Error  -ERR msg\r\n
+  if (type === 0x2d) {
+    const end = findCRLF(buf, offset);
+    if (end === -1) return null;
+    return { value: new Error(buf.subarray(offset + 1, end).toString("utf8")), consumed: end + 2 - offset };
+  }
+
+  // Integer  :1000\r\n
+  if (type === 0x3a) {
+    const end = findCRLF(buf, offset);
+    if (end === -1) return null;
+    return { value: parseInt(buf.subarray(offset + 1, end).toString("utf8"), 10), consumed: end + 2 - offset };
+  }
+
+  // Bulk String  $6\r\nhello!\r\n  or  $-1\r\n (null)
+  if (type === 0x24) {
+    const end = findCRLF(buf, offset);
+    if (end === -1) return null;
+    const len = parseInt(buf.subarray(offset + 1, end).toString("utf8"), 10);
+    if (len === -1) return { value: null, consumed: end + 2 - offset };
+    const dataStart = end + 2;
+    const dataEnd = dataStart + len;
+    if (buf.length < dataEnd + 2) return null; // incomplete
+    return { value: buf.subarray(dataStart, dataEnd).toString("utf8"), consumed: dataEnd + 2 - offset };
+  }
+
+  // Array  *2\r\n...
+  if (type === 0x2a) {
+    const end = findCRLF(buf, offset);
+    if (end === -1) return null;
+    const count = parseInt(buf.subarray(offset + 1, end).toString("utf8"), 10);
+    if (count === -1) return { value: null, consumed: end + 2 - offset };
+    let pos = end + 2 - offset; // relative consumed so far
+    const items: any[] = [];
+    for (let i = 0; i < count; i++) {
+      const r = parseResp(buf, offset + pos);
+      if (r === null) return null; // incomplete
+      items.push(r.value);
+      pos += r.consumed;
+    }
+    return { value: items, consumed: pos };
+  }
+
+  // Unknown type – skip to next CRLF
+  const end = findCRLF(buf, offset);
+  if (end === -1) return null;
+  return { value: buf.subarray(offset + 1, end).toString("utf8"), consumed: end + 2 - offset };
+}
+
+// ---- Connection helpers ----------------------------------------------------
+
+function setupDataHandler(conn: RedisConnection) {
+  conn.socket.on("data", (chunk: Buffer) => {
+    conn.buffer = Buffer.concat([conn.buffer, chunk]);
+    drainBuffer(conn);
+  });
+  conn.socket.on("error", (err) => {
+    while (conn.pending.length) conn.pending.shift()!.reject(err);
+  });
+  conn.socket.on("close", () => {
+    const e = new Error("Redis connection closed");
+    while (conn.pending.length) conn.pending.shift()!.reject(e);
+  });
+}
+
+function drainBuffer(conn: RedisConnection) {
+  while (conn.pending.length && conn.buffer.length > 0) {
+    const result = parseResp(conn.buffer, 0);
+    if (result === null) break; // need more data
+    conn.buffer = conn.buffer.subarray(result.consumed);
+    const { resolve, reject } = conn.pending.shift()!;
+    if (result.value instanceof Error) reject(result.value);
+    else resolve(result.value);
+  }
+}
+
+function sendCommand(conn: RedisConnection, args: string[]): Promise<any> {
+  return new Promise((resolve, reject) => {
+    conn.pending.push({ resolve, reject });
+    conn.socket.write(encodeCommand(args));
+  });
+}
+
+function getConn(name: string): RedisConnection {
   const conn = connections.get(name);
   if (!conn) throw new Error(`Redis connection "${name}" not found. Call redis.connect first.`);
   return conn;
 }
 
+function prefixKey(conn: RedisConnection, key: string): string {
+  return conn.prefix ? conn.prefix + key : key;
+}
+
+async function rawCmd(connName: string, args: string[]): Promise<any> {
+  const conn = getConn(connName);
+  return sendCommand(conn, args);
+}
+
+// ---------------------------------------------------------------------------
+// Handlers
+// ---------------------------------------------------------------------------
+
 const connect: BuiltinHandler = async (args) => {
   const opts = (typeof args[0] === "object" && args[0] !== null ? args[0] : {}) as Record<string, unknown>;
   const name = String(opts.name ?? "default");
-  const redis = new Redis({ host: String(opts.host ?? "localhost"), port: Number(opts.port ?? 6379), password: opts.password ? String(opts.password) : undefined, db: Number(opts.db ?? 0), keyPrefix: opts.prefix ? String(opts.prefix) : undefined });
-  connections.set(name, redis);
+  const host = String(opts.host ?? "localhost");
+  const port = Number(opts.port ?? 6379);
+  const password = opts.password ? String(opts.password) : undefined;
+  const db = Number(opts.db ?? 0);
+  const prefix = opts.prefix ? String(opts.prefix) : "";
+  const useTls = Boolean(opts.tls ?? false);
+
+  // Create socket
+  const socket: net.Socket = await new Promise((resolve, reject) => {
+    let sock: net.Socket;
+    if (useTls) {
+      sock = tls.connect({ host, port, rejectUnauthorized: opts.rejectUnauthorized !== false }, () => resolve(sock));
+    } else {
+      sock = net.createConnection({ host, port }, () => resolve(sock));
+    }
+    sock.once("error", reject);
+  });
+
+  const conn: RedisConnection = { socket, buffer: Buffer.alloc(0), pending: [], prefix };
+  setupDataHandler(conn);
+
+  // AUTH if password provided
+  if (password) {
+    const authReply = await sendCommand(conn, ["AUTH", password]);
+    if (authReply instanceof Error) throw authReply;
+  }
+
+  // SELECT database
+  if (db !== 0) {
+    const selReply = await sendCommand(conn, ["SELECT", String(db)]);
+    if (selReply instanceof Error) throw selReply;
+  }
+
+  connections.set(name, conn);
   return { name, connected: true };
 };
 
-const get: BuiltinHandler = async (args) => { const v = await getConn(String(args[1] ?? "default")).get(String(args[0] ?? "")); try { return v ? JSON.parse(v) : null; } catch { return v; } };
-const set: BuiltinHandler = async (args) => { const val = typeof args[1] === "string" ? args[1] : JSON.stringify(args[1]); const ttl = args[2] ? Number(args[2]) : undefined; if (ttl) await getConn(String(args[3] ?? "default")).set(String(args[0] ?? ""), val, "EX", ttl); else await getConn(String(args[3] ?? "default")).set(String(args[0] ?? ""), val); return true; };
-const del: BuiltinHandler = async (args) => { const keys = Array.isArray(args[0]) ? args[0].map(String) : [String(args[0] ?? "")]; return await getConn(String(args[1] ?? "default")).del(...keys); };
-const exists: BuiltinHandler = async (args) => (await getConn(String(args[1] ?? "default")).exists(String(args[0] ?? ""))) === 1;
-const keys: BuiltinHandler = async (args) => await getConn(String(args[1] ?? "default")).keys(String(args[0] ?? "*"));
-const ttl: BuiltinHandler = async (args) => await getConn(String(args[1] ?? "default")).ttl(String(args[0] ?? ""));
-const expire: BuiltinHandler = async (args) => (await getConn(String(args[2] ?? "default")).expire(String(args[0] ?? ""), Number(args[1] ?? 0))) === 1;
-const incr: BuiltinHandler = async (args) => await getConn(String(args[1] ?? "default")).incrby(String(args[0] ?? ""), Number(args[1] ?? 1));
-const decr: BuiltinHandler = async (args) => await getConn(String(args[1] ?? "default")).decrby(String(args[0] ?? ""), Number(args[1] ?? 1));
+const get: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[1] ?? "default"));
+  const v = await sendCommand(conn, ["GET", prefixKey(conn, String(args[0] ?? ""))]);
+  if (v === null) return null;
+  try { return JSON.parse(v); } catch { return v; }
+};
 
-const hget: BuiltinHandler = async (args) => { const v = await getConn(String(args[2] ?? "default")).hget(String(args[0] ?? ""), String(args[1] ?? "")); try { return v ? JSON.parse(v) : null; } catch { return v; } };
-const hset: BuiltinHandler = async (args) => { const data = (typeof args[1] === "object" && args[1] !== null ? args[1] : {}) as Record<string, unknown>; const flat: string[] = []; for (const [k, v] of Object.entries(data)) flat.push(k, typeof v === "string" ? v : JSON.stringify(v)); await getConn(String(args[2] ?? "default")).hset(String(args[0] ?? ""), ...flat); return true; };
-const hgetall: BuiltinHandler = async (args) => await getConn(String(args[1] ?? "default")).hgetall(String(args[0] ?? ""));
-const hdel: BuiltinHandler = async (args) => { const fields = Array.isArray(args[1]) ? args[1].map(String) : [String(args[1] ?? "")]; return await getConn(String(args[2] ?? "default")).hdel(String(args[0] ?? ""), ...fields); };
+const set: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[3] ?? "default"));
+  const key = prefixKey(conn, String(args[0] ?? ""));
+  const val = typeof args[1] === "string" ? args[1] : JSON.stringify(args[1]);
+  const ttl = args[2] ? Number(args[2]) : undefined;
+  if (ttl) await sendCommand(conn, ["SET", key, val, "EX", String(ttl)]);
+  else await sendCommand(conn, ["SET", key, val]);
+  return true;
+};
 
-const lpush: BuiltinHandler = async (args) => { const vals = Array.isArray(args[1]) ? args[1].map(String) : [String(args[1] ?? "")]; return await getConn(String(args[2] ?? "default")).lpush(String(args[0] ?? ""), ...vals); };
-const rpush: BuiltinHandler = async (args) => { const vals = Array.isArray(args[1]) ? args[1].map(String) : [String(args[1] ?? "")]; return await getConn(String(args[2] ?? "default")).rpush(String(args[0] ?? ""), ...vals); };
-const lpop: BuiltinHandler = async (args) => await getConn(String(args[1] ?? "default")).lpop(String(args[0] ?? ""));
-const rpop: BuiltinHandler = async (args) => await getConn(String(args[1] ?? "default")).rpop(String(args[0] ?? ""));
-const lrange: BuiltinHandler = async (args) => await getConn(String(args[3] ?? "default")).lrange(String(args[0] ?? ""), Number(args[1] ?? 0), Number(args[2] ?? -1));
-const llen: BuiltinHandler = async (args) => await getConn(String(args[1] ?? "default")).llen(String(args[0] ?? ""));
+const del: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[1] ?? "default"));
+  const keys = Array.isArray(args[0]) ? args[0].map(String) : [String(args[0] ?? "")];
+  return await sendCommand(conn, ["DEL", ...keys.map((k) => prefixKey(conn, k))]);
+};
 
-const sadd: BuiltinHandler = async (args) => { const members = Array.isArray(args[1]) ? args[1].map(String) : [String(args[1] ?? "")]; return await getConn(String(args[2] ?? "default")).sadd(String(args[0] ?? ""), ...members); };
-const smembers: BuiltinHandler = async (args) => await getConn(String(args[1] ?? "default")).smembers(String(args[0] ?? ""));
-const sismember: BuiltinHandler = async (args) => (await getConn(String(args[2] ?? "default")).sismember(String(args[0] ?? ""), String(args[1] ?? ""))) === 1;
-const srem: BuiltinHandler = async (args) => { const members = Array.isArray(args[1]) ? args[1].map(String) : [String(args[1] ?? "")]; return await getConn(String(args[2] ?? "default")).srem(String(args[0] ?? ""), ...members); };
+const exists: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[1] ?? "default"));
+  return (await sendCommand(conn, ["EXISTS", prefixKey(conn, String(args[0] ?? ""))])) === 1;
+};
 
-const publish: BuiltinHandler = async (args) => await getConn(String(args[2] ?? "default")).publish(String(args[0] ?? ""), String(args[1] ?? ""));
-const flushdb: BuiltinHandler = async (args) => { await getConn(String(args[0] ?? "default")).flushdb(); return true; };
+const keys: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[1] ?? "default"));
+  return await sendCommand(conn, ["KEYS", prefixKey(conn, String(args[0] ?? "*"))]);
+};
 
-const close: BuiltinHandler = async (args) => { const name = String(args[0] ?? "default"); const c = connections.get(name); if (c) { c.disconnect(); connections.delete(name); } return true; };
-const closeAll: BuiltinHandler = async () => { for (const [n, c] of connections) { c.disconnect(); connections.delete(n); } return true; };
+const ttl: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[1] ?? "default"));
+  return await sendCommand(conn, ["TTL", prefixKey(conn, String(args[0] ?? ""))]);
+};
+
+const expire: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[2] ?? "default"));
+  return (await sendCommand(conn, ["EXPIRE", prefixKey(conn, String(args[0] ?? "")), String(Number(args[1] ?? 0))])) === 1;
+};
+
+const incr: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[1] ?? "default"));
+  return await sendCommand(conn, ["INCRBY", prefixKey(conn, String(args[0] ?? "")), String(Number(args[1] ?? 1))]);
+};
+
+const decr: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[1] ?? "default"));
+  return await sendCommand(conn, ["DECRBY", prefixKey(conn, String(args[0] ?? "")), String(Number(args[1] ?? 1))]);
+};
+
+const hget: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[2] ?? "default"));
+  const v = await sendCommand(conn, ["HGET", prefixKey(conn, String(args[0] ?? "")), String(args[1] ?? "")]);
+  if (v === null) return null;
+  try { return JSON.parse(v); } catch { return v; }
+};
+
+const hset: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[2] ?? "default"));
+  const data = (typeof args[1] === "object" && args[1] !== null ? args[1] : {}) as Record<string, unknown>;
+  const flat: string[] = [];
+  for (const [k, v] of Object.entries(data)) flat.push(k, typeof v === "string" ? v : JSON.stringify(v));
+  await sendCommand(conn, ["HSET", prefixKey(conn, String(args[0] ?? "")), ...flat]);
+  return true;
+};
+
+const hgetall: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[1] ?? "default"));
+  const arr = await sendCommand(conn, ["HGETALL", prefixKey(conn, String(args[0] ?? ""))]);
+  if (!Array.isArray(arr)) return {};
+  const obj: Record<string, string> = {};
+  for (let i = 0; i < arr.length; i += 2) obj[arr[i]] = arr[i + 1];
+  return obj;
+};
+
+const hdel: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[2] ?? "default"));
+  const fields = Array.isArray(args[1]) ? args[1].map(String) : [String(args[1] ?? "")];
+  return await sendCommand(conn, ["HDEL", prefixKey(conn, String(args[0] ?? "")), ...fields]);
+};
+
+const lpush: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[2] ?? "default"));
+  const vals = Array.isArray(args[1]) ? args[1].map(String) : [String(args[1] ?? "")];
+  return await sendCommand(conn, ["LPUSH", prefixKey(conn, String(args[0] ?? "")), ...vals]);
+};
+
+const rpush: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[2] ?? "default"));
+  const vals = Array.isArray(args[1]) ? args[1].map(String) : [String(args[1] ?? "")];
+  return await sendCommand(conn, ["RPUSH", prefixKey(conn, String(args[0] ?? "")), ...vals]);
+};
+
+const lpop: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[1] ?? "default"));
+  return await sendCommand(conn, ["LPOP", prefixKey(conn, String(args[0] ?? ""))]);
+};
+
+const rpop: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[1] ?? "default"));
+  return await sendCommand(conn, ["RPOP", prefixKey(conn, String(args[0] ?? ""))]);
+};
+
+const lrange: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[3] ?? "default"));
+  return await sendCommand(conn, ["LRANGE", prefixKey(conn, String(args[0] ?? "")), String(Number(args[1] ?? 0)), String(Number(args[2] ?? -1))]);
+};
+
+const llen: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[1] ?? "default"));
+  return await sendCommand(conn, ["LLEN", prefixKey(conn, String(args[0] ?? ""))]);
+};
+
+const sadd: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[2] ?? "default"));
+  const members = Array.isArray(args[1]) ? args[1].map(String) : [String(args[1] ?? "")];
+  return await sendCommand(conn, ["SADD", prefixKey(conn, String(args[0] ?? "")), ...members]);
+};
+
+const smembers: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[1] ?? "default"));
+  return await sendCommand(conn, ["SMEMBERS", prefixKey(conn, String(args[0] ?? ""))]);
+};
+
+const sismember: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[2] ?? "default"));
+  return (await sendCommand(conn, ["SISMEMBER", prefixKey(conn, String(args[0] ?? "")), String(args[1] ?? "")])) === 1;
+};
+
+const srem: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[2] ?? "default"));
+  const members = Array.isArray(args[1]) ? args[1].map(String) : [String(args[1] ?? "")];
+  return await sendCommand(conn, ["SREM", prefixKey(conn, String(args[0] ?? "")), ...members]);
+};
+
+const publish: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[2] ?? "default"));
+  return await sendCommand(conn, ["PUBLISH", String(args[0] ?? ""), String(args[1] ?? "")]);
+};
+
+const flushdb: BuiltinHandler = async (args) => {
+  const conn = getConn(String(args[0] ?? "default"));
+  await sendCommand(conn, ["FLUSHDB"]);
+  return true;
+};
+
+const close: BuiltinHandler = async (args) => {
+  const name = String(args[0] ?? "default");
+  const c = connections.get(name);
+  if (c) {
+    c.socket.destroy();
+    connections.delete(name);
+  }
+  return true;
+};
+
+const closeAll: BuiltinHandler = async () => {
+  for (const [n, c] of connections) {
+    c.socket.destroy();
+    connections.delete(n);
+  }
+  return true;
+};
+
+// ---------------------------------------------------------------------------
+// Exports
+// ---------------------------------------------------------------------------
 
 export const RedisFunctions: Record<string, BuiltinHandler> = { connect, get, set, del, exists, keys, ttl, expire, incr, decr, hget, hset, hgetall, hdel, lpush, rpush, lpop, rpop, lrange, llen, sadd, smembers, sismember, srem, publish, flushdb, close, closeAll };
 
 export const RedisFunctionMetadata = {
-  connect: { description: "Connect to Redis", parameters: [{ name: "options", dataType: "object", description: "{host, port, password, db, prefix, name}", formInputType: "text", required: true }], returnType: "object", returnDescription: "{name, connected}", example: 'redis.connect {"host": "localhost"}' },
+  connect: { description: "Connect to Redis", parameters: [{ name: "options", dataType: "object", description: "{host, port, password, db, prefix, name, tls}", formInputType: "text", required: true }], returnType: "object", returnDescription: "{name, connected}", example: 'redis.connect {"host": "localhost"}' },
   get: { description: "Get value by key", parameters: [{ name: "key", dataType: "string", description: "Key", formInputType: "text", required: true }, { name: "connection", dataType: "string", description: "Connection name", formInputType: "text", required: false }], returnType: "any", returnDescription: "Value or null", example: 'redis.get "user:1"' },
   set: { description: "Set key-value", parameters: [{ name: "key", dataType: "string", description: "Key", formInputType: "text", required: true }, { name: "value", dataType: "any", description: "Value", formInputType: "text", required: true }, { name: "ttl", dataType: "number", description: "TTL in seconds", formInputType: "text", required: false }, { name: "connection", dataType: "string", description: "Connection name", formInputType: "text", required: false }], returnType: "boolean", returnDescription: "true", example: 'redis.set "user:1" {"name": "Alice"} 3600' },
   del: { description: "Delete key(s)", parameters: [{ name: "keys", dataType: "string", description: "Key or array of keys", formInputType: "text", required: true }, { name: "connection", dataType: "string", description: "Connection name", formInputType: "text", required: false }], returnType: "number", returnDescription: "Keys deleted", example: 'redis.del "user:1"' },

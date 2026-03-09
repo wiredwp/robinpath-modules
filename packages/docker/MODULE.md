@@ -339,12 +339,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as docker.ps
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Ps and validate result"
+do
+  set $result as docker.ps
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -355,10 +358,13 @@ end
 Chain multiple docker operations together.
 
 ```robinpath
-set $r_ps as docker.ps
-set $r_images as docker.images
-set $r_run as docker.run
-print "All operations complete"
+@desc "Ps, images, and more"
+do
+  set $r_ps as docker.ps
+  set $r_images as docker.images
+  set $r_run as docker.run
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe ps with validation
@@ -366,12 +372,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as docker.ps
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Ps and validate result"
+do
+  set $result as docker.ps
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

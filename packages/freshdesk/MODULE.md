@@ -418,12 +418,15 @@ All functions throw on failure. Common errors:
 | `Freshdesk: "..." not configured. Call freshdesk.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as freshdesk.listTickets
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List tickets and validate result"
+do
+  set $result as freshdesk.listTickets
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -434,11 +437,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-freshdesk.setCredentials $token
-set $result as freshdesk.listTickets
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  freshdesk.setCredentials $token
+enddo
+
+@desc "List tickets and iterate results"
+do
+  set $result as freshdesk.listTickets
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createTicket
@@ -446,9 +456,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-freshdesk.setCredentials $token
-set $result as freshdesk.createTicket
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  freshdesk.setCredentials $token
+enddo
+
+@desc "Create ticket"
+do
+  set $result as freshdesk.createTicket
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -456,10 +473,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-freshdesk.setCredentials $token
-set $created as freshdesk.createTicket
-# Update the created item
-freshdesk.updateTicket
+@desc "Setup authentication"
+do
+  freshdesk.setCredentials $token
+enddo
+
+@desc "Create ticket and update ticket"
+do
+  set $created as freshdesk.createTicket
+  # Update the created item
+  freshdesk.updateTicket
+enddo
 ```
 
 ### 4. Check before creating
@@ -467,14 +491,21 @@ freshdesk.updateTicket
 List existing items and only create if needed.
 
 ```robinpath
-freshdesk.setCredentials $token
-set $existing as freshdesk.listTickets
-if $existing == null
-  freshdesk.createTicket
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  freshdesk.setCredentials $token
+enddo
+
+@desc "List tickets and create ticket"
+do
+  set $existing as freshdesk.listTickets
+  if $existing == null
+    freshdesk.createTicket
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Freshdesk workflow
@@ -482,11 +513,18 @@ end
 Chain multiple freshdesk operations together.
 
 ```robinpath
-freshdesk.setCredentials $token
-set $r_listTickets as freshdesk.listTickets
-set $r_getTicket as freshdesk.getTicket
-set $r_createTicket as freshdesk.createTicket
-print "All operations complete"
+@desc "Setup authentication"
+do
+  freshdesk.setCredentials $token
+enddo
+
+@desc "List tickets, get ticket, and more"
+do
+  set $r_listTickets as freshdesk.listTickets
+  set $r_getTicket as freshdesk.getTicket
+  set $r_createTicket as freshdesk.createTicket
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listTickets with validation
@@ -494,13 +532,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-freshdesk.setCredentials $token
-set $result as freshdesk.listTickets
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  freshdesk.setCredentials $token
+enddo
+
+@desc "List tickets and validate result"
+do
+  set $result as freshdesk.listTickets
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -505,12 +505,15 @@ All functions throw on failure. Common errors:
 | `tags are required.` | Check the error message for details |
 
 ```robinpath
-set $result as mailchimp.getLists
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get lists and validate result"
+do
+  set $result as mailchimp.getLists
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -521,11 +524,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-mailchimp.setCredentials $token
-set $result as mailchimp.getLists
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  mailchimp.setCredentials $token
+enddo
+
+@desc "Get lists and iterate results"
+do
+  set $result as mailchimp.getLists
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createList
@@ -533,9 +543,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-mailchimp.setCredentials $token
-set $result as mailchimp.createList "My Newsletter" {"company": "Acme", "fromEmail": "news@acme.com", "fromName": "Acme News"}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  mailchimp.setCredentials $token
+enddo
+
+@desc "Create list"
+do
+  set $result as mailchimp.createList "My Newsletter" {"company": "Acme", "fromEmail": "news@acme.com", "fromName": "Acme News"}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -543,10 +560,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-mailchimp.setCredentials $token
-set $created as mailchimp.createList "My Newsletter" {"company": "Acme", "fromEmail": "news@acme.com", "fromName": "Acme News"}
-# Update the created item
-mailchimp.updateMember "abc123" "user@example.com" {"mergeFields": {"FNAME": "Jane"}}
+@desc "Setup authentication"
+do
+  mailchimp.setCredentials $token
+enddo
+
+@desc "Create list and update member"
+do
+  set $created as mailchimp.createList "My Newsletter" {"company": "Acme", "fromEmail": "news@acme.com", "fromName": "Acme News"}
+  # Update the created item
+  mailchimp.updateMember "abc123" "user@example.com" {"mergeFields": {"FNAME": "Jane"}}
+enddo
 ```
 
 ### 4. Check before creating
@@ -554,14 +578,21 @@ mailchimp.updateMember "abc123" "user@example.com" {"mergeFields": {"FNAME": "Ja
 List existing items and only create if needed.
 
 ```robinpath
-mailchimp.setCredentials $token
-set $existing as mailchimp.getLists
-if $existing == null
-  mailchimp.createList "My Newsletter" {"company": "Acme", "fromEmail": "news@acme.com", "fromName": "Acme News"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  mailchimp.setCredentials $token
+enddo
+
+@desc "Get lists and create list"
+do
+  set $existing as mailchimp.getLists
+  if $existing == null
+    mailchimp.createList "My Newsletter" {"company": "Acme", "fromEmail": "news@acme.com", "fromName": "Acme News"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Mailchimp workflow
@@ -569,11 +600,18 @@ end
 Chain multiple mailchimp operations together.
 
 ```robinpath
-mailchimp.setCredentials $token
-set $r_getLists as mailchimp.getLists
-set $r_getList as mailchimp.getList "abc123"
-set $r_createList as mailchimp.createList "My Newsletter" {"company": "Acme", "fromEmail": "news@acme.com", "fromName": "Acme News"}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  mailchimp.setCredentials $token
+enddo
+
+@desc "Get lists, get list, and more"
+do
+  set $r_getLists as mailchimp.getLists
+  set $r_getList as mailchimp.getList "abc123"
+  set $r_createList as mailchimp.createList "My Newsletter" {"company": "Acme", "fromEmail": "news@acme.com", "fromName": "Acme News"}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe getLists with validation
@@ -581,13 +619,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-mailchimp.setCredentials $token
-set $result as mailchimp.getLists
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  mailchimp.setCredentials $token
+enddo
+
+@desc "Get lists and validate result"
+do
+  set $result as mailchimp.getLists
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

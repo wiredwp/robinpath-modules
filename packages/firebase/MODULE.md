@@ -436,12 +436,15 @@ All functions throw on failure. Common errors:
 | `collection and documentId are required` | Check the error message for details |
 
 ```robinpath
-set $result as firebase.getDocument "users" "user123"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get document and validate result"
+do
+  set $result as firebase.getDocument "users" "user123"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -452,11 +455,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-firebase.setCredentials $token
-set $result as firebase.getDocument "users" "user123"
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  firebase.setCredentials $token
+enddo
+
+@desc "Get document and iterate results"
+do
+  set $result as firebase.getDocument "users" "user123"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createDocument
@@ -464,9 +474,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-firebase.setCredentials $token
-set $result as firebase.createDocument "users" {"name": "Alice", "age": 30}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  firebase.setCredentials $token
+enddo
+
+@desc "Create document"
+do
+  set $result as firebase.createDocument "users" {"name": "Alice", "age": 30}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -474,10 +491,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-firebase.setCredentials $token
-set $created as firebase.createDocument "users" {"name": "Alice", "age": 30}
-# Update the created item
-firebase.updateDocument "users" "user123" {"name": "Bob"}
+@desc "Setup authentication"
+do
+  firebase.setCredentials $token
+enddo
+
+@desc "Create document and update document"
+do
+  set $created as firebase.createDocument "users" {"name": "Alice", "age": 30}
+  # Update the created item
+  firebase.updateDocument "users" "user123" {"name": "Bob"}
+enddo
 ```
 
 ### 4. Check before creating
@@ -485,14 +509,21 @@ firebase.updateDocument "users" "user123" {"name": "Bob"}
 List existing items and only create if needed.
 
 ```robinpath
-firebase.setCredentials $token
-set $existing as firebase.getDocument "users" "user123"
-if $existing == null
-  firebase.createDocument "users" {"name": "Alice", "age": 30}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  firebase.setCredentials $token
+enddo
+
+@desc "Get document and create document"
+do
+  set $existing as firebase.getDocument "users" "user123"
+  if $existing == null
+    firebase.createDocument "users" {"name": "Alice", "age": 30}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Firebase workflow
@@ -500,11 +531,18 @@ end
 Chain multiple firebase operations together.
 
 ```robinpath
-firebase.setCredentials $token
-set $r_getDocument as firebase.getDocument "users" "user123"
-set $r_listDocuments as firebase.listDocuments "users" {"pageSize": 10}
-set $r_createDocument as firebase.createDocument "users" {"name": "Alice", "age": 30}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  firebase.setCredentials $token
+enddo
+
+@desc "Get document, list documents, and more"
+do
+  set $r_getDocument as firebase.getDocument "users" "user123"
+  set $r_listDocuments as firebase.listDocuments "users" {"pageSize": 10}
+  set $r_createDocument as firebase.createDocument "users" {"name": "Alice", "age": 30}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe getDocument with validation
@@ -512,13 +550,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-firebase.setCredentials $token
-set $result as firebase.getDocument "users" "user123"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  firebase.setCredentials $token
+enddo
+
+@desc "Get document and validate result"
+do
+  set $result as firebase.getDocument "users" "user123"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

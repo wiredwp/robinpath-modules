@@ -417,12 +417,15 @@ All functions throw on failure. Common errors:
 | `Linear: "..." not configured. Call linear.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as linear.listIssues
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List issues and validate result"
+do
+  set $result as linear.listIssues
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -433,11 +436,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-linear.setCredentials $token
-set $result as linear.listIssues
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  linear.setCredentials $token
+enddo
+
+@desc "List issues and iterate results"
+do
+  set $result as linear.listIssues
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createIssue
@@ -445,9 +455,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-linear.setCredentials $token
-set $result as linear.createIssue
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  linear.setCredentials $token
+enddo
+
+@desc "Create issue"
+do
+  set $result as linear.createIssue
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -455,10 +472,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-linear.setCredentials $token
-set $created as linear.createIssue
-# Update the created item
-linear.updateIssue
+@desc "Setup authentication"
+do
+  linear.setCredentials $token
+enddo
+
+@desc "Create issue and update issue"
+do
+  set $created as linear.createIssue
+  # Update the created item
+  linear.updateIssue
+enddo
 ```
 
 ### 4. Check before creating
@@ -466,14 +490,21 @@ linear.updateIssue
 List existing items and only create if needed.
 
 ```robinpath
-linear.setCredentials $token
-set $existing as linear.listIssues
-if $existing == null
-  linear.createIssue
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  linear.setCredentials $token
+enddo
+
+@desc "List issues and create issue"
+do
+  set $existing as linear.listIssues
+  if $existing == null
+    linear.createIssue
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Linear workflow
@@ -481,11 +512,18 @@ end
 Chain multiple linear operations together.
 
 ```robinpath
-linear.setCredentials $token
-set $r_listIssues as linear.listIssues
-set $r_getIssue as linear.getIssue
-set $r_createIssue as linear.createIssue
-print "All operations complete"
+@desc "Setup authentication"
+do
+  linear.setCredentials $token
+enddo
+
+@desc "List issues, get issue, and more"
+do
+  set $r_listIssues as linear.listIssues
+  set $r_getIssue as linear.getIssue
+  set $r_createIssue as linear.createIssue
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listIssues with validation
@@ -493,13 +531,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-linear.setCredentials $token
-set $result as linear.listIssues
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  linear.setCredentials $token
+enddo
+
+@desc "List issues and validate result"
+do
+  set $result as linear.listIssues
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -348,12 +348,15 @@ All functions throw on failure. Common errors:
 | `Anthropic: "..." not configured. Call anthropic.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as anthropic.createMessage
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create message and validate result"
+do
+  set $result as anthropic.createMessage
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -364,11 +367,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-anthropic.setCredentials $token
-set $result as anthropic.listModels
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  anthropic.setCredentials $token
+enddo
+
+@desc "List models and iterate results"
+do
+  set $result as anthropic.listModels
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createMessage
@@ -376,9 +386,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-anthropic.setCredentials $token
-set $result as anthropic.createMessage
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  anthropic.setCredentials $token
+enddo
+
+@desc "Create message"
+do
+  set $result as anthropic.createMessage
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -386,14 +403,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-anthropic.setCredentials $token
-set $existing as anthropic.listModels
-if $existing == null
-  anthropic.createMessage
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  anthropic.setCredentials $token
+enddo
+
+@desc "List models and create message"
+do
+  set $existing as anthropic.listModels
+  if $existing == null
+    anthropic.createMessage
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Anthropic workflow
@@ -401,11 +425,18 @@ end
 Chain multiple anthropic operations together.
 
 ```robinpath
-anthropic.setCredentials $token
-set $r_createMessage as anthropic.createMessage
-set $r_chat as anthropic.chat
-set $r_summarize as anthropic.summarize
-print "All operations complete"
+@desc "Setup authentication"
+do
+  anthropic.setCredentials $token
+enddo
+
+@desc "Create message, chat, and more"
+do
+  set $r_createMessage as anthropic.createMessage
+  set $r_chat as anthropic.chat
+  set $r_summarize as anthropic.summarize
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe createMessage with validation
@@ -413,13 +444,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-anthropic.setCredentials $token
-set $result as anthropic.createMessage
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  anthropic.setCredentials $token
+enddo
+
+@desc "Create message and validate result"
+do
+  set $result as anthropic.createMessage
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

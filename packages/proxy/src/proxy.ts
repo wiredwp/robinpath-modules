@@ -421,11 +421,11 @@ export const ProxyFunctionMetadata = {
   forward: {
     description: "Forward a single HTTP request to a target server and return the response",
     parameters: [
-      { name: "targetUrl", dataType: "string", description: "Target server URL to forward to", optional: false },
-      { name: "method", dataType: "string", description: "HTTP method (GET, POST, etc.)", optional: true },
-      { name: "path", dataType: "string", description: "Request path (default: /)", optional: true },
-      { name: "headers", dataType: "object", description: "Request headers", optional: true },
-      { name: "body", dataType: "string", description: "Request body", optional: true },
+      { name: "targetUrl", dataType: "string", description: "Target server URL to forward to", required: true, formInputType: "text" },
+      { name: "method", dataType: "string", description: "HTTP method (GET, POST, etc.)", required: false, formInputType: "text" },
+      { name: "path", dataType: "string", description: "Request path (default: /)", required: false, formInputType: "text" },
+      { name: "headers", dataType: "object", description: "Request headers", required: false, formInputType: "json" },
+      { name: "body", dataType: "string", description: "Request body", required: false, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -434,9 +434,9 @@ export const ProxyFunctionMetadata = {
   create: {
     description: "Create a new HTTP proxy server instance",
     parameters: [
-      { name: "id", dataType: "string", description: "Proxy identifier", optional: true },
-      { name: "target", dataType: "string", description: "Default target URL to proxy requests to", optional: false },
-      { name: "port", dataType: "number", description: "Port to listen on (default: 8080)", optional: true },
+      { name: "id", dataType: "string", description: "Proxy identifier", required: false, formInputType: "text" },
+      { name: "target", dataType: "string", description: "Default target URL to proxy requests to", required: true, formInputType: "text" },
+      { name: "port", dataType: "number", description: "Port to listen on (default: 8080)", required: false, formInputType: "number" },
     ],
 
     returnType: "object",
@@ -445,7 +445,7 @@ export const ProxyFunctionMetadata = {
   start: {
     description: "Start a proxy server and begin listening for requests",
     parameters: [
-      { name: "id", dataType: "string", description: "Proxy identifier", optional: true },
+      { name: "id", dataType: "string", description: "Proxy identifier", required: false, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -454,7 +454,7 @@ export const ProxyFunctionMetadata = {
   stop: {
     description: "Stop a running proxy server and clean up resources",
     parameters: [
-      { name: "id", dataType: "string", description: "Proxy identifier", optional: true },
+      { name: "id", dataType: "string", description: "Proxy identifier", required: false, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -463,9 +463,9 @@ export const ProxyFunctionMetadata = {
   rewrite: {
     description: "Add a URL rewrite rule to transform incoming request paths",
     parameters: [
-      { name: "id", dataType: "string", description: "Proxy identifier", optional: true },
-      { name: "pattern", dataType: "string", description: "Regex pattern to match in the URL", optional: false },
-      { name: "replacement", dataType: "string", description: "Replacement string", optional: false },
+      { name: "id", dataType: "string", description: "Proxy identifier", required: false, formInputType: "text" },
+      { name: "pattern", dataType: "string", description: "Regex pattern to match in the URL", required: true, formInputType: "text" },
+      { name: "replacement", dataType: "string", description: "Replacement string", required: true, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -474,9 +474,9 @@ export const ProxyFunctionMetadata = {
   addHeader: {
     description: "Add a header to all proxied responses",
     parameters: [
-      { name: "id", dataType: "string", description: "Proxy identifier", optional: true },
-      { name: "name", dataType: "string", description: "Header name", optional: false },
-      { name: "value", dataType: "string", description: "Header value", optional: false },
+      { name: "id", dataType: "string", description: "Proxy identifier", required: false, formInputType: "text" },
+      { name: "name", dataType: "string", description: "Header name", required: true, formInputType: "text" },
+      { name: "value", dataType: "string", description: "Header value", required: true, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -485,8 +485,8 @@ export const ProxyFunctionMetadata = {
   removeHeader: {
     description: "Remove a header from all proxied responses",
     parameters: [
-      { name: "id", dataType: "string", description: "Proxy identifier", optional: true },
-      { name: "name", dataType: "string", description: "Header name to remove", optional: false },
+      { name: "id", dataType: "string", description: "Proxy identifier", required: false, formInputType: "text" },
+      { name: "name", dataType: "string", description: "Header name to remove", required: true, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -495,8 +495,8 @@ export const ProxyFunctionMetadata = {
   onRequest: {
     description: "Register an interceptor function for incoming requests",
     parameters: [
-      { name: "id", dataType: "string", description: "Proxy identifier", optional: true },
-      { name: "callback", dataType: "string", description: "Interceptor function receiving (req)", optional: false },
+      { name: "id", dataType: "string", description: "Proxy identifier", required: false, formInputType: "text" },
+      { name: "callback", dataType: "string", description: "Interceptor function receiving (req)", required: true, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -505,8 +505,8 @@ export const ProxyFunctionMetadata = {
   onResponse: {
     description: "Register an interceptor function for proxy responses",
     parameters: [
-      { name: "id", dataType: "string", description: "Proxy identifier", optional: true },
-      { name: "callback", dataType: "string", description: "Interceptor function receiving (proxyRes, res)", optional: false },
+      { name: "id", dataType: "string", description: "Proxy identifier", required: false, formInputType: "text" },
+      { name: "callback", dataType: "string", description: "Interceptor function receiving (proxyRes, res)", required: true, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -515,8 +515,8 @@ export const ProxyFunctionMetadata = {
   balance: {
     description: "Configure round-robin load balancing across multiple target servers",
     parameters: [
-      { name: "id", dataType: "string", description: "Proxy identifier", optional: true },
-      { name: "targets", dataType: "array", description: "Array of target URLs for load balancing", optional: false },
+      { name: "id", dataType: "string", description: "Proxy identifier", required: false, formInputType: "text" },
+      { name: "targets", dataType: "array", description: "Array of target URLs for load balancing", required: true, formInputType: "json" },
     ],
 
     returnType: "object",
@@ -525,8 +525,8 @@ export const ProxyFunctionMetadata = {
   health: {
     description: "Check the health of a target server by sending a HEAD request",
     parameters: [
-      { name: "targetUrl", dataType: "string", description: "Target URL to check", optional: false },
-      { name: "timeout", dataType: "number", description: "Timeout in milliseconds (default: 5000)", optional: true },
+      { name: "targetUrl", dataType: "string", description: "Target URL to check", required: true, formInputType: "text" },
+      { name: "timeout", dataType: "number", description: "Timeout in milliseconds (default: 5000)", required: false, formInputType: "number" },
     ],
 
     returnType: "object",
@@ -542,7 +542,7 @@ export const ProxyFunctionMetadata = {
   stats: {
     description: "Get statistics for a proxy server including request count, errors, and uptime",
     parameters: [
-      { name: "id", dataType: "string", description: "Proxy identifier", optional: true },
+      { name: "id", dataType: "string", description: "Proxy identifier", required: false, formInputType: "text" },
     ],
 
     returnType: "object",
@@ -552,5 +552,5 @@ export const ProxyFunctionMetadata = {
 
 export const ProxyModuleMetadata = {
   description: "HTTP proxy and request forwarding module using Node.js built-in http module. Supports creating proxy servers, URL rewriting, header manipulation, request and response interception, round-robin load balancing, and health checking. No external dependencies required.",
-  version: "1.0.0",
+  methods: ["forward", "create", "start", "stop", "rewrite", "addHeader", "removeHeader", "onRequest", "onResponse", "balance", "health", "list", "stats"],
 };

@@ -383,12 +383,15 @@ All functions throw on failure. Common errors:
 | `Brevo: "..." not configured. Call brevo.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as brevo.sendTransactionalEmail
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Send transactional email and validate result"
+do
+  set $result as brevo.sendTransactionalEmail
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -399,11 +402,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-brevo.setCredentials $token
-set $result as brevo.listContacts
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  brevo.setCredentials $token
+enddo
+
+@desc "List contacts and iterate results"
+do
+  set $result as brevo.listContacts
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with sendTransactionalEmail
@@ -411,9 +421,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-brevo.setCredentials $token
-set $result as brevo.sendTransactionalEmail
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  brevo.setCredentials $token
+enddo
+
+@desc "Send transactional email"
+do
+  set $result as brevo.sendTransactionalEmail
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -421,10 +438,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-brevo.setCredentials $token
-set $created as brevo.sendTransactionalEmail
-# Update the created item
-brevo.updateContact
+@desc "Setup authentication"
+do
+  brevo.setCredentials $token
+enddo
+
+@desc "Send transactional email and update contact"
+do
+  set $created as brevo.sendTransactionalEmail
+  # Update the created item
+  brevo.updateContact
+enddo
 ```
 
 ### 4. Check before creating
@@ -432,14 +456,21 @@ brevo.updateContact
 List existing items and only create if needed.
 
 ```robinpath
-brevo.setCredentials $token
-set $existing as brevo.listContacts
-if $existing == null
-  brevo.sendTransactionalEmail
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  brevo.setCredentials $token
+enddo
+
+@desc "List contacts and send transactional email"
+do
+  set $existing as brevo.listContacts
+  if $existing == null
+    brevo.sendTransactionalEmail
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Brevo workflow
@@ -447,11 +478,18 @@ end
 Chain multiple brevo operations together.
 
 ```robinpath
-brevo.setCredentials $token
-set $r_sendTransactionalEmail as brevo.sendTransactionalEmail
-set $r_sendTransactionalSms as brevo.sendTransactionalSms
-set $r_listContacts as brevo.listContacts
-print "All operations complete"
+@desc "Setup authentication"
+do
+  brevo.setCredentials $token
+enddo
+
+@desc "Send transactional email, send transactional sms, and more"
+do
+  set $r_sendTransactionalEmail as brevo.sendTransactionalEmail
+  set $r_sendTransactionalSms as brevo.sendTransactionalSms
+  set $r_listContacts as brevo.listContacts
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe sendTransactionalEmail with validation
@@ -459,13 +497,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-brevo.setCredentials $token
-set $result as brevo.sendTransactionalEmail
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  brevo.setCredentials $token
+enddo
+
+@desc "Send transactional email and validate result"
+do
+  set $result as brevo.sendTransactionalEmail
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

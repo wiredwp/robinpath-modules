@@ -255,12 +255,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as mime.lookup "photo.png"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Lookup and validate result"
+do
+  set $result as mime.lookup "photo.png"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -271,10 +274,13 @@ end
 Chain multiple mime operations together.
 
 ```robinpath
-set $r_lookup as mime.lookup "photo.png"
-set $r_extension as mime.extension "image/png"
-set $r_detect as mime.detect "./unknown_file"
-print "All operations complete"
+@desc "Lookup, extension, and more"
+do
+  set $r_lookup as mime.lookup "photo.png"
+  set $r_extension as mime.extension "image/png"
+  set $r_detect as mime.detect "./unknown_file"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe lookup with validation
@@ -282,12 +288,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as mime.lookup "photo.png"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Lookup and validate result"
+do
+  set $result as mime.lookup "photo.png"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

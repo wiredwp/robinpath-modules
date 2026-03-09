@@ -350,12 +350,15 @@ All functions throw on failure. Common errors:
 | `Pinterest: "..." not configured. Call pinterest.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as pinterest.listBoards
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List boards and validate result"
+do
+  set $result as pinterest.listBoards
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -366,11 +369,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-pinterest.setCredentials $token
-set $result as pinterest.listBoards
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  pinterest.setCredentials $token
+enddo
+
+@desc "List boards and iterate results"
+do
+  set $result as pinterest.listBoards
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createBoard
@@ -378,9 +388,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-pinterest.setCredentials $token
-set $result as pinterest.createBoard
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  pinterest.setCredentials $token
+enddo
+
+@desc "Create board"
+do
+  set $result as pinterest.createBoard
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -388,10 +405,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-pinterest.setCredentials $token
-set $created as pinterest.createBoard
-# Update the created item
-pinterest.updateBoard
+@desc "Setup authentication"
+do
+  pinterest.setCredentials $token
+enddo
+
+@desc "Create board and update board"
+do
+  set $created as pinterest.createBoard
+  # Update the created item
+  pinterest.updateBoard
+enddo
 ```
 
 ### 4. Check before creating
@@ -399,14 +423,21 @@ pinterest.updateBoard
 List existing items and only create if needed.
 
 ```robinpath
-pinterest.setCredentials $token
-set $existing as pinterest.listBoards
-if $existing == null
-  pinterest.createBoard
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  pinterest.setCredentials $token
+enddo
+
+@desc "List boards and create board"
+do
+  set $existing as pinterest.listBoards
+  if $existing == null
+    pinterest.createBoard
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Pinterest workflow
@@ -414,11 +445,18 @@ end
 Chain multiple pinterest operations together.
 
 ```robinpath
-pinterest.setCredentials $token
-set $r_listBoards as pinterest.listBoards
-set $r_getBoard as pinterest.getBoard
-set $r_createBoard as pinterest.createBoard
-print "All operations complete"
+@desc "Setup authentication"
+do
+  pinterest.setCredentials $token
+enddo
+
+@desc "List boards, get board, and more"
+do
+  set $r_listBoards as pinterest.listBoards
+  set $r_getBoard as pinterest.getBoard
+  set $r_createBoard as pinterest.createBoard
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listBoards with validation
@@ -426,13 +464,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-pinterest.setCredentials $token
-set $result as pinterest.listBoards
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  pinterest.setCredentials $token
+enddo
+
+@desc "List boards and validate result"
+do
+  set $result as pinterest.listBoards
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

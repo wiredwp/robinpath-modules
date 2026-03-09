@@ -199,12 +199,15 @@ All functions throw on failure. Common errors:
 | `URL is required` | Check the error message for details |
 
 ```robinpath
-set $result as webhook.send "https://example.com/hook" $data {"secret": "whsec_abc"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Send and validate result"
+do
+  set $result as webhook.send "https://example.com/hook" $data {"secret": "whsec_abc"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -224,10 +227,13 @@ print "Created: " + $result
 Chain multiple webhook operations together.
 
 ```robinpath
-set $r_send as webhook.send "https://example.com/hook" $data {"secret": "whsec_abc"}
-set $r_sign as webhook.sign $payload "whsec_abc"
-set $r_verify as webhook.verify $body "whsec_abc" $signatureHeader
-print "All operations complete"
+@desc "Send, sign, and more"
+do
+  set $r_send as webhook.send "https://example.com/hook" $data {"secret": "whsec_abc"}
+  set $r_sign as webhook.sign $payload "whsec_abc"
+  set $r_verify as webhook.verify $body "whsec_abc" $signatureHeader
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe send with validation
@@ -235,12 +241,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as webhook.send "https://example.com/hook" $data {"secret": "whsec_abc"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Send and validate result"
+do
+  set $result as webhook.send "https://example.com/hook" $data {"secret": "whsec_abc"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

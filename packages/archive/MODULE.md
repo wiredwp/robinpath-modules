@@ -195,12 +195,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as archive.createZip "./backup.zip" ["./src", "./package.json"]
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create zip and validate result"
+do
+  set $result as archive.createZip "./backup.zip" ["./src", "./package.json"]
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -211,10 +214,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as archive.listZip "./backup.zip"
-each $item in $result
-  print $item
-end
+@desc "List zip and iterate results"
+do
+  set $result as archive.listZip "./backup.zip"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createZip
@@ -231,13 +237,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as archive.listZip "./backup.zip"
-if $existing == null
-  archive.createZip "./backup.zip" ["./src", "./package.json"]
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "List zip and create zip"
+do
+  set $existing as archive.listZip "./backup.zip"
+  if $existing == null
+    archive.createZip "./backup.zip" ["./src", "./package.json"]
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Archive workflow
@@ -245,10 +254,13 @@ end
 Chain multiple archive operations together.
 
 ```robinpath
-set $r_createZip as archive.createZip "./backup.zip" ["./src", "./package.json"]
-set $r_extractZip as archive.extractZip "./backup.zip" "./restored"
-set $r_listZip as archive.listZip "./backup.zip"
-print "All operations complete"
+@desc "Create zip, extract zip, and more"
+do
+  set $r_createZip as archive.createZip "./backup.zip" ["./src", "./package.json"]
+  set $r_extractZip as archive.extractZip "./backup.zip" "./restored"
+  set $r_listZip as archive.listZip "./backup.zip"
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe createZip with validation
@@ -256,12 +268,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as archive.createZip "./backup.zip" ["./src", "./package.json"]
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create zip and validate result"
+do
+  set $result as archive.createZip "./backup.zip" ["./src", "./package.json"]
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

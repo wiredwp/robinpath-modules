@@ -270,12 +270,15 @@ All functions throw on failure. Common errors:
 | `Invalid placement: "...". Use "header" or "query".` | Check the error message for details |
 
 ```robinpath
-set $result as auth.basic "user" "pass"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Basic and validate result"
+do
+  set $result as auth.basic "user" "pass"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -286,10 +289,13 @@ end
 Chain multiple auth operations together.
 
 ```robinpath
-set $r_basic as auth.basic "user" "pass"
-set $r_parseBasic as auth.parseBasic "Basic dXNlcjpwYXNz"
-set $r_bearer as auth.bearer "eyJhbGciOi..."
-print "All operations complete"
+@desc "Basic, parse basic, and more"
+do
+  set $r_basic as auth.basic "user" "pass"
+  set $r_parseBasic as auth.parseBasic "Basic dXNlcjpwYXNz"
+  set $r_bearer as auth.bearer "eyJhbGciOi..."
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe basic with validation
@@ -297,12 +303,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as auth.basic "user" "pass"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Basic and validate result"
+do
+  set $result as auth.basic "user" "pass"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

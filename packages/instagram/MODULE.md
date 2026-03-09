@@ -435,12 +435,15 @@ All functions throw on failure. Common errors:
 | `Container ID is required.` | Check the error message for details |
 
 ```robinpath
-set $result as instagram.getProfile
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get profile and validate result"
+do
+  set $result as instagram.getProfile
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -451,11 +454,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-instagram.setToken $token
-set $result as instagram.getProfile
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  instagram.setToken $token
+enddo
+
+@desc "Get profile and iterate results"
+do
+  set $result as instagram.getProfile
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createMediaContainer
@@ -463,9 +473,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-instagram.setToken $token
-set $result as instagram.createMediaContainer "https://example.com/photo.jpg" "Beautiful sunset! #nature"
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  instagram.setToken $token
+enddo
+
+@desc "Create media container"
+do
+  set $result as instagram.createMediaContainer "https://example.com/photo.jpg" "Beautiful sunset! #nature"
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -473,14 +490,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-instagram.setToken $token
-set $existing as instagram.getProfile
-if $existing == null
-  instagram.createMediaContainer "https://example.com/photo.jpg" "Beautiful sunset! #nature"
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  instagram.setToken $token
+enddo
+
+@desc "Get profile and create media container"
+do
+  set $existing as instagram.getProfile
+  if $existing == null
+    instagram.createMediaContainer "https://example.com/photo.jpg" "Beautiful sunset! #nature"
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Instagram workflow
@@ -488,11 +512,18 @@ end
 Chain multiple instagram operations together.
 
 ```robinpath
-instagram.setToken $token
-set $r_getProfile as instagram.getProfile
-set $r_getMedia as instagram.getMedia "17895695668004550"
-set $r_listMedia as instagram.listMedia {"limit": 10}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  instagram.setToken $token
+enddo
+
+@desc "Get profile, get media, and more"
+do
+  set $r_getProfile as instagram.getProfile
+  set $r_getMedia as instagram.getMedia "17895695668004550"
+  set $r_listMedia as instagram.listMedia {"limit": 10}
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe getProfile with validation
@@ -500,13 +531,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-instagram.setToken $token
-set $result as instagram.getProfile
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  instagram.setToken $token
+enddo
+
+@desc "Get profile and validate result"
+do
+  set $result as instagram.getProfile
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -226,12 +226,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as shell.exec "ls -la"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Exec and validate result"
+do
+  set $result as shell.exec "ls -la"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -242,10 +245,13 @@ end
 Chain multiple shell operations together.
 
 ```robinpath
-set $r_exec as shell.exec "ls -la"
-set $r_run as shell.run "echo hello"
-set $r_execFile as shell.execFile "/usr/bin/node" ["--version"]
-print "All operations complete"
+@desc "Exec, run, and more"
+do
+  set $r_exec as shell.exec "ls -la"
+  set $r_run as shell.run "echo hello"
+  set $r_execFile as shell.execFile "/usr/bin/node" ["--version"]
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe exec with validation
@@ -253,12 +259,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as shell.exec "ls -la"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Exec and validate result"
+do
+  set $result as shell.exec "ls -la"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

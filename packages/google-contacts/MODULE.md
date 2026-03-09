@@ -351,12 +351,15 @@ All functions throw on failure. Common errors:
 | `GoogleContacts: "..." not configured. Call google-contacts.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as google-contacts.listContacts
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Validate result"
+do
+  set $result as google-contacts.listContacts
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -367,11 +370,14 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-google-contacts.setCredentials $token
-set $result as google-contacts.listContacts
-each $item in $result
-  print $item
-end
+@desc "Iterate results"
+do
+  google-contacts.setCredentials $token
+  set $result as google-contacts.listContacts
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createContact
@@ -379,9 +385,12 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-google-contacts.setCredentials $token
-set $result as google-contacts.createContact
-print "Created: " + $result
+@desc "Execute operation"
+do
+  google-contacts.setCredentials $token
+  set $result as google-contacts.createContact
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -389,10 +398,13 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-google-contacts.setCredentials $token
-set $created as google-contacts.createContact
-# Update the created item
-google-contacts.updateContact
+@desc "Execute operation"
+do
+  google-contacts.setCredentials $token
+  set $created as google-contacts.createContact
+  # Update the created item
+  google-contacts.updateContact
+enddo
 ```
 
 ### 4. Check before creating
@@ -400,14 +412,17 @@ google-contacts.updateContact
 List existing items and only create if needed.
 
 ```robinpath
-google-contacts.setCredentials $token
-set $existing as google-contacts.listContacts
-if $existing == null
-  google-contacts.createContact
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Validate result"
+do
+  google-contacts.setCredentials $token
+  set $existing as google-contacts.listContacts
+  if $existing == null
+    google-contacts.createContact
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Google Contacts workflow
@@ -415,11 +430,14 @@ end
 Chain multiple google-contacts operations together.
 
 ```robinpath
-google-contacts.setCredentials $token
-set $r_listContacts as google-contacts.listContacts
-set $r_getContact as google-contacts.getContact
-set $r_createContact as google-contacts.createContact
-print "All operations complete"
+@desc "Execute operation"
+do
+  google-contacts.setCredentials $token
+  set $r_listContacts as google-contacts.listContacts
+  set $r_getContact as google-contacts.getContact
+  set $r_createContact as google-contacts.createContact
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listContacts with validation
@@ -427,13 +445,16 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-google-contacts.setCredentials $token
-set $result as google-contacts.listContacts
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Validate result"
+do
+  google-contacts.setCredentials $token
+  set $result as google-contacts.listContacts
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

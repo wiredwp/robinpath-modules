@@ -375,12 +375,15 @@ All functions throw on failure. Common errors:
 | `Store "..." not found. Create it first.` | Check the error message for details |
 
 ```robinpath
-set $result as storage.create "workflow-state" {"type": "file", "path": "./data/state.json"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create and validate result"
+do
+  set $result as storage.create "workflow-state" {"type": "file", "path": "./data/state.json"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -391,10 +394,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as storage.get "state" "lastRun"
-each $item in $result
-  print $item
-end
+@desc "Get and iterate results"
+do
+  set $result as storage.get "state" "lastRun"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with create
@@ -411,13 +417,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as storage.get "state" "lastRun"
-if $existing == null
-  storage.create "workflow-state" {"type": "file", "path": "./data/state.json"}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Get and create"
+do
+  set $existing as storage.get "state" "lastRun"
+  if $existing == null
+    storage.create "workflow-state" {"type": "file", "path": "./data/state.json"}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Storage workflow
@@ -425,10 +434,13 @@ end
 Chain multiple storage operations together.
 
 ```robinpath
-set $r_create as storage.create "workflow-state" {"type": "file", "path": "./data/state.json"}
-set $r_get as storage.get "state" "lastRun"
-set $r_has as storage.has "state" "lastRun"
-print "All operations complete"
+@desc "Create, get, and more"
+do
+  set $r_create as storage.create "workflow-state" {"type": "file", "path": "./data/state.json"}
+  set $r_get as storage.get "state" "lastRun"
+  set $r_has as storage.has "state" "lastRun"
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe create with validation
@@ -436,12 +448,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as storage.create "workflow-state" {"type": "file", "path": "./data/state.json"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create and validate result"
+do
+  set $result as storage.create "workflow-state" {"type": "file", "path": "./data/state.json"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

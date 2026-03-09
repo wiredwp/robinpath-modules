@@ -418,12 +418,15 @@ All functions throw on failure. Common errors:
 | `Youtube: "..." not configured. Call youtube.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as youtube.searchVideos
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Search videos and validate result"
+do
+  set $result as youtube.searchVideos
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -434,11 +437,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-youtube.setCredentials $token
-set $result as youtube.getVideo
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  youtube.setCredentials $token
+enddo
+
+@desc "Get video and iterate results"
+do
+  set $result as youtube.getVideo
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createPlaylist
@@ -446,9 +456,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-youtube.setCredentials $token
-set $result as youtube.createPlaylist
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  youtube.setCredentials $token
+enddo
+
+@desc "Create playlist"
+do
+  set $result as youtube.createPlaylist
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -456,10 +473,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-youtube.setCredentials $token
-set $created as youtube.createPlaylist
-# Update the created item
-youtube.updateVideo
+@desc "Setup authentication"
+do
+  youtube.setCredentials $token
+enddo
+
+@desc "Create playlist and update video"
+do
+  set $created as youtube.createPlaylist
+  # Update the created item
+  youtube.updateVideo
+enddo
 ```
 
 ### 4. Check before creating
@@ -467,14 +491,21 @@ youtube.updateVideo
 List existing items and only create if needed.
 
 ```robinpath
-youtube.setCredentials $token
-set $existing as youtube.getVideo
-if $existing == null
-  youtube.createPlaylist
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  youtube.setCredentials $token
+enddo
+
+@desc "Get video and create playlist"
+do
+  set $existing as youtube.getVideo
+  if $existing == null
+    youtube.createPlaylist
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step YouTube workflow
@@ -482,11 +513,18 @@ end
 Chain multiple youtube operations together.
 
 ```robinpath
-youtube.setCredentials $token
-set $r_searchVideos as youtube.searchVideos
-set $r_getVideo as youtube.getVideo
-set $r_listMyVideos as youtube.listMyVideos
-print "All operations complete"
+@desc "Setup authentication"
+do
+  youtube.setCredentials $token
+enddo
+
+@desc "Search videos, get video, and more"
+do
+  set $r_searchVideos as youtube.searchVideos
+  set $r_getVideo as youtube.getVideo
+  set $r_listMyVideos as youtube.listMyVideos
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe searchVideos with validation
@@ -494,13 +532,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-youtube.setCredentials $token
-set $result as youtube.searchVideos
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  youtube.setCredentials $token
+enddo
+
+@desc "Search videos and validate result"
+do
+  set $result as youtube.searchVideos
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

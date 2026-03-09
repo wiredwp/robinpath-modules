@@ -515,12 +515,15 @@ All functions throw on failure. Common errors:
 | `array must be an array` | Check the error message for details |
 
 ```robinpath
-set $result as faker.seed
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Seed and validate result"
+do
+  set $result as faker.seed
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -540,10 +543,13 @@ print "Created: " + $result
 Chain multiple faker operations together.
 
 ```robinpath
-set $r_seed as faker.seed
-set $r_name as faker.name
-set $r_firstName as faker.firstName
-print "All operations complete"
+@desc "Seed, name, and more"
+do
+  set $r_seed as faker.seed
+  set $r_name as faker.name
+  set $r_firstName as faker.firstName
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe seed with validation
@@ -551,12 +557,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as faker.seed
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Seed and validate result"
+do
+  set $result as faker.seed
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

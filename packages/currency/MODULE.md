@@ -222,12 +222,15 @@ All functions throw on failure. Common errors:
 | `Currency: "..." not configured. Call currency.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as currency.getLatestRates
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get latest rates and validate result"
+do
+  set $result as currency.getLatestRates
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -238,10 +241,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as currency.getLatestRates
-each $item in $result
-  print $item
-end
+@desc "Get latest rates and iterate results"
+do
+  set $result as currency.getLatestRates
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Currency workflow
@@ -249,10 +255,13 @@ end
 Chain multiple currency operations together.
 
 ```robinpath
-set $r_getLatestRates as currency.getLatestRates
-set $r_convert as currency.convert
-set $r_convertBatch as currency.convertBatch
-print "All operations complete"
+@desc "Get latest rates, convert, and more"
+do
+  set $r_getLatestRates as currency.getLatestRates
+  set $r_convert as currency.convert
+  set $r_convertBatch as currency.convertBatch
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe getLatestRates with validation
@@ -260,12 +269,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as currency.getLatestRates
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Get latest rates and validate result"
+do
+  set $result as currency.getLatestRates
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

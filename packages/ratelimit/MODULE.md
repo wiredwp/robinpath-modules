@@ -194,12 +194,15 @@ All functions throw on failure. Common errors:
 | `Rate limit wait timeout after ...ms for "..."` | Check the error message for details |
 
 ```robinpath
-set $result as ratelimit.create "api" "token-bucket" {"maxTokens": 100, "refillRate": 10}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create and validate result"
+do
+  set $result as ratelimit.create "api" "token-bucket" {"maxTokens": 100, "refillRate": 10}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -219,10 +222,13 @@ print "Created: " + $result
 Chain multiple ratelimit operations together.
 
 ```robinpath
-set $r_create as ratelimit.create "api" "token-bucket" {"maxTokens": 100, "refillRate": 10}
-set $r_acquire as ratelimit.acquire "api"
-set $r_check as ratelimit.check "api"
-print "All operations complete"
+@desc "Create, acquire, and more"
+do
+  set $r_create as ratelimit.create "api" "token-bucket" {"maxTokens": 100, "refillRate": 10}
+  set $r_acquire as ratelimit.acquire "api"
+  set $r_check as ratelimit.check "api"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe create with validation
@@ -230,12 +236,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as ratelimit.create "api" "token-bucket" {"maxTokens": 100, "refillRate": 10}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create and validate result"
+do
+  set $result as ratelimit.create "api" "token-bucket" {"maxTokens": 100, "refillRate": 10}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

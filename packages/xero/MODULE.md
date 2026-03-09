@@ -418,12 +418,15 @@ All functions throw on failure. Common errors:
 | `Xero: "..." not configured. Call xero.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as xero.listInvoices
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List invoices and validate result"
+do
+  set $result as xero.listInvoices
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -434,11 +437,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-xero.setCredentials $token
-set $result as xero.listInvoices
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  xero.setCredentials $token
+enddo
+
+@desc "List invoices and iterate results"
+do
+  set $result as xero.listInvoices
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createInvoice
@@ -446,9 +456,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-xero.setCredentials $token
-set $result as xero.createInvoice
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  xero.setCredentials $token
+enddo
+
+@desc "Create invoice"
+do
+  set $result as xero.createInvoice
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -456,10 +473,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-xero.setCredentials $token
-set $created as xero.createInvoice
-# Update the created item
-xero.updateInvoice
+@desc "Setup authentication"
+do
+  xero.setCredentials $token
+enddo
+
+@desc "Create invoice and update invoice"
+do
+  set $created as xero.createInvoice
+  # Update the created item
+  xero.updateInvoice
+enddo
 ```
 
 ### 4. Check before creating
@@ -467,14 +491,21 @@ xero.updateInvoice
 List existing items and only create if needed.
 
 ```robinpath
-xero.setCredentials $token
-set $existing as xero.listInvoices
-if $existing == null
-  xero.createInvoice
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  xero.setCredentials $token
+enddo
+
+@desc "List invoices and create invoice"
+do
+  set $existing as xero.listInvoices
+  if $existing == null
+    xero.createInvoice
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Xero workflow
@@ -482,11 +513,18 @@ end
 Chain multiple xero operations together.
 
 ```robinpath
-xero.setCredentials $token
-set $r_listInvoices as xero.listInvoices
-set $r_getInvoice as xero.getInvoice
-set $r_createInvoice as xero.createInvoice
-print "All operations complete"
+@desc "Setup authentication"
+do
+  xero.setCredentials $token
+enddo
+
+@desc "List invoices, get invoice, and more"
+do
+  set $r_listInvoices as xero.listInvoices
+  set $r_getInvoice as xero.getInvoice
+  set $r_createInvoice as xero.createInvoice
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listInvoices with validation
@@ -494,13 +532,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-xero.setCredentials $token
-set $result as xero.listInvoices
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  xero.setCredentials $token
+enddo
+
+@desc "List invoices and validate result"
+do
+  set $result as xero.listInvoices
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

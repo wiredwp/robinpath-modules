@@ -360,12 +360,15 @@ All functions throw on failure. Common errors:
 | `modifyLabels requires messageId` | Check the error message for details |
 
 ```robinpath
-set $result as gmail.listMessages
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List messages and validate result"
+do
+  set $result as gmail.listMessages
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -376,11 +379,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-gmail.setCredentials $token
-set $result as gmail.listMessages
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  gmail.setCredentials $token
+enddo
+
+@desc "List messages and iterate results"
+do
+  set $result as gmail.listMessages
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with sendEmail
@@ -388,9 +398,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-gmail.setCredentials $token
-set $result as gmail.sendEmail
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  gmail.setCredentials $token
+enddo
+
+@desc "Send email"
+do
+  set $result as gmail.sendEmail
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -398,10 +415,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-gmail.setCredentials $token
-set $created as gmail.sendEmail
-# Update the created item
-gmail.modifyLabels
+@desc "Setup authentication"
+do
+  gmail.setCredentials $token
+enddo
+
+@desc "Send email and modify labels"
+do
+  set $created as gmail.sendEmail
+  # Update the created item
+  gmail.modifyLabels
+enddo
 ```
 
 ### 4. Check before creating
@@ -409,14 +433,21 @@ gmail.modifyLabels
 List existing items and only create if needed.
 
 ```robinpath
-gmail.setCredentials $token
-set $existing as gmail.listMessages
-if $existing == null
-  gmail.sendEmail
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  gmail.setCredentials $token
+enddo
+
+@desc "List messages and send email"
+do
+  set $existing as gmail.listMessages
+  if $existing == null
+    gmail.sendEmail
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Gmail workflow
@@ -424,11 +455,18 @@ end
 Chain multiple gmail operations together.
 
 ```robinpath
-gmail.setCredentials $token
-set $r_listMessages as gmail.listMessages
-set $r_getMessage as gmail.getMessage
-set $r_sendEmail as gmail.sendEmail
-print "All operations complete"
+@desc "Setup authentication"
+do
+  gmail.setCredentials $token
+enddo
+
+@desc "List messages, get message, and more"
+do
+  set $r_listMessages as gmail.listMessages
+  set $r_getMessage as gmail.getMessage
+  set $r_sendEmail as gmail.sendEmail
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listMessages with validation
@@ -436,13 +474,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-gmail.setCredentials $token
-set $result as gmail.listMessages
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  gmail.setCredentials $token
+enddo
+
+@desc "List messages and validate result"
+do
+  set $result as gmail.listMessages
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

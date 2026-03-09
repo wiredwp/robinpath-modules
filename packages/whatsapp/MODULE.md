@@ -246,12 +246,15 @@ All functions throw on failure. Common errors:
 | `whatsapp.sendContact requires to and contacts array.` | Check the error message for details |
 
 ```robinpath
-set $result as whatsapp.sendText "+1234567890" "Hello from RobinPath!"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Send text and validate result"
+do
+  set $result as whatsapp.sendText "+1234567890" "Hello from RobinPath!"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -262,11 +265,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-whatsapp.setCredentials $token
-set $result as whatsapp.getProfile
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  whatsapp.setCredentials $token
+enddo
+
+@desc "Get profile and iterate results"
+do
+  set $result as whatsapp.getProfile
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with sendText
@@ -274,9 +284,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-whatsapp.setCredentials $token
-set $result as whatsapp.sendText "+1234567890" "Hello from RobinPath!"
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  whatsapp.setCredentials $token
+enddo
+
+@desc "Send text"
+do
+  set $result as whatsapp.sendText "+1234567890" "Hello from RobinPath!"
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -284,10 +301,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-whatsapp.setCredentials $token
-set $created as whatsapp.sendText "+1234567890" "Hello from RobinPath!"
-# Update the created item
-whatsapp.updateProfile {"about":"We are a business","description":"Our business description"}
+@desc "Setup authentication"
+do
+  whatsapp.setCredentials $token
+enddo
+
+@desc "Send text and update profile"
+do
+  set $created as whatsapp.sendText "+1234567890" "Hello from RobinPath!"
+  # Update the created item
+  whatsapp.updateProfile {"about":"We are a business","description":"Our business description"}
+enddo
 ```
 
 ### 4. Check before creating
@@ -295,14 +319,21 @@ whatsapp.updateProfile {"about":"We are a business","description":"Our business 
 List existing items and only create if needed.
 
 ```robinpath
-whatsapp.setCredentials $token
-set $existing as whatsapp.getProfile
-if $existing == null
-  whatsapp.sendText "+1234567890" "Hello from RobinPath!"
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  whatsapp.setCredentials $token
+enddo
+
+@desc "Get profile and send text"
+do
+  set $existing as whatsapp.getProfile
+  if $existing == null
+    whatsapp.sendText "+1234567890" "Hello from RobinPath!"
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step WhatsApp workflow
@@ -310,11 +341,18 @@ end
 Chain multiple whatsapp operations together.
 
 ```robinpath
-whatsapp.setCredentials $token
-set $r_sendText as whatsapp.sendText "+1234567890" "Hello from RobinPath!"
-set $r_sendTemplate as whatsapp.sendTemplate "+1234567890" "hello_world"
-set $r_sendImage as whatsapp.sendImage "+1234567890" "https://example.com/photo.jpg" "Check this out"
-print "All operations complete"
+@desc "Setup authentication"
+do
+  whatsapp.setCredentials $token
+enddo
+
+@desc "Send text, send template, and more"
+do
+  set $r_sendText as whatsapp.sendText "+1234567890" "Hello from RobinPath!"
+  set $r_sendTemplate as whatsapp.sendTemplate "+1234567890" "hello_world"
+  set $r_sendImage as whatsapp.sendImage "+1234567890" "https://example.com/photo.jpg" "Check this out"
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe sendText with validation
@@ -322,13 +360,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-whatsapp.setCredentials $token
-set $result as whatsapp.sendText "+1234567890" "Hello from RobinPath!"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  whatsapp.setCredentials $token
+enddo
+
+@desc "Send text and validate result"
+do
+  set $result as whatsapp.sendText "+1234567890" "Hello from RobinPath!"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

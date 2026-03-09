@@ -231,12 +231,15 @@ All functions throw on failure. Common errors:
 | `Circuit breaker "..." not found. Create it first.` | Check the error message for details |
 
 ```robinpath
-set $result as retry.execute $myFunction {"maxAttempts": 5, "initialDelay": 2000}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Execute and validate result"
+do
+  set $result as retry.execute $myFunction {"maxAttempts": 5, "initialDelay": 2000}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -256,10 +259,13 @@ print "Created: " + $result
 Chain multiple retry operations together.
 
 ```robinpath
-set $r_execute as retry.execute $myFunction {"maxAttempts": 5, "initialDelay": 2000}
-set $r_withBackoff as retry.withBackoff 3 1000 2 30000
-set $r_isRetryable as retry.isRetryable 503
-print "All operations complete"
+@desc "Execute, with backoff, and more"
+do
+  set $r_execute as retry.execute $myFunction {"maxAttempts": 5, "initialDelay": 2000}
+  set $r_withBackoff as retry.withBackoff 3 1000 2 30000
+  set $r_isRetryable as retry.isRetryable 503
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe execute with validation
@@ -267,12 +273,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as retry.execute $myFunction {"maxAttempts": 5, "initialDelay": 2000}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Execute and validate result"
+do
+  set $result as retry.execute $myFunction {"maxAttempts": 5, "initialDelay": 2000}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -239,12 +239,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as image.resize "./photo.jpg" "./thumb.jpg" {"width": 300, "height": 200}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Resize and validate result"
+do
+  set $result as image.resize "./photo.jpg" "./thumb.jpg" {"width": 300, "height": 200}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -255,10 +258,13 @@ end
 Chain multiple image operations together.
 
 ```robinpath
-set $r_resize as image.resize "./photo.jpg" "./thumb.jpg" {"width": 300, "height": 200}
-set $r_crop as image.crop "./photo.jpg" "./cropped.jpg" {"left": 10, "top": 10, "width": 200, "height": 200}
-set $r_convert as image.convert "./photo.png" "./photo.webp" "webp" 85
-print "All operations complete"
+@desc "Resize, crop, and more"
+do
+  set $r_resize as image.resize "./photo.jpg" "./thumb.jpg" {"width": 300, "height": 200}
+  set $r_crop as image.crop "./photo.jpg" "./cropped.jpg" {"left": 10, "top": 10, "width": 200, "height": 200}
+  set $r_convert as image.convert "./photo.png" "./photo.webp" "webp" 85
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe resize with validation
@@ -266,12 +272,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as image.resize "./photo.jpg" "./thumb.jpg" {"width": 300, "height": 200}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Resize and validate result"
+do
+  set $result as image.resize "./photo.jpg" "./thumb.jpg" {"width": 300, "height": 200}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

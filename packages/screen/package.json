@@ -39,6 +39,8 @@
     "category": "web",
     "type": "utility",
     "auth": "none",
-    "functionCount": 8
+    "functionCount": 8,
+    "runtime": "node",
+    "runtimeReason": "Requires tesseract.js (OCR engine — WASM + trained models)"
   }
 }

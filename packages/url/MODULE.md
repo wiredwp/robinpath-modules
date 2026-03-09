@@ -294,12 +294,15 @@ All functions throw on failure. Common errors:
 | `format requires an object argument with URL components` | Check the error message for details |
 
 ```robinpath
-set $result as url.parse "https://example.com:8080/path?q=1#frag"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Parse and validate result"
+do
+  set $result as url.parse "https://example.com:8080/path?q=1#frag"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -310,10 +313,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as url.getParam "https://example.com?foo=bar" "foo"
-each $item in $result
-  print $item
-end
+@desc "Get param and iterate results"
+do
+  set $result as url.getParam "https://example.com?foo=bar" "foo"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Url workflow
@@ -321,10 +327,13 @@ end
 Chain multiple url operations together.
 
 ```robinpath
-set $r_parse as url.parse "https://example.com:8080/path?q=1#frag"
-set $r_format as url.format { protocol: "https:", hostname: "example.com", pathname: "/path" }
-set $r_resolve as url.resolve "https://example.com/a/b" "../c"
-print "All operations complete"
+@desc "Parse, format, and more"
+do
+  set $r_parse as url.parse "https://example.com:8080/path?q=1#frag"
+  set $r_format as url.format { protocol: "https:", hostname: "example.com", pathname: "/path" }
+  set $r_resolve as url.resolve "https://example.com/a/b" "../c"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe parse with validation
@@ -332,12 +341,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as url.parse "https://example.com:8080/path?q=1#frag"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Parse and validate result"
+do
+  set $result as url.parse "https://example.com:8080/path?q=1#frag"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -312,12 +312,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as geo.distance 40.7128 -74.0060 51.5074 -0.1278
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Distance and validate result"
+do
+  set $result as geo.distance 40.7128 -74.0060 51.5074 -0.1278
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -328,10 +331,13 @@ end
 Chain multiple geo operations together.
 
 ```robinpath
-set $r_distance as geo.distance 40.7128 -74.0060 51.5074 -0.1278
-set $r_bearing as geo.bearing 40.7128 -74.0060 51.5074 -0.1278
-set $r_midpoint as geo.midpoint 40.7128 -74.0060 51.5074 -0.1278
-print "All operations complete"
+@desc "Distance, bearing, and more"
+do
+  set $r_distance as geo.distance 40.7128 -74.0060 51.5074 -0.1278
+  set $r_bearing as geo.bearing 40.7128 -74.0060 51.5074 -0.1278
+  set $r_midpoint as geo.midpoint 40.7128 -74.0060 51.5074 -0.1278
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe distance with validation
@@ -339,12 +345,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as geo.distance 40.7128 -74.0060 51.5074 -0.1278
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Distance and validate result"
+do
+  set $result as geo.distance 40.7128 -74.0060 51.5074 -0.1278
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

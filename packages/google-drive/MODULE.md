@@ -239,12 +239,15 @@ All functions throw on failure. Common errors:
 | `Google Drive upload error (${res.status}): ${text}` | Check the error message for details |
 
 ```robinpath
-set $result as googleDrive.listFiles {"q":"mimeType='application/pdf'","pageSize":10}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List files and validate result"
+do
+  set $result as googleDrive.listFiles {"q":"mimeType='application/pdf'","pageSize":10}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -255,11 +258,14 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-google-drive.setCredentials $token
-set $result as googleDrive.listFiles {"q":"mimeType='application/pdf'","pageSize":10}
-each $item in $result
-  print $item
-end
+@desc "List files and iterate results"
+do
+  google-drive.setCredentials $token
+  set $result as googleDrive.listFiles {"q":"mimeType='application/pdf'","pageSize":10}
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createFolder
@@ -267,9 +273,12 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-google-drive.setCredentials $token
-set $result as googleDrive.createFolder "My Folder"
-print "Created: " + $result
+@desc "Create folder"
+do
+  google-drive.setCredentials $token
+  set $result as googleDrive.createFolder "My Folder"
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -277,14 +286,17 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-google-drive.setCredentials $token
-set $existing as googleDrive.listFiles {"q":"mimeType='application/pdf'","pageSize":10}
-if $existing == null
-  googleDrive.createFolder "My Folder"
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "List files and create folder"
+do
+  google-drive.setCredentials $token
+  set $existing as googleDrive.listFiles {"q":"mimeType='application/pdf'","pageSize":10}
+  if $existing == null
+    googleDrive.createFolder "My Folder"
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Google Drive workflow
@@ -292,11 +304,14 @@ end
 Chain multiple google-drive operations together.
 
 ```robinpath
-google-drive.setCredentials $token
-set $r_listFiles as googleDrive.listFiles {"q":"mimeType='application/pdf'","pageSize":10}
-set $r_getFile as googleDrive.getFile "file-id"
-set $r_downloadFile as googleDrive.downloadFile "file-id"
-print "All operations complete"
+@desc "List files, get file, and more"
+do
+  google-drive.setCredentials $token
+  set $r_listFiles as googleDrive.listFiles {"q":"mimeType='application/pdf'","pageSize":10}
+  set $r_getFile as googleDrive.getFile "file-id"
+  set $r_downloadFile as googleDrive.downloadFile "file-id"
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe listFiles with validation
@@ -304,13 +319,16 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-google-drive.setCredentials $token
-set $result as googleDrive.listFiles {"q":"mimeType='application/pdf'","pageSize":10}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "List files and validate result"
+do
+  google-drive.setCredentials $token
+  set $result as googleDrive.listFiles {"q":"mimeType='application/pdf'","pageSize":10}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

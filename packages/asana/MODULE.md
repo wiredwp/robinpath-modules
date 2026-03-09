@@ -452,12 +452,15 @@ All functions throw on failure. Common errors:
 | `Asana: "..." not configured. Call asana.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as asana.listWorkspaces
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List workspaces and validate result"
+do
+  set $result as asana.listWorkspaces
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -468,11 +471,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-asana.setCredentials $token
-set $result as asana.listWorkspaces
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  asana.setCredentials $token
+enddo
+
+@desc "List workspaces and iterate results"
+do
+  set $result as asana.listWorkspaces
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createProject
@@ -480,9 +490,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-asana.setCredentials $token
-set $result as asana.createProject
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  asana.setCredentials $token
+enddo
+
+@desc "Create project"
+do
+  set $result as asana.createProject
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -490,10 +507,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-asana.setCredentials $token
-set $created as asana.createProject
-# Update the created item
-asana.updateProject
+@desc "Setup authentication"
+do
+  asana.setCredentials $token
+enddo
+
+@desc "Create project and update project"
+do
+  set $created as asana.createProject
+  # Update the created item
+  asana.updateProject
+enddo
 ```
 
 ### 4. Check before creating
@@ -501,14 +525,21 @@ asana.updateProject
 List existing items and only create if needed.
 
 ```robinpath
-asana.setCredentials $token
-set $existing as asana.listWorkspaces
-if $existing == null
-  asana.createProject
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  asana.setCredentials $token
+enddo
+
+@desc "List workspaces and create project"
+do
+  set $existing as asana.listWorkspaces
+  if $existing == null
+    asana.createProject
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Asana workflow
@@ -516,11 +547,18 @@ end
 Chain multiple asana operations together.
 
 ```robinpath
-asana.setCredentials $token
-set $r_listWorkspaces as asana.listWorkspaces
-set $r_listProjects as asana.listProjects
-set $r_getProject as asana.getProject
-print "All operations complete"
+@desc "Setup authentication"
+do
+  asana.setCredentials $token
+enddo
+
+@desc "List workspaces, list projects, and more"
+do
+  set $r_listWorkspaces as asana.listWorkspaces
+  set $r_listProjects as asana.listProjects
+  set $r_getProject as asana.getProject
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listWorkspaces with validation
@@ -528,13 +566,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-asana.setCredentials $token
-set $result as asana.listWorkspaces
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  asana.setCredentials $token
+enddo
+
+@desc "List workspaces and validate result"
+do
+  set $result as asana.listWorkspaces
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

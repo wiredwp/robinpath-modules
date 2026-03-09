@@ -448,9 +448,9 @@ export const ServerFunctionMetadata = {
   create: {
     description: "Create a new HTTP server instance",
     parameters: [
-      { name: "id", dataType: "string", description: "Unique server identifier", optional: true },
-      { name: "port", dataType: "number", description: "Port to listen on (default 3000)", optional: true },
-      { name: "host", dataType: "string", description: "Host to bind to (default 0.0.0.0)", optional: true },
+      { name: "id", dataType: "string", formInputType: "text", description: "Unique server identifier", required: false },
+      { name: "port", dataType: "number", formInputType: "number", description: "Port to listen on (default 3000)", required: false },
+      { name: "host", dataType: "string", formInputType: "text", description: "Host to bind to (default 0.0.0.0)", required: false },
     ],
 
     returnType: "object",
@@ -459,7 +459,7 @@ export const ServerFunctionMetadata = {
   start: {
     description: "Start listening for incoming connections",
     parameters: [
-      { name: "id", dataType: "string", description: "Server identifier" },
+      { name: "id", dataType: "string", formInputType: "text", description: "Server identifier", required: true },
     ],
 
     returnType: "object",
@@ -468,7 +468,7 @@ export const ServerFunctionMetadata = {
   stop: {
     description: "Stop the server and close all connections",
     parameters: [
-      { name: "id", dataType: "string", description: "Server identifier" },
+      { name: "id", dataType: "string", formInputType: "text", description: "Server identifier", required: true },
     ],
 
     returnType: "object",
@@ -477,8 +477,8 @@ export const ServerFunctionMetadata = {
   onRequest: {
     description: "Register a handler for all incoming requests",
     parameters: [
-      { name: "id", dataType: "string", description: "Server identifier" },
-      { name: "handler", dataType: "string", description: "Request handler function (req, res)" },
+      { name: "id", dataType: "string", formInputType: "text", description: "Server identifier", required: true },
+      { name: "handler", dataType: "string", formInputType: "text", description: "Request handler function (req, res)", required: true },
     ],
 
     returnType: "object",
@@ -487,8 +487,8 @@ export const ServerFunctionMetadata = {
   onError: {
     description: "Register an error handler for the server",
     parameters: [
-      { name: "id", dataType: "string", description: "Server identifier" },
-      { name: "handler", dataType: "string", description: "Error handler function (err)" },
+      { name: "id", dataType: "string", formInputType: "text", description: "Server identifier", required: true },
+      { name: "handler", dataType: "string", formInputType: "text", description: "Error handler function (err)", required: true },
     ],
 
     returnType: "object",
@@ -497,10 +497,10 @@ export const ServerFunctionMetadata = {
   route: {
     description: "Add a route with method, path pattern, and handler",
     parameters: [
-      { name: "id", dataType: "string", description: "Server identifier" },
-      { name: "method", dataType: "string", description: "HTTP method (GET, POST, etc.)", optional: true },
-      { name: "path", dataType: "string", description: "Route path pattern (supports :param and *)" },
-      { name: "handler", dataType: "string", description: "Route handler function (req, res)" },
+      { name: "id", dataType: "string", formInputType: "text", description: "Server identifier", required: true },
+      { name: "method", dataType: "string", formInputType: "text", description: "HTTP method (GET, POST, etc.)", required: false },
+      { name: "path", dataType: "string", formInputType: "text", description: "Route path pattern (supports :param and *)", required: true },
+      { name: "handler", dataType: "string", formInputType: "text", description: "Route handler function (req, res)", required: true },
     ],
 
     returnType: "object",
@@ -509,8 +509,8 @@ export const ServerFunctionMetadata = {
   static: {
     description: "Serve static files from a directory",
     parameters: [
-      { name: "id", dataType: "string", description: "Server identifier" },
-      { name: "dir", dataType: "string", description: "Directory path to serve files from" },
+      { name: "id", dataType: "string", formInputType: "text", description: "Server identifier", required: true },
+      { name: "dir", dataType: "string", formInputType: "text", description: "Directory path to serve files from", required: true },
     ],
 
     returnType: "object",
@@ -519,9 +519,9 @@ export const ServerFunctionMetadata = {
   sendJson: {
     description: "Send a JSON response",
     parameters: [
-      { name: "res", dataType: "object", description: "HTTP response object" },
-      { name: "data", dataType: "any", description: "Data to serialize as JSON" },
-      { name: "status", dataType: "number", description: "HTTP status code (default 200)", optional: true },
+      { name: "res", dataType: "object", formInputType: "json", description: "HTTP response object", required: true },
+      { name: "data", dataType: "any", formInputType: "textarea", description: "Data to serialize as JSON", required: true },
+      { name: "status", dataType: "number", formInputType: "number", description: "HTTP status code (default 200)", required: false },
     ],
 
     returnType: "object",
@@ -530,9 +530,9 @@ export const ServerFunctionMetadata = {
   sendHtml: {
     description: "Send an HTML response",
     parameters: [
-      { name: "res", dataType: "object", description: "HTTP response object" },
-      { name: "html", dataType: "string", description: "HTML content" },
-      { name: "status", dataType: "number", description: "HTTP status code (default 200)", optional: true },
+      { name: "res", dataType: "object", formInputType: "json", description: "HTTP response object", required: true },
+      { name: "html", dataType: "string", formInputType: "text", description: "HTML content", required: true },
+      { name: "status", dataType: "number", formInputType: "number", description: "HTTP status code (default 200)", required: false },
     ],
 
     returnType: "object",
@@ -541,9 +541,9 @@ export const ServerFunctionMetadata = {
   sendFile: {
     description: "Send a file as the response",
     parameters: [
-      { name: "res", dataType: "object", description: "HTTP response object" },
-      { name: "path", dataType: "string", description: "Path to the file" },
-      { name: "status", dataType: "number", description: "HTTP status code (default 200)", optional: true },
+      { name: "res", dataType: "object", formInputType: "json", description: "HTTP response object", required: true },
+      { name: "path", dataType: "string", formInputType: "text", description: "Path to the file", required: true },
+      { name: "status", dataType: "number", formInputType: "number", description: "HTTP status code (default 200)", required: false },
     ],
 
     returnType: "object",
@@ -552,9 +552,9 @@ export const ServerFunctionMetadata = {
   sendRedirect: {
     description: "Send an HTTP redirect response",
     parameters: [
-      { name: "res", dataType: "object", description: "HTTP response object" },
-      { name: "url", dataType: "string", description: "URL to redirect to" },
-      { name: "status", dataType: "number", description: "HTTP status code (default 302)", optional: true },
+      { name: "res", dataType: "object", formInputType: "json", description: "HTTP response object", required: true },
+      { name: "url", dataType: "string", formInputType: "text", description: "URL to redirect to", required: true },
+      { name: "status", dataType: "number", formInputType: "number", description: "HTTP status code (default 302)", required: false },
     ],
 
     returnType: "object",
@@ -563,9 +563,9 @@ export const ServerFunctionMetadata = {
   status: {
     description: "Send a response with a specific status code",
     parameters: [
-      { name: "res", dataType: "object", description: "HTTP response object" },
-      { name: "code", dataType: "number", description: "HTTP status code" },
-      { name: "body", dataType: "string", description: "Response body text", optional: true },
+      { name: "res", dataType: "object", formInputType: "json", description: "HTTP response object", required: true },
+      { name: "code", dataType: "number", formInputType: "number", description: "HTTP status code", required: true },
+      { name: "body", dataType: "string", formInputType: "text", description: "Response body text", required: false },
     ],
 
     returnType: "object",
@@ -574,10 +574,10 @@ export const ServerFunctionMetadata = {
   cors: {
     description: "Enable and configure CORS headers for a server",
     parameters: [
-      { name: "id", dataType: "string", description: "Server identifier" },
-      { name: "origin", dataType: "string", description: "Allowed origin (default *)", optional: true },
-      { name: "methods", dataType: "string", description: "Allowed methods", optional: true },
-      { name: "headers", dataType: "string", description: "Allowed headers", optional: true },
+      { name: "id", dataType: "string", formInputType: "text", description: "Server identifier", required: true },
+      { name: "origin", dataType: "string", formInputType: "text", description: "Allowed origin (default *)", required: false },
+      { name: "methods", dataType: "string", formInputType: "text", description: "Allowed methods", required: false },
+      { name: "headers", dataType: "string", formInputType: "text", description: "Allowed headers", required: false },
     ],
 
     returnType: "object",
@@ -593,7 +593,7 @@ export const ServerFunctionMetadata = {
   getRoutes: {
     description: "List all routes registered on a server",
     parameters: [
-      { name: "id", dataType: "string", description: "Server identifier" },
+      { name: "id", dataType: "string", formInputType: "text", description: "Server identifier", required: true },
     ],
 
     returnType: "object",
@@ -603,5 +603,5 @@ export const ServerFunctionMetadata = {
 
 export const ServerModuleMetadata = {
   description: "HTTP server creation and management using Node.js built-in http module. Supports routing, static file serving, CORS, and common response helpers.",
-  version: "1.0.0",
+  methods: ["create", "start", "stop", "onRequest", "onError", "route", "static", "sendJson", "sendHtml", "sendFile", "sendRedirect", "status", "cors", "getServers", "getRoutes"],
 };

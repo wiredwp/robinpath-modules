@@ -253,12 +253,15 @@ All functions throw on failure. Common errors:
 | `Max listeners (...) reached for event "..."` | Check the error message for details |
 
 ```robinpath
-set $result as event.create "workflow" 50
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create and validate result"
+do
+  set $result as event.create "workflow" 50
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -269,10 +272,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as event.listenerCount "workflow" "task.completed"
-each $item in $result
-  print $item
-end
+@desc "Listener count and iterate results"
+do
+  set $result as event.listenerCount "workflow" "task.completed"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with create
@@ -289,13 +295,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as event.listenerCount "workflow" "task.completed"
-if $existing == null
-  event.create "workflow" 50
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Listener count and create"
+do
+  set $existing as event.listenerCount "workflow" "task.completed"
+  if $existing == null
+    event.create "workflow" 50
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Event workflow
@@ -303,10 +312,13 @@ end
 Chain multiple event operations together.
 
 ```robinpath
-set $r_create as event.create "workflow" 50
-set $r_on as event.on "workflow" "task.completed" $handler
-set $r_once as event.once "workflow" "done" $handler
-print "All operations complete"
+@desc "Create, on, and more"
+do
+  set $r_create as event.create "workflow" 50
+  set $r_on as event.on "workflow" "task.completed" $handler
+  set $r_once as event.once "workflow" "done" $handler
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe create with validation
@@ -314,12 +326,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as event.create "workflow" 50
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create and validate result"
+do
+  set $result as event.create "workflow" 50
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

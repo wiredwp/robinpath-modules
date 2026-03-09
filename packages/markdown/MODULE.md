@@ -220,12 +220,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as markdown.toHtml "# Hello"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "To html and validate result"
+do
+  set $result as markdown.toHtml "# Hello"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -236,10 +239,13 @@ end
 Chain multiple markdown operations together.
 
 ```robinpath
-set $r_toHtml as markdown.toHtml "# Hello"
-set $r_extractHeadings as markdown.extractHeadings $md
-set $r_extractLinks as markdown.extractLinks $md
-print "All operations complete"
+@desc "To html, extract headings, and more"
+do
+  set $r_toHtml as markdown.toHtml "# Hello"
+  set $r_extractHeadings as markdown.extractHeadings $md
+  set $r_extractLinks as markdown.extractLinks $md
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe toHtml with validation
@@ -247,12 +253,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as markdown.toHtml "# Hello"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "To html and validate result"
+do
+  set $result as markdown.toHtml "# Hello"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

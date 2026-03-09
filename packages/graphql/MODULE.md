@@ -219,12 +219,15 @@ All functions throw on failure. Common errors:
 | `GraphQL client "..." not found. Create it first.` | Check the error message for details |
 
 ```robinpath
-set $result as graphql.create "github" "https://api.github.com/graphql" {"token": $ghToken}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create and validate result"
+do
+  set $result as graphql.create "github" "https://api.github.com/graphql" {"token": $ghToken}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -235,10 +238,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as graphql.listTypes "github"
-each $item in $result
-  print $item
-end
+@desc "List types and iterate results"
+do
+  set $result as graphql.listTypes "github"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with create
@@ -255,13 +261,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as graphql.listTypes "github"
-if $existing == null
-  graphql.create "github" "https://api.github.com/graphql" {"token": $ghToken}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "List types and create"
+do
+  set $existing as graphql.listTypes "github"
+  if $existing == null
+    graphql.create "github" "https://api.github.com/graphql" {"token": $ghToken}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step GraphQL workflow
@@ -269,10 +278,13 @@ end
 Chain multiple graphql operations together.
 
 ```robinpath
-set $r_create as graphql.create "github" "https://api.github.com/graphql" {"token": $ghToken}
-set $r_query as graphql.query "github" "{ viewer { login name } }"
-set $r_mutate as graphql.mutate "api" "mutation { createUser(name: $name) { id } }" {"name": "Alice"}
-print "All operations complete"
+@desc "Create, query, and more"
+do
+  set $r_create as graphql.create "github" "https://api.github.com/graphql" {"token": $ghToken}
+  set $r_query as graphql.query "github" "{ viewer { login name } }"
+  set $r_mutate as graphql.mutate "api" "mutation { createUser(name: $name) { id } }" {"name": "Alice"}
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe create with validation
@@ -280,12 +292,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as graphql.create "github" "https://api.github.com/graphql" {"token": $ghToken}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create and validate result"
+do
+  set $result as graphql.create "github" "https://api.github.com/graphql" {"token": $ghToken}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

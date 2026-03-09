@@ -419,12 +419,15 @@ All functions throw on failure. Common errors:
 | `pipedrive.updateActivity requires an ID.` | Check the error message for details |
 
 ```robinpath
-set $result as pipedrive.listDeals
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List deals and validate result"
+do
+  set $result as pipedrive.listDeals
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -435,11 +438,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-pipedrive.setCredentials $token
-set $result as pipedrive.listDeals
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  pipedrive.setCredentials $token
+enddo
+
+@desc "List deals and iterate results"
+do
+  set $result as pipedrive.listDeals
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createDeal
@@ -447,9 +457,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-pipedrive.setCredentials $token
-set $result as pipedrive.createDeal
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  pipedrive.setCredentials $token
+enddo
+
+@desc "Create deal"
+do
+  set $result as pipedrive.createDeal
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -457,10 +474,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-pipedrive.setCredentials $token
-set $created as pipedrive.createDeal
-# Update the created item
-pipedrive.updateDeal
+@desc "Setup authentication"
+do
+  pipedrive.setCredentials $token
+enddo
+
+@desc "Create deal and update deal"
+do
+  set $created as pipedrive.createDeal
+  # Update the created item
+  pipedrive.updateDeal
+enddo
 ```
 
 ### 4. Check before creating
@@ -468,14 +492,21 @@ pipedrive.updateDeal
 List existing items and only create if needed.
 
 ```robinpath
-pipedrive.setCredentials $token
-set $existing as pipedrive.listDeals
-if $existing == null
-  pipedrive.createDeal
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  pipedrive.setCredentials $token
+enddo
+
+@desc "List deals and create deal"
+do
+  set $existing as pipedrive.listDeals
+  if $existing == null
+    pipedrive.createDeal
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Pipedrive workflow
@@ -483,11 +514,18 @@ end
 Chain multiple pipedrive operations together.
 
 ```robinpath
-pipedrive.setCredentials $token
-set $r_listDeals as pipedrive.listDeals
-set $r_getDeal as pipedrive.getDeal
-set $r_createDeal as pipedrive.createDeal
-print "All operations complete"
+@desc "Setup authentication"
+do
+  pipedrive.setCredentials $token
+enddo
+
+@desc "List deals, get deal, and more"
+do
+  set $r_listDeals as pipedrive.listDeals
+  set $r_getDeal as pipedrive.getDeal
+  set $r_createDeal as pipedrive.createDeal
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listDeals with validation
@@ -495,13 +533,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-pipedrive.setCredentials $token
-set $result as pipedrive.listDeals
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  pipedrive.setCredentials $token
+enddo
+
+@desc "List deals and validate result"
+do
+  set $result as pipedrive.listDeals
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -42,6 +42,8 @@
     "category": "utility",
     "type": "utility",
     "auth": "none",
-    "functionCount": 16
+    "functionCount": 16,
+    "runtime": "node",
+    "runtimeReason": "Requires better-sqlite3 (native C++ binding)"
   }
 }

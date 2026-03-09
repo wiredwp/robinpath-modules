@@ -384,12 +384,15 @@ All functions throw on failure. Common errors:
 | `Basecamp: "..." not configured. Call basecamp.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as basecamp.listProjects
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List projects and validate result"
+do
+  set $result as basecamp.listProjects
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -400,11 +403,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-basecamp.setCredentials $token
-set $result as basecamp.listProjects
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  basecamp.setCredentials $token
+enddo
+
+@desc "List projects and iterate results"
+do
+  set $result as basecamp.listProjects
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createProject
@@ -412,9 +422,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-basecamp.setCredentials $token
-set $result as basecamp.createProject
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  basecamp.setCredentials $token
+enddo
+
+@desc "Create project"
+do
+  set $result as basecamp.createProject
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -422,10 +439,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-basecamp.setCredentials $token
-set $created as basecamp.createProject
-# Update the created item
-basecamp.updateProject
+@desc "Setup authentication"
+do
+  basecamp.setCredentials $token
+enddo
+
+@desc "Create project and update project"
+do
+  set $created as basecamp.createProject
+  # Update the created item
+  basecamp.updateProject
+enddo
 ```
 
 ### 4. Check before creating
@@ -433,14 +457,21 @@ basecamp.updateProject
 List existing items and only create if needed.
 
 ```robinpath
-basecamp.setCredentials $token
-set $existing as basecamp.listProjects
-if $existing == null
-  basecamp.createProject
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  basecamp.setCredentials $token
+enddo
+
+@desc "List projects and create project"
+do
+  set $existing as basecamp.listProjects
+  if $existing == null
+    basecamp.createProject
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Basecamp workflow
@@ -448,11 +479,18 @@ end
 Chain multiple basecamp operations together.
 
 ```robinpath
-basecamp.setCredentials $token
-set $r_listProjects as basecamp.listProjects
-set $r_getProject as basecamp.getProject
-set $r_createProject as basecamp.createProject
-print "All operations complete"
+@desc "Setup authentication"
+do
+  basecamp.setCredentials $token
+enddo
+
+@desc "List projects, get project, and more"
+do
+  set $r_listProjects as basecamp.listProjects
+  set $r_getProject as basecamp.getProject
+  set $r_createProject as basecamp.createProject
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listProjects with validation
@@ -460,13 +498,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-basecamp.setCredentials $token
-set $result as basecamp.listProjects
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  basecamp.setCredentials $token
+enddo
+
+@desc "List projects and validate result"
+do
+  set $result as basecamp.listProjects
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

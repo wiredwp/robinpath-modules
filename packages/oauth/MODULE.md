@@ -251,12 +251,15 @@ All functions throw on failure. Common errors:
 | `OAuth token exchange failed: ... - ...` | Check the error message for details |
 
 ```robinpath
-set $result as oauth.authUrl "https://accounts.google.com/o/oauth2/v2/auth" {"clientId": "...", "scope": "email profile"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Auth url and validate result"
+do
+  set $result as oauth.authUrl "https://accounts.google.com/o/oauth2/v2/auth" {"clientId": "...", "scope": "email profile"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -267,10 +270,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as oauth.getToken "google"
-each $item in $result
-  print $item
-end
+@desc "Get token and iterate results"
+do
+  set $result as oauth.getToken "google"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step OAuth workflow
@@ -278,10 +284,13 @@ end
 Chain multiple oauth operations together.
 
 ```robinpath
-set $r_authUrl as oauth.authUrl "https://accounts.google.com/o/oauth2/v2/auth" {"clientId": "...", "scope": "email profile"}
-set $r_exchangeCode as oauth.exchangeCode "https://oauth2.googleapis.com/token" {"code": "...", "clientId": "..."}
-set $r_refreshToken as oauth.refreshToken "https://oauth2.googleapis.com/token" {"name": "google", "clientId": "..."}
-print "All operations complete"
+@desc "Auth url, exchange code, and more"
+do
+  set $r_authUrl as oauth.authUrl "https://accounts.google.com/o/oauth2/v2/auth" {"clientId": "...", "scope": "email profile"}
+  set $r_exchangeCode as oauth.exchangeCode "https://oauth2.googleapis.com/token" {"code": "...", "clientId": "..."}
+  set $r_refreshToken as oauth.refreshToken "https://oauth2.googleapis.com/token" {"name": "google", "clientId": "..."}
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe authUrl with validation
@@ -289,12 +298,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as oauth.authUrl "https://accounts.google.com/o/oauth2/v2/auth" {"clientId": "...", "scope": "email profile"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Auth url and validate result"
+do
+  set $result as oauth.authUrl "https://accounts.google.com/o/oauth2/v2/auth" {"clientId": "...", "scope": "email profile"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

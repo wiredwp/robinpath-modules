@@ -384,12 +384,15 @@ All functions throw on failure. Common errors:
 | `Zoom: "..." not configured. Call zoom.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as zoom.listMeetings
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List meetings and validate result"
+do
+  set $result as zoom.listMeetings
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -400,11 +403,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-zoom.setCredentials $token
-set $result as zoom.listMeetings
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  zoom.setCredentials $token
+enddo
+
+@desc "List meetings and iterate results"
+do
+  set $result as zoom.listMeetings
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createMeeting
@@ -412,9 +422,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-zoom.setCredentials $token
-set $result as zoom.createMeeting
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  zoom.setCredentials $token
+enddo
+
+@desc "Create meeting"
+do
+  set $result as zoom.createMeeting
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -422,10 +439,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-zoom.setCredentials $token
-set $created as zoom.createMeeting
-# Update the created item
-zoom.updateMeeting
+@desc "Setup authentication"
+do
+  zoom.setCredentials $token
+enddo
+
+@desc "Create meeting and update meeting"
+do
+  set $created as zoom.createMeeting
+  # Update the created item
+  zoom.updateMeeting
+enddo
 ```
 
 ### 4. Check before creating
@@ -433,14 +457,21 @@ zoom.updateMeeting
 List existing items and only create if needed.
 
 ```robinpath
-zoom.setCredentials $token
-set $existing as zoom.listMeetings
-if $existing == null
-  zoom.createMeeting
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  zoom.setCredentials $token
+enddo
+
+@desc "List meetings and create meeting"
+do
+  set $existing as zoom.listMeetings
+  if $existing == null
+    zoom.createMeeting
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Zoom workflow
@@ -448,11 +479,18 @@ end
 Chain multiple zoom operations together.
 
 ```robinpath
-zoom.setCredentials $token
-set $r_listMeetings as zoom.listMeetings
-set $r_getMeeting as zoom.getMeeting
-set $r_createMeeting as zoom.createMeeting
-print "All operations complete"
+@desc "Setup authentication"
+do
+  zoom.setCredentials $token
+enddo
+
+@desc "List meetings, get meeting, and more"
+do
+  set $r_listMeetings as zoom.listMeetings
+  set $r_getMeeting as zoom.getMeeting
+  set $r_createMeeting as zoom.createMeeting
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listMeetings with validation
@@ -460,13 +498,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-zoom.setCredentials $token
-set $result as zoom.listMeetings
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  zoom.setCredentials $token
+enddo
+
+@desc "List meetings and validate result"
+do
+  set $result as zoom.listMeetings
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

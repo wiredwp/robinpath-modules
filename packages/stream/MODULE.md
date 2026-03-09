@@ -287,12 +287,15 @@ All functions throw on failure. Common errors:
 | `HTTP ${response.status}: ${response.statusText}` | Check the error message for details |
 
 ```robinpath
-set $result as stream.readFile "./data.txt"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Read file and validate result"
+do
+  set $result as stream.readFile "./data.txt"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -303,10 +306,13 @@ end
 Chain multiple stream operations together.
 
 ```robinpath
-set $r_readFile as stream.readFile "./data.txt"
-set $r_writeFile as stream.writeFile "./out.txt" "hello"
-set $r_copyFile as stream.copyFile "./a.txt" "./b.txt"
-print "All operations complete"
+@desc "Read file, write file, and more"
+do
+  set $r_readFile as stream.readFile "./data.txt"
+  set $r_writeFile as stream.writeFile "./out.txt" "hello"
+  set $r_copyFile as stream.copyFile "./a.txt" "./b.txt"
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe readFile with validation
@@ -314,12 +320,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as stream.readFile "./data.txt"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Read file and validate result"
+do
+  set $result as stream.readFile "./data.txt"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

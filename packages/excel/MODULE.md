@@ -214,12 +214,15 @@ All functions throw on failure. Common errors:
 | `Sheet "..." not found` | Check the error message for details |
 
 ```robinpath
-set $result as excel.read "./data.xlsx"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Read and validate result"
+do
+  set $result as excel.read "./data.xlsx"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -230,10 +233,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as excel.getCell "./data.xlsx" "B2"
-each $item in $result
-  print $item
-end
+@desc "Get cell and iterate results"
+do
+  set $result as excel.getCell "./data.xlsx" "B2"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with addSheet
@@ -250,13 +256,16 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-set $existing as excel.getCell "./data.xlsx" "B2"
-if $existing == null
-  excel.addSheet "./data.xlsx" "Summary" $summaryData
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Get cell and add sheet"
+do
+  set $existing as excel.getCell "./data.xlsx" "B2"
+  if $existing == null
+    excel.addSheet "./data.xlsx" "Summary" $summaryData
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Excel workflow
@@ -264,10 +273,13 @@ end
 Chain multiple excel operations together.
 
 ```robinpath
-set $r_read as excel.read "./data.xlsx"
-set $r_write as excel.write "./output.xlsx" $data {"sheetName": "Users"}
-set $r_readSheetNames as excel.readSheetNames "./data.xlsx"
-print "All operations complete"
+@desc "Read, write, and more"
+do
+  set $r_read as excel.read "./data.xlsx"
+  set $r_write as excel.write "./output.xlsx" $data {"sheetName": "Users"}
+  set $r_readSheetNames as excel.readSheetNames "./data.xlsx"
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe read with validation
@@ -275,12 +287,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as excel.read "./data.xlsx"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Read and validate result"
+do
+  set $result as excel.read "./data.xlsx"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

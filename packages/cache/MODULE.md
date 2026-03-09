@@ -262,12 +262,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as cache.get "user:1" "unknown"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get and validate result"
+do
+  set $result as cache.get "user:1" "unknown"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -278,10 +281,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as cache.get "user:1" "unknown"
-each $item in $result
-  print $item
-end
+@desc "Get and iterate results"
+do
+  set $result as cache.get "user:1" "unknown"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Cache workflow
@@ -289,10 +295,13 @@ end
 Chain multiple cache operations together.
 
 ```robinpath
-set $r_get as cache.get "user:1" "unknown"
-set $r_has as cache.has "user:1"
-set $r_delete as cache.delete "user:1"
-print "All operations complete"
+@desc "Get, has, and more"
+do
+  set $r_get as cache.get "user:1" "unknown"
+  set $r_has as cache.has "user:1"
+  set $r_delete as cache.delete "user:1"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe get with validation
@@ -300,12 +309,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as cache.get "user:1" "unknown"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Get and validate result"
+do
+  set $result as cache.get "user:1" "unknown"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -222,12 +222,15 @@ All functions throw on failure. Common errors:
 | `Translate: "..." not configured. Call translate.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as translate.translateText
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Translate text and validate result"
+do
+  set $result as translate.translateText
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -238,10 +241,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as translate.listLanguages
-each $item in $result
-  print $item
-end
+@desc "List languages and iterate results"
+do
+  set $result as translate.listLanguages
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Translate workflow
@@ -249,10 +255,13 @@ end
 Chain multiple translate operations together.
 
 ```robinpath
-set $r_translateText as translate.translateText
-set $r_translateBatch as translate.translateBatch
-set $r_detectLanguage as translate.detectLanguage
-print "All operations complete"
+@desc "Translate text, translate batch, and more"
+do
+  set $r_translateText as translate.translateText
+  set $r_translateBatch as translate.translateBatch
+  set $r_detectLanguage as translate.detectLanguage
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe translateText with validation
@@ -260,12 +269,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as translate.translateText
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Translate text and validate result"
+do
+  set $result as translate.translateText
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

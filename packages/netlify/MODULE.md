@@ -419,12 +419,15 @@ All functions throw on failure. Common errors:
 | `netlify.cancelDeploy requires an ID.` | Check the error message for details |
 
 ```robinpath
-set $result as netlify.listSites
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List sites and validate result"
+do
+  set $result as netlify.listSites
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -435,11 +438,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-netlify.setCredentials $token
-set $result as netlify.listSites
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  netlify.setCredentials $token
+enddo
+
+@desc "List sites and iterate results"
+do
+  set $result as netlify.listSites
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createSite
@@ -447,9 +457,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-netlify.setCredentials $token
-set $result as netlify.createSite
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  netlify.setCredentials $token
+enddo
+
+@desc "Create site"
+do
+  set $result as netlify.createSite
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -457,10 +474,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-netlify.setCredentials $token
-set $created as netlify.createSite
-# Update the created item
-netlify.updateSite
+@desc "Setup authentication"
+do
+  netlify.setCredentials $token
+enddo
+
+@desc "Create site and update site"
+do
+  set $created as netlify.createSite
+  # Update the created item
+  netlify.updateSite
+enddo
 ```
 
 ### 4. Check before creating
@@ -468,14 +492,21 @@ netlify.updateSite
 List existing items and only create if needed.
 
 ```robinpath
-netlify.setCredentials $token
-set $existing as netlify.listSites
-if $existing == null
-  netlify.createSite
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  netlify.setCredentials $token
+enddo
+
+@desc "List sites and create site"
+do
+  set $existing as netlify.listSites
+  if $existing == null
+    netlify.createSite
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Netlify workflow
@@ -483,11 +514,18 @@ end
 Chain multiple netlify operations together.
 
 ```robinpath
-netlify.setCredentials $token
-set $r_listSites as netlify.listSites
-set $r_getSite as netlify.getSite
-set $r_createSite as netlify.createSite
-print "All operations complete"
+@desc "Setup authentication"
+do
+  netlify.setCredentials $token
+enddo
+
+@desc "List sites, get site, and more"
+do
+  set $r_listSites as netlify.listSites
+  set $r_getSite as netlify.getSite
+  set $r_createSite as netlify.createSite
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listSites with validation
@@ -495,13 +533,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-netlify.setCredentials $token
-set $result as netlify.listSites
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  netlify.setCredentials $token
+enddo
+
+@desc "List sites and validate result"
+do
+  set $result as netlify.listSites
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

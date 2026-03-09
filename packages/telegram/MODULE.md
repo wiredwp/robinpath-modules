@@ -292,12 +292,15 @@ All functions throw on failure. Common errors:
 | `At least 2 poll options are required.` | Check the error message for details |
 
 ```robinpath
-set $result as telegram.getMe "default"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get me and validate result"
+do
+  set $result as telegram.getMe "default"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -308,11 +311,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-telegram.setToken $token
-set $result as telegram.getMe "default"
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  telegram.setToken $token
+enddo
+
+@desc "Get me and iterate results"
+do
+  set $result as telegram.getMe "default"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with send
@@ -320,9 +330,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-telegram.setToken $token
-set $result as telegram.send "default" "-100123456" "Hello from RobinPath!"
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  telegram.setToken $token
+enddo
+
+@desc "Send"
+do
+  set $result as telegram.send "default" "-100123456" "Hello from RobinPath!"
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -330,10 +347,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-telegram.setToken $token
-set $created as telegram.send "default" "-100123456" "Hello from RobinPath!"
-# Update the created item
-telegram.editMessage "default" "-100123456" 42 "Updated text"
+@desc "Setup authentication"
+do
+  telegram.setToken $token
+enddo
+
+@desc "Send and edit message"
+do
+  set $created as telegram.send "default" "-100123456" "Hello from RobinPath!"
+  # Update the created item
+  telegram.editMessage "default" "-100123456" 42 "Updated text"
+enddo
 ```
 
 ### 4. Check before creating
@@ -341,14 +365,21 @@ telegram.editMessage "default" "-100123456" 42 "Updated text"
 List existing items and only create if needed.
 
 ```robinpath
-telegram.setToken $token
-set $existing as telegram.getMe "default"
-if $existing == null
-  telegram.send "default" "-100123456" "Hello from RobinPath!"
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  telegram.setToken $token
+enddo
+
+@desc "Get me and send"
+do
+  set $existing as telegram.getMe "default"
+  if $existing == null
+    telegram.send "default" "-100123456" "Hello from RobinPath!"
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Telegram workflow
@@ -356,11 +387,18 @@ end
 Chain multiple telegram operations together.
 
 ```robinpath
-telegram.setToken $token
-set $r_getMe as telegram.getMe "default"
-set $r_send as telegram.send "default" "-100123456" "Hello from RobinPath!"
-set $r_sendPhoto as telegram.sendPhoto "default" "-100123456" "/tmp/photo.jpg" {"caption": "Look at this!"}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  telegram.setToken $token
+enddo
+
+@desc "Get me, send, and more"
+do
+  set $r_getMe as telegram.getMe "default"
+  set $r_send as telegram.send "default" "-100123456" "Hello from RobinPath!"
+  set $r_sendPhoto as telegram.sendPhoto "default" "-100123456" "/tmp/photo.jpg" {"caption": "Look at this!"}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe getMe with validation
@@ -368,13 +406,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-telegram.setToken $token
-set $result as telegram.getMe "default"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  telegram.setToken $token
+enddo
+
+@desc "Get me and validate result"
+do
+  set $result as telegram.getMe "default"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

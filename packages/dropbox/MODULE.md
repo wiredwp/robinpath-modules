@@ -385,12 +385,15 @@ All functions throw on failure. Common errors:
 | `Dropbox: "..." not configured. Call dropbox.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as dropbox.listFolder
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List folder and validate result"
+do
+  set $result as dropbox.listFolder
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -401,11 +404,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-dropbox.setCredentials $token
-set $result as dropbox.listFolder
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  dropbox.setCredentials $token
+enddo
+
+@desc "List folder and iterate results"
+do
+  set $result as dropbox.listFolder
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createFolder
@@ -413,9 +423,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-dropbox.setCredentials $token
-set $result as dropbox.createFolder
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  dropbox.setCredentials $token
+enddo
+
+@desc "Create folder"
+do
+  set $result as dropbox.createFolder
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -423,14 +440,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-dropbox.setCredentials $token
-set $existing as dropbox.listFolder
-if $existing == null
-  dropbox.createFolder
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  dropbox.setCredentials $token
+enddo
+
+@desc "List folder and create folder"
+do
+  set $existing as dropbox.listFolder
+  if $existing == null
+    dropbox.createFolder
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step Dropbox workflow
@@ -438,11 +462,18 @@ end
 Chain multiple dropbox operations together.
 
 ```robinpath
-dropbox.setCredentials $token
-set $r_listFolder as dropbox.listFolder
-set $r_getMetadata as dropbox.getMetadata
-set $r_createFolder as dropbox.createFolder
-print "All operations complete"
+@desc "Setup authentication"
+do
+  dropbox.setCredentials $token
+enddo
+
+@desc "List folder, get metadata, and more"
+do
+  set $r_listFolder as dropbox.listFolder
+  set $r_getMetadata as dropbox.getMetadata
+  set $r_createFolder as dropbox.createFolder
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe listFolder with validation
@@ -450,13 +481,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-dropbox.setCredentials $token
-set $result as dropbox.listFolder
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  dropbox.setCredentials $token
+enddo
+
+@desc "List folder and validate result"
+do
+  set $result as dropbox.listFolder
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

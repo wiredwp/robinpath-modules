@@ -288,12 +288,15 @@ All functions throw on failure. Common errors:
 | `Uptime: "..." not configured. Call uptime.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as uptime.checkHttp
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Check http and validate result"
+do
+  set $result as uptime.checkHttp
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -304,10 +307,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as uptime.getResponseTime
-each $item in $result
-  print $item
-end
+@desc "Get response time and iterate results"
+do
+  set $result as uptime.getResponseTime
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Uptime workflow
@@ -315,10 +321,13 @@ end
 Chain multiple uptime operations together.
 
 ```robinpath
-set $r_checkHttp as uptime.checkHttp
-set $r_checkHttps as uptime.checkHttps
-set $r_checkTcp as uptime.checkTcp
-print "All operations complete"
+@desc "Check http, check https, and more"
+do
+  set $r_checkHttp as uptime.checkHttp
+  set $r_checkHttps as uptime.checkHttps
+  set $r_checkTcp as uptime.checkTcp
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe checkHttp with validation
@@ -326,12 +335,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as uptime.checkHttp
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Check http and validate result"
+do
+  set $result as uptime.checkHttp
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

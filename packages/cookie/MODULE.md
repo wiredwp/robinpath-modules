@@ -261,12 +261,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as cookie.parse "session=abc; theme=dark"
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Parse and validate result"
+do
+  set $result as cookie.parse "session=abc; theme=dark"
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -277,10 +280,13 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-set $result as cookie.get $header "session"
-each $item in $result
-  print $item
-end
+@desc "Get and iterate results"
+do
+  set $result as cookie.get $header "session"
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Cookie workflow
@@ -288,10 +294,13 @@ end
 Chain multiple cookie operations together.
 
 ```robinpath
-set $r_parse as cookie.parse "session=abc; theme=dark"
-set $r_serialize as cookie.serialize "session" "abc123" {"httpOnly": true, "maxAge": 3600}
-set $r_sign as cookie.sign "userId=123" "my-secret"
-print "All operations complete"
+@desc "Parse, serialize, and more"
+do
+  set $r_parse as cookie.parse "session=abc; theme=dark"
+  set $r_serialize as cookie.serialize "session" "abc123" {"httpOnly": true, "maxAge": 3600}
+  set $r_sign as cookie.sign "userId=123" "my-secret"
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe parse with validation
@@ -299,12 +308,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as cookie.parse "session=abc; theme=dark"
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Parse and validate result"
+do
+  set $result as cookie.parse "session=abc; theme=dark"
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

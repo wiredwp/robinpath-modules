@@ -178,12 +178,15 @@ All functions throw on failure. Common errors:
 | `Chart "..." already exists` | Check the error message for details |
 
 ```robinpath
-set $result as chart.create "c1" "bar" {"labels": ["Q1","Q2"], "datasets": [{"label": "Sales", "data": [100,200]}]} {"title": "Revenue"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create and validate result"
+do
+  set $result as chart.create "c1" "bar" {"labels": ["Q1","Q2"], "datasets": [{"label": "Sales", "data": [100,200]}]} {"title": "Revenue"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -203,9 +206,12 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-set $created as chart.create "c1" "bar" {"labels": ["Q1","Q2"], "datasets": [{"label": "Sales", "data": [100,200]}]} {"title": "Revenue"}
-# Update the created item
-chart.update "c1" {"title": "Updated Title", "width": 1200}
+@desc "Create and update"
+do
+  set $created as chart.create "c1" "bar" {"labels": ["Q1","Q2"], "datasets": [{"label": "Sales", "data": [100,200]}]} {"title": "Revenue"}
+  # Update the created item
+  chart.update "c1" {"title": "Updated Title", "width": 1200}
+enddo
 ```
 
 ### 3. Multi-step Chart workflow
@@ -213,10 +219,13 @@ chart.update "c1" {"title": "Updated Title", "width": 1200}
 Chain multiple chart operations together.
 
 ```robinpath
-set $r_create as chart.create "c1" "bar" {"labels": ["Q1","Q2"], "datasets": [{"label": "Sales", "data": [100,200]}]} {"title": "Revenue"}
-set $r_addDataset as chart.addDataset "c1" {"label": "Costs", "data": [50, 80]}
-set $r_update as chart.update "c1" {"title": "Updated Title", "width": 1200}
-print "All operations complete"
+@desc "Create, add dataset, and more"
+do
+  set $r_create as chart.create "c1" "bar" {"labels": ["Q1","Q2"], "datasets": [{"label": "Sales", "data": [100,200]}]} {"title": "Revenue"}
+  set $r_addDataset as chart.addDataset "c1" {"label": "Costs", "data": [50, 80]}
+  set $r_update as chart.update "c1" {"title": "Updated Title", "width": 1200}
+  print "All operations complete"
+enddo
 ```
 
 ### 4. Safe create with validation
@@ -224,12 +233,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as chart.create "c1" "bar" {"labels": ["Q1","Q2"], "datasets": [{"label": "Sales", "data": [100,200]}]} {"title": "Revenue"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create and validate result"
+do
+  set $result as chart.create "c1" "bar" {"labels": ["Q1","Q2"], "datasets": [{"label": "Sales", "data": [100,200]}]} {"title": "Revenue"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

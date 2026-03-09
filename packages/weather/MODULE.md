@@ -278,12 +278,15 @@ All functions throw on failure. Common errors:
 | `Weather: "..." not configured. Call weather.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as weather.getCurrentWeather
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Get current weather and validate result"
+do
+  set $result as weather.getCurrentWeather
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -294,11 +297,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-weather.setCredentials $token
-set $result as weather.getCurrentWeather
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  weather.setCredentials $token
+enddo
+
+@desc "Get current weather and iterate results"
+do
+  set $result as weather.getCurrentWeather
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Weather workflow
@@ -306,11 +316,18 @@ end
 Chain multiple weather operations together.
 
 ```robinpath
-weather.setCredentials $token
-set $r_getCurrentWeather as weather.getCurrentWeather
-set $r_getForecast as weather.getForecast
-set $r_get5DayForecast as weather.get5DayForecast
-print "All operations complete"
+@desc "Setup authentication"
+do
+  weather.setCredentials $token
+enddo
+
+@desc "Get current weather, get forecast, and more"
+do
+  set $r_getCurrentWeather as weather.getCurrentWeather
+  set $r_getForecast as weather.getForecast
+  set $r_get5DayForecast as weather.get5DayForecast
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe getCurrentWeather with validation
@@ -318,13 +335,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-weather.setCredentials $token
-set $result as weather.getCurrentWeather
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  weather.setCredentials $token
+enddo
+
+@desc "Get current weather and validate result"
+do
+  set $result as weather.getCurrentWeather
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

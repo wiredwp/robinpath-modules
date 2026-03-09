@@ -417,12 +417,15 @@ All functions throw on failure. Common errors:
 | `Quickbooks: "..." not configured. Call quickbooks.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as quickbooks.query
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Query and validate result"
+do
+  set $result as quickbooks.query
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -433,11 +436,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-quickbooks.setCredentials $token
-set $result as quickbooks.getInvoice
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  quickbooks.setCredentials $token
+enddo
+
+@desc "Get invoice and iterate results"
+do
+  set $result as quickbooks.getInvoice
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createInvoice
@@ -445,9 +455,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-quickbooks.setCredentials $token
-set $result as quickbooks.createInvoice
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  quickbooks.setCredentials $token
+enddo
+
+@desc "Create invoice"
+do
+  set $result as quickbooks.createInvoice
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -455,10 +472,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-quickbooks.setCredentials $token
-set $created as quickbooks.createInvoice
-# Update the created item
-quickbooks.updateCustomer
+@desc "Setup authentication"
+do
+  quickbooks.setCredentials $token
+enddo
+
+@desc "Create invoice and update customer"
+do
+  set $created as quickbooks.createInvoice
+  # Update the created item
+  quickbooks.updateCustomer
+enddo
 ```
 
 ### 4. Check before creating
@@ -466,14 +490,21 @@ quickbooks.updateCustomer
 List existing items and only create if needed.
 
 ```robinpath
-quickbooks.setCredentials $token
-set $existing as quickbooks.getInvoice
-if $existing == null
-  quickbooks.createInvoice
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  quickbooks.setCredentials $token
+enddo
+
+@desc "Get invoice and create invoice"
+do
+  set $existing as quickbooks.getInvoice
+  if $existing == null
+    quickbooks.createInvoice
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step QuickBooks workflow
@@ -481,11 +512,18 @@ end
 Chain multiple quickbooks operations together.
 
 ```robinpath
-quickbooks.setCredentials $token
-set $r_query as quickbooks.query
-set $r_getInvoice as quickbooks.getInvoice
-set $r_createInvoice as quickbooks.createInvoice
-print "All operations complete"
+@desc "Setup authentication"
+do
+  quickbooks.setCredentials $token
+enddo
+
+@desc "Query, get invoice, and more"
+do
+  set $r_query as quickbooks.query
+  set $r_getInvoice as quickbooks.getInvoice
+  set $r_createInvoice as quickbooks.createInvoice
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe query with validation
@@ -493,13 +531,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-quickbooks.setCredentials $token
-set $result as quickbooks.query
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  quickbooks.setCredentials $token
+enddo
+
+@desc "Query and validate result"
+do
+  set $result as quickbooks.query
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

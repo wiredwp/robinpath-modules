@@ -312,12 +312,15 @@ All functions throw on failure. Common errors:
 | `Clearbit: "..." not configured. Call clearbit.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as clearbit.enrichPerson
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Enrich person and validate result"
+do
+  set $result as clearbit.enrichPerson
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -328,11 +331,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-clearbit.setCredentials $token
-set $result as clearbit.getPersonFlag
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  clearbit.setCredentials $token
+enddo
+
+@desc "Get person flag and iterate results"
+do
+  set $result as clearbit.getPersonFlag
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Multi-step Clearbit workflow
@@ -340,11 +350,18 @@ end
 Chain multiple clearbit operations together.
 
 ```robinpath
-clearbit.setCredentials $token
-set $r_enrichPerson as clearbit.enrichPerson
-set $r_enrichCompany as clearbit.enrichCompany
-set $r_findPerson as clearbit.findPerson
-print "All operations complete"
+@desc "Setup authentication"
+do
+  clearbit.setCredentials $token
+enddo
+
+@desc "Enrich person, enrich company, and more"
+do
+  set $r_enrichPerson as clearbit.enrichPerson
+  set $r_enrichCompany as clearbit.enrichCompany
+  set $r_findPerson as clearbit.findPerson
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe enrichPerson with validation
@@ -352,13 +369,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-clearbit.setCredentials $token
-set $result as clearbit.enrichPerson
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  clearbit.setCredentials $token
+enddo
+
+@desc "Enrich person and validate result"
+do
+  set $result as clearbit.enrichPerson
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

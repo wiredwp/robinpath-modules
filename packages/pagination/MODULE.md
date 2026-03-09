@@ -122,12 +122,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as pagination.fetchAll "https://api.example.com/users" {"strategy": "offset", "pageSize": 100}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Fetch all and validate result"
+do
+  set $result as pagination.fetchAll "https://api.example.com/users" {"strategy": "offset", "pageSize": 100}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -138,10 +141,13 @@ end
 Chain multiple pagination operations together.
 
 ```robinpath
-set $r_fetchAll as pagination.fetchAll "https://api.example.com/users" {"strategy": "offset", "pageSize": 100}
-set $r_fetchPage as pagination.fetchPage "https://api.example.com/users" 2 {"pageSize": 20}
-set $r_parseLinkHeader as pagination.parseLinkHeader $linkHeader
-print "All operations complete"
+@desc "Fetch all, fetch page, and more"
+do
+  set $r_fetchAll as pagination.fetchAll "https://api.example.com/users" {"strategy": "offset", "pageSize": 100}
+  set $r_fetchPage as pagination.fetchPage "https://api.example.com/users" 2 {"pageSize": 20}
+  set $r_parseLinkHeader as pagination.parseLinkHeader $linkHeader
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe fetchAll with validation
@@ -149,12 +155,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as pagination.fetchAll "https://api.example.com/users" {"strategy": "offset", "pageSize": 100}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Fetch all and validate result"
+do
+  set $result as pagination.fetchAll "https://api.example.com/users" {"strategy": "offset", "pageSize": 100}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -357,12 +357,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as promise.all [$p1, $p2, $p3]
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "All and validate result"
+do
+  set $result as promise.all [$p1, $p2, $p3]
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -373,10 +376,13 @@ end
 Chain multiple promise operations together.
 
 ```robinpath
-set $r_all as promise.all [$p1, $p2, $p3]
-set $r_allSettled as promise.allSettled [$p1, $p2]
-set $r_race as promise.race [$p1, $p2]
-print "All operations complete"
+@desc "All, all settled, and more"
+do
+  set $r_all as promise.all [$p1, $p2, $p3]
+  set $r_allSettled as promise.allSettled [$p1, $p2]
+  set $r_race as promise.race [$p1, $p2]
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe all with validation
@@ -384,12 +390,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as promise.all [$p1, $p2, $p3]
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "All and validate result"
+do
+  set $result as promise.all [$p1, $p2, $p3]
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

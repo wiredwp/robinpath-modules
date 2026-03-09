@@ -243,12 +243,15 @@ All functions throw on failure. Common errors:
 | `Google Calendar delete error (${res.status}): ${text}` | Check the error message for details |
 
 ```robinpath
-set $result as googleCalendar.listEvents "primary" {"timeMin":"2025-01-01T00:00:00Z","maxResults":10}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List events and validate result"
+do
+  set $result as googleCalendar.listEvents "primary" {"timeMin":"2025-01-01T00:00:00Z","maxResults":10}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -259,11 +262,14 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-google-calendar.setCredentials $token
-set $result as googleCalendar.listEvents "primary" {"timeMin":"2025-01-01T00:00:00Z","maxResults":10}
-each $item in $result
-  print $item
-end
+@desc "List events and iterate results"
+do
+  google-calendar.setCredentials $token
+  set $result as googleCalendar.listEvents "primary" {"timeMin":"2025-01-01T00:00:00Z","maxResults":10}
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createEvent
@@ -271,9 +277,12 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-google-calendar.setCredentials $token
-set $result as googleCalendar.createEvent "primary" {"summary":"Meeting","start":{"dateTime":"2025-06-01T10:00:00Z"},"end":{"dateTime":"2025-06-01T11:00:00Z"}}
-print "Created: " + $result
+@desc "Create event"
+do
+  google-calendar.setCredentials $token
+  set $result as googleCalendar.createEvent "primary" {"summary":"Meeting","start":{"dateTime":"2025-06-01T10:00:00Z"},"end":{"dateTime":"2025-06-01T11:00:00Z"}}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -281,10 +290,13 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-google-calendar.setCredentials $token
-set $created as googleCalendar.createEvent "primary" {"summary":"Meeting","start":{"dateTime":"2025-06-01T10:00:00Z"},"end":{"dateTime":"2025-06-01T11:00:00Z"}}
-# Update the created item
-googleCalendar.updateEvent "primary" "event-id" {"summary":"Updated Meeting"}
+@desc "Create event and update event"
+do
+  google-calendar.setCredentials $token
+  set $created as googleCalendar.createEvent "primary" {"summary":"Meeting","start":{"dateTime":"2025-06-01T10:00:00Z"},"end":{"dateTime":"2025-06-01T11:00:00Z"}}
+  # Update the created item
+  googleCalendar.updateEvent "primary" "event-id" {"summary":"Updated Meeting"}
+enddo
 ```
 
 ### 4. Check before creating
@@ -292,14 +304,17 @@ googleCalendar.updateEvent "primary" "event-id" {"summary":"Updated Meeting"}
 List existing items and only create if needed.
 
 ```robinpath
-google-calendar.setCredentials $token
-set $existing as googleCalendar.listEvents "primary" {"timeMin":"2025-01-01T00:00:00Z","maxResults":10}
-if $existing == null
-  googleCalendar.createEvent "primary" {"summary":"Meeting","start":{"dateTime":"2025-06-01T10:00:00Z"},"end":{"dateTime":"2025-06-01T11:00:00Z"}}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "List events and create event"
+do
+  google-calendar.setCredentials $token
+  set $existing as googleCalendar.listEvents "primary" {"timeMin":"2025-01-01T00:00:00Z","maxResults":10}
+  if $existing == null
+    googleCalendar.createEvent "primary" {"summary":"Meeting","start":{"dateTime":"2025-06-01T10:00:00Z"},"end":{"dateTime":"2025-06-01T11:00:00Z"}}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Google Calendar workflow
@@ -307,11 +322,14 @@ end
 Chain multiple google-calendar operations together.
 
 ```robinpath
-google-calendar.setCredentials $token
-set $r_listEvents as googleCalendar.listEvents "primary" {"timeMin":"2025-01-01T00:00:00Z","maxResults":10}
-set $r_getEvent as googleCalendar.getEvent "primary" "event-id"
-set $r_createEvent as googleCalendar.createEvent "primary" {"summary":"Meeting","start":{"dateTime":"2025-06-01T10:00:00Z"},"end":{"dateTime":"2025-06-01T11:00:00Z"}}
-print "All operations complete"
+@desc "List events, get event, and more"
+do
+  google-calendar.setCredentials $token
+  set $r_listEvents as googleCalendar.listEvents "primary" {"timeMin":"2025-01-01T00:00:00Z","maxResults":10}
+  set $r_getEvent as googleCalendar.getEvent "primary" "event-id"
+  set $r_createEvent as googleCalendar.createEvent "primary" {"summary":"Meeting","start":{"dateTime":"2025-06-01T10:00:00Z"},"end":{"dateTime":"2025-06-01T11:00:00Z"}}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe listEvents with validation
@@ -319,13 +337,16 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-google-calendar.setCredentials $token
-set $result as googleCalendar.listEvents "primary" {"timeMin":"2025-01-01T00:00:00Z","maxResults":10}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "List events and validate result"
+do
+  google-calendar.setCredentials $token
+  set $result as googleCalendar.listEvents "primary" {"timeMin":"2025-01-01T00:00:00Z","maxResults":10}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

@@ -278,12 +278,15 @@ All functions throw on failure. Common errors:
 | _(standard errors)_ | Check function parameters and authentication |
 
 ```robinpath
-set $result as calendar.createEvent {"summary": "Meeting", "start": "2024-01-15T10:00:00Z", "end": "2024-01-15T11:00:00Z"}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Create event and validate result"
+do
+  set $result as calendar.createEvent {"summary": "Meeting", "start": "2024-01-15T10:00:00Z", "end": "2024-01-15T11:00:00Z"}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -303,10 +306,13 @@ print "Created: " + $result
 Chain multiple calendar operations together.
 
 ```robinpath
-set $r_createEvent as calendar.createEvent {"summary": "Meeting", "start": "2024-01-15T10:00:00Z", "end": "2024-01-15T11:00:00Z"}
-set $r_createCalendar as calendar.createCalendar [$event1, $event2] {"name": "My Calendar"}
-set $r_parse as calendar.parse $icsContent
-print "All operations complete"
+@desc "Create event, create calendar, and more"
+do
+  set $r_createEvent as calendar.createEvent {"summary": "Meeting", "start": "2024-01-15T10:00:00Z", "end": "2024-01-15T11:00:00Z"}
+  set $r_createCalendar as calendar.createCalendar [$event1, $event2] {"name": "My Calendar"}
+  set $r_parse as calendar.parse $icsContent
+  print "All operations complete"
+enddo
 ```
 
 ### 3. Safe createEvent with validation
@@ -314,12 +320,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as calendar.createEvent {"summary": "Meeting", "start": "2024-01-15T10:00:00Z", "end": "2024-01-15T11:00:00Z"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Create event and validate result"
+do
+  set $result as calendar.createEvent {"summary": "Meeting", "start": "2024-01-15T10:00:00Z", "end": "2024-01-15T11:00:00Z"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

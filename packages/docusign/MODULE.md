@@ -314,12 +314,15 @@ All functions throw on failure. Common errors:
 | `Docusign: "..." not configured. Call docusign.setCredentials first.` | Check the error message for details |
 
 ```robinpath
-set $result as docusign.listEnvelopes
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "List envelopes and validate result"
+do
+  set $result as docusign.listEnvelopes
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -330,11 +333,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-docusign.setCredentials $token
-set $result as docusign.listEnvelopes
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  docusign.setCredentials $token
+enddo
+
+@desc "List envelopes and iterate results"
+do
+  set $result as docusign.listEnvelopes
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createEnvelope
@@ -342,9 +352,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-docusign.setCredentials $token
-set $result as docusign.createEnvelope
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  docusign.setCredentials $token
+enddo
+
+@desc "Create envelope"
+do
+  set $result as docusign.createEnvelope
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Check before creating
@@ -352,14 +369,21 @@ print "Created: " + $result
 List existing items and only create if needed.
 
 ```robinpath
-docusign.setCredentials $token
-set $existing as docusign.listEnvelopes
-if $existing == null
-  docusign.createEnvelope
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  docusign.setCredentials $token
+enddo
+
+@desc "List envelopes and create envelope"
+do
+  set $existing as docusign.listEnvelopes
+  if $existing == null
+    docusign.createEnvelope
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 4. Multi-step DocuSign workflow
@@ -367,11 +391,18 @@ end
 Chain multiple docusign operations together.
 
 ```robinpath
-docusign.setCredentials $token
-set $r_listEnvelopes as docusign.listEnvelopes
-set $r_getEnvelope as docusign.getEnvelope
-set $r_createEnvelope as docusign.createEnvelope
-print "All operations complete"
+@desc "Setup authentication"
+do
+  docusign.setCredentials $token
+enddo
+
+@desc "List envelopes, get envelope, and more"
+do
+  set $r_listEnvelopes as docusign.listEnvelopes
+  set $r_getEnvelope as docusign.getEnvelope
+  set $r_createEnvelope as docusign.createEnvelope
+  print "All operations complete"
+enddo
 ```
 
 ### 5. Safe listEnvelopes with validation
@@ -379,13 +410,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-docusign.setCredentials $token
-set $result as docusign.listEnvelopes
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  docusign.setCredentials $token
+enddo
+
+@desc "List envelopes and validate result"
+do
+  set $result as docusign.listEnvelopes
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

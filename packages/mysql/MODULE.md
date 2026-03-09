@@ -277,12 +277,15 @@ All functions throw on failure. Common errors:
 | `MySQL connection "..." not found. Call mysql.connect first.` | Check the error message for details |
 
 ```robinpath
-set $result as mysql.query "SELECT * FROM users WHERE id = ?" [1]
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Query and validate result"
+do
+  set $result as mysql.query "SELECT * FROM users WHERE id = ?" [1]
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -293,10 +296,13 @@ end
 Chain multiple mysql operations together.
 
 ```robinpath
-set $r_connect as mysql.connect {"host": "localhost", "user": "root", "database": "mydb"}
-set $r_query as mysql.query "SELECT * FROM users WHERE id = ?" [1]
-set $r_insert as mysql.insert "users" {"name": "Alice", "email": "alice@example.com"}
-print "All operations complete"
+@desc "Connect, query, and more"
+do
+  set $r_connect as mysql.connect {"host": "localhost", "user": "root", "database": "mydb"}
+  set $r_query as mysql.query "SELECT * FROM users WHERE id = ?" [1]
+  set $r_insert as mysql.insert "users" {"name": "Alice", "email": "alice@example.com"}
+  print "All operations complete"
+enddo
 ```
 
 ### 2. Safe connect with validation
@@ -304,12 +310,15 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-set $result as mysql.connect {"host": "localhost", "user": "root", "database": "mydb"}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Connect and validate result"
+do
+  set $result as mysql.connect {"host": "localhost", "user": "root", "database": "mydb"}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 

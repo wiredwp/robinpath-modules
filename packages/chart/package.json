@@ -40,6 +40,8 @@
     "category": "analytics",
     "type": "integration",
     "auth": "none",
-    "functionCount": 7
+    "functionCount": 7,
+    "runtime": "node",
+    "runtimeReason": "Requires Chart.js + @napi-rs/canvas (native binary)"
   }
 }

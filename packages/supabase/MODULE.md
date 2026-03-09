@@ -559,12 +559,15 @@ All functions throw on failure. Common errors:
 | `Supabase ${res.status}: ${text}` | Check the error message for details |
 
 ```robinpath
-set $result as supabase.select "users" "*" {"eq": {"status": "active"}, "limit": 10}
-if $result != null
-  print "Success"
-else
-  print "No result"
-end
+@desc "Select and validate result"
+do
+  set $result as supabase.select "users" "*" {"eq": {"status": "active"}, "limit": 10}
+  if $result != null
+    print "Success"
+  else
+    print "No result"
+  end
+enddo
 ```
 
 
@@ -575,11 +578,18 @@ end
 Retrieve all items and loop through them.
 
 ```robinpath
-supabase.setCredentials $token
-set $result as supabase.getUser "eyJhbGc..."
-each $item in $result
-  print $item
-end
+@desc "Setup authentication"
+do
+  supabase.setCredentials $token
+enddo
+
+@desc "Get user and iterate results"
+do
+  set $result as supabase.getUser "eyJhbGc..."
+  each $item in $result
+    print $item
+  end
+enddo
 ```
 
 ### 2. Create a new item with createBucket
@@ -587,9 +597,16 @@ end
 Create a new resource and capture the result.
 
 ```robinpath
-supabase.setCredentials $token
-set $result as supabase.createBucket "avatars" {"public": true}
-print "Created: " + $result
+@desc "Setup authentication"
+do
+  supabase.setCredentials $token
+enddo
+
+@desc "Create bucket"
+do
+  set $result as supabase.createBucket "avatars" {"public": true}
+  print "Created: " + $result
+enddo
 ```
 
 ### 3. Create and update workflow
@@ -597,10 +614,17 @@ print "Created: " + $result
 Create an item and then update it.
 
 ```robinpath
-supabase.setCredentials $token
-set $created as supabase.createBucket "avatars" {"public": true}
-# Update the created item
-supabase.update "users" {"status": "inactive"} {"id": 42}
+@desc "Setup authentication"
+do
+  supabase.setCredentials $token
+enddo
+
+@desc "Create bucket and update"
+do
+  set $created as supabase.createBucket "avatars" {"public": true}
+  # Update the created item
+  supabase.update "users" {"status": "inactive"} {"id": 42}
+enddo
 ```
 
 ### 4. Check before creating
@@ -608,14 +632,21 @@ supabase.update "users" {"status": "inactive"} {"id": 42}
 List existing items and only create if needed.
 
 ```robinpath
-supabase.setCredentials $token
-set $existing as supabase.getUser "eyJhbGc..."
-if $existing == null
-  supabase.createBucket "avatars" {"public": true}
-  print "Item created"
-else
-  print "Item already exists"
-end
+@desc "Setup authentication"
+do
+  supabase.setCredentials $token
+enddo
+
+@desc "Get user and create bucket"
+do
+  set $existing as supabase.getUser "eyJhbGc..."
+  if $existing == null
+    supabase.createBucket "avatars" {"public": true}
+    print "Item created"
+  else
+    print "Item already exists"
+  end
+enddo
 ```
 
 ### 5. Multi-step Supabase workflow
@@ -623,11 +654,18 @@ end
 Chain multiple supabase operations together.
 
 ```robinpath
-supabase.setCredentials $token
-set $r_select as supabase.select "users" "*" {"eq": {"status": "active"}, "limit": 10}
-set $r_insert as supabase.insert "users" {"name": "Alice", "email": "alice@example.com"}
-set $r_update as supabase.update "users" {"status": "inactive"} {"id": 42}
-print "All operations complete"
+@desc "Setup authentication"
+do
+  supabase.setCredentials $token
+enddo
+
+@desc "Select, insert, and more"
+do
+  set $r_select as supabase.select "users" "*" {"eq": {"status": "active"}, "limit": 10}
+  set $r_insert as supabase.insert "users" {"name": "Alice", "email": "alice@example.com"}
+  set $r_update as supabase.update "users" {"status": "inactive"} {"id": 42}
+  print "All operations complete"
+enddo
 ```
 
 ### 6. Safe select with validation
@@ -635,13 +673,20 @@ print "All operations complete"
 Check results before proceeding.
 
 ```robinpath
-supabase.setCredentials $token
-set $result as supabase.select "users" "*" {"eq": {"status": "active"}, "limit": 10}
-if $result != null
-  print "Success: " + $result
-else
-  print "Operation returned no data"
-end
+@desc "Setup authentication"
+do
+  supabase.setCredentials $token
+enddo
+
+@desc "Select and validate result"
+do
+  set $result as supabase.select "users" "*" {"eq": {"status": "active"}, "limit": 10}
+  if $result != null
+    print "Success: " + $result
+  else
+    print "Operation returned no data"
+  end
+enddo
 ```
 
 
